@@ -1,8 +1,14 @@
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
+ENV['RAILS_ENV'] = 'test'
 
-require 'coveralls'
-Coveralls.wear!
+if ENV['CODECLIMATE_REPO_TOKEN']
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
+
+  require 'coveralls'
+  Coveralls.wear!
+end
+
+require File.expand_path("../dummy/config/environment", __FILE__)
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true

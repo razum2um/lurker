@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
 
   # build template
   spec.add_development_dependency("sprockets")
-  spec.add_development_dependency("sass")
+  spec.add_development_dependency("sass-rails")
   spec.add_development_dependency("bootstrap-sass", '~> 3.1.1')
   spec.add_development_dependency("jquery-rails")
   spec.add_development_dependency("remotipart")
@@ -41,4 +41,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("simplecov")
   spec.add_development_dependency("coveralls")
   spec.add_development_dependency("codeclimate-test-reporter")
+  spec.add_development_dependency("rails", "~> 4.1.0.rc2")
 end
