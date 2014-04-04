@@ -4,7 +4,6 @@
 [![Build Status][BS img]][Build Status]
 [![Dependency Status][DS img]][Dependency Status]
 [![Code Climate][CC img]][Code Climate]
-[![Coverage][CCC img]][Code Climate]
 [![Coverage Status][CS img]][Coverage Status]
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/87ced56265849ad6386c2ba0a78f8038 "githalytics.com")](http://githalytics.com/razum2um/lurker)
 
@@ -45,5 +44,4 @@ TODO: Write usage instructions here
 [BS img]: https://travis-ci.org/razum2um/lurker.png
 [DS img]: https://gemnasium.com/razum2um/lurker.png
 [CC img]: https://codeclimate.com/github/razum2um/lurker.png
-[CCC img]: https://codeclimate.com/github/razum2um/lurker/coverage.png
 [CS img]: https://coveralls.io/repos/razum2um/lurker/badge.png?branch=master
