@@ -1,0 +1,98 @@
+<div id="main-container" class="row-fluid">
+  <div id="list-api-div" class="col-sm-3 col-md-3">
+    <div class="panel-group" id="accordion">
+      <%= render 'left_menu', service_presenter: @endpoint_presenter.service_presenter %>
+    </div>
+  </div>
+  <div id="show-api-div" class="col-sm-9 col-md-9">
+  <%# render 'breadcrumb',
+    :parent     => @endpoint_presenter[:reqs][:controller].humanize,
+    :current    => @endpoint_presenter[:path],
+    :label      => @endpoint_presenter[:verb],
+    :label_type => 'important'
+  %>
+
+  <% if @params.is_a?(Hash) && @params.has_key?(:undefined) %>
+    <%= render 'undefined_route', :route => @params[:undefined] %>
+  <% else %>
+
+    <% if @comment %>
+      <div class="well">
+        <%= markdown @comment %>
+      </div>
+    <% end %>
+
+    <% @params.each do |param| %>
+      <%= form_tag "/#{@endpoint_presenter.path}", :method => @endpoint_presenter.verb, :class => 'well form-horizontal', :remote => true do %>
+
+        <% if param[:url_params].empty? && param[:post_params].empty? %>
+          <div class="alert alert-info">
+            No params specified.
+          </div>
+        <% else %>
+          <ul class="nav nav-tabs">
+            <li class="nav-label">Request</li>
+
+            <li class="active"><a href="#" id="info">INFO</a></li>
+            <% if param[:url_params].present? %>
+              <li<% unless param[:post_params].present? %> class="active"<% end %>><a href="#" id="url-params">URL</a></li>
+            <% end %>
+            <% if param[:post_params].present? %>
+              <li><a href="#" id="post-params">POST</a></li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <fieldset ref="info">
+          <%= render 'endpoint' %>
+        </fieldset>
+
+        <% if param[:url_params].present? %>
+          <fieldset ref="url-params">
+            <% param[:url_params].each do |label, value| %>
+              <%= render 'param_form_element', :label => "[api_taster_url_params]#{label}", :value => value, :label_text => label %>
+            <% end %>
+          </fieldset>
+        <% end %>
+
+        <% if param[:post_params].present? %>
+          <fieldset ref="post-params">
+            <%= Lurker::FormBuilder.new(param[:post_params]).html.html_safe %>
+          </fieldset>
+        <% end %>
+
+        <div class="form-actions">
+          <input id="submit-api" type="submit" class="btn btn-primary pull-right"></input>
+        </div>
+
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <div id="show-api-response-div" class="well" style='display: none;'>
+    <ul class="nav nav-tabs">
+      <li class="nav-label">Response</li>
+      <li><a href="#" id="response-info">Info</a></li>
+      <li><a href="#" id="response-json">JSON</a></li>
+      <li class="active"><a href="#" id="response-raw">Raw</a></li>
+    </ul>
+    <pre ref="response-info">
+      <table>
+        <tr class="status">
+          <td class="name">Status:</td>
+          <td class="value str"></td>
+        </tr>
+        <tr class="time">
+          <td class="name">Time:</td>
+          <td class="value str"></td>
+        </tr>
+        <tr class="headers">
+          <td class="name">Headers:</td>
+          <td class="value str"></td>
+        </tr>
+      </table>
+    </pre>
+    <pre class="prettyprint nowrap" ref="response-json"></pre>
+    <pre class="prettyprint" ref="response-raw"></pre>
+  </div>
+</div>
