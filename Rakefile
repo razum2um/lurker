@@ -29,7 +29,7 @@ namespace :generate do
   desc "generate a fresh app with rspec installed"
   task :app do |t|
     unless File.directory?(EXAMPLE_PATH)
-      sh "bundle exec rails new #{EXAMPLE_PATH} -m #{File.expand_path '../templates/example_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps"
+      sh "bundle exec rails new #{EXAMPLE_PATH} -m #{File.expand_path '../templates/example_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps --quiet"
     end
   end
 
