@@ -19,8 +19,8 @@ Feature: schema scaffolding
        end
        """
 
-   When I run `rspec spec/controllers/api/v1/users_controller_spec.rb`
+   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
    Then the example should pass
-   Then there is a file named "lurker/api/v1/users-GET.fdoc" with:
-     """yml
-     """
+   Then a directory named "lurker" should exist
+   # Then a file named "lurker/api/v1/users-GET.fdoc" should exist
+

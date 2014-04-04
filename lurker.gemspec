@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("rake")
   spec.add_development_dependency("rspec")
   spec.add_development_dependency("cucumber")
+  spec.add_development_dependency("aruba")
   spec.add_development_dependency("pry-debugger")
   spec.add_development_dependency("pry-stack_explorer")
   spec.add_development_dependency("fuubar")
@@ -43,4 +44,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("coveralls")
   spec.add_development_dependency("codeclimate-test-reporter")
   spec.add_development_dependency("rails", "~> 4.1.0.rc2")
+
+  # need for cucumber: not loaded inner bundle
+  spec.add_development_dependency("rspec-rails")
+  spec.add_development_dependency("sqlite3")
+  spec.add_development_dependency("jbuilder")
 end
