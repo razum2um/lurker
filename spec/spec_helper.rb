@@ -1,12 +1,7 @@
 ENV['RAILS_ENV'] = 'test'
 
-if ENV['CODECLIMATE_REPO_TOKEN']
-  require "codeclimate-test-reporter"
-  CodeClimate::TestReporter.start
-
-  require 'coveralls'
-  Coveralls.wear!
-end
+require 'coveralls'
+Coveralls.wear!
 
 require File.expand_path("../dummy/config/environment", __FILE__)
 

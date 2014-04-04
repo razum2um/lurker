@@ -42,7 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("fuubar")
   spec.add_development_dependency("simplecov")
   spec.add_development_dependency("coveralls")
-  spec.add_development_dependency("codeclimate-test-reporter")
   spec.add_development_dependency("rails", "~> 4.1.0.rc2")
 
   # need for cucumber: not loaded inner bundle
