@@ -38,4 +38,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("pry-debugger")
   spec.add_development_dependency("pry-stack_explorer")
   spec.add_development_dependency("fuubar")
+  spec.add_development_dependency("simplecov")
+  spec.add_development_dependency("coveralls")
 end
