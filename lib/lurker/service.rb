@@ -4,7 +4,7 @@ require 'yaml'
 class Lurker::Service
   attr_reader :service_dir, :schema
   attr_accessor :meta_service, :opened_endpoints
-  SUFFIX = '.lurker.service'
+  SUFFIX = '.service.yml'
 
   def self.default_service
     new(Lurker.service_path)
@@ -62,7 +62,7 @@ class Lurker::Service
   end
 
   def endpoint_paths
-    Dir["#{service_dir}/**/*.lurker"] + Dir["#{service_dir}/**/*.lurker.erb"]
+    Dir["#{service_dir}/**/*.json"] + Dir["#{service_dir}/**/*.json.yml"] + Dir["#{service_dir}/**/*.json.yml.erb"]
   end
 
   def endpoints
@@ -72,8 +72,8 @@ class Lurker::Service
   end
 
   def path_for(verb, path)
-    flat_path   = fix_endpoint_path(File.join(@service_dir, "#{path}-#{verb.to_s.upcase}.lurker"))
-    nested_path = fix_endpoint_path(File.join(@service_dir, "#{path}/#{verb.to_s.upcase}.lurker"))
+    flat_path   = fix_endpoint_path(File.join(@service_dir, "#{path}-#{verb.to_s.upcase}.json.yml"))
+    nested_path = fix_endpoint_path(File.join(@service_dir, "#{path}/#{verb.to_s.upcase}.json.yml"))
 
     if File.exist?(flat_path)
       flat_path

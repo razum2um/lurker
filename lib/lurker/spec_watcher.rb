@@ -42,7 +42,7 @@ module Lurker
           end
 
           if successful = Lurker.decide_success(response_params, real_response.status)
-            @__request_params.stringify_keys! # FIXME
+            @__request_params.try :stringify_keys! # FIXME
             @__lurker_service.verify!(
               verb, endpoint_path, path_params.merge(extensions),
               parsed_request_params(@__request_params), response_params,

@@ -48,4 +48,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("rspec-rails")
   spec.add_development_dependency("sqlite3")
   spec.add_development_dependency("jbuilder")
+
+  # aruba generation
+  spec.add_development_dependency("bcat")
+  spec.add_development_dependency("rdiscount")
 end
