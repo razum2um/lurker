@@ -2,18 +2,18 @@ Feature: schema scaffolding
 
   Scenario: scaffold a json schema for a controller spec
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
-     """ruby
-     require "spec_helper"
+      """ruby
+      require "spec_helper"
 
-     describe Api::V1::UsersController, :lurker do
+      describe Api::V1::UsersController, :lurker do
+        render_views
 
-      it "lists all the users" do
-        get :index
-        expect(response).to be_success
+        it "lists all the users" do
+          get :index
+          expect(response).to be_success
+        end
       end
-
-     end
-     """
+      """
 
   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
   Then the example should pass
