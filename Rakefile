@@ -2,6 +2,7 @@ require "bundler/gem_tasks"
 require 'bundler/setup'
 require 'rspec/core/rake_task'
 require 'cucumber/rake/task'
+require 'coveralls/rake/task'
 
 desc 'pry console for gem'
 task :c do
@@ -12,12 +13,18 @@ task :c do
   Pry.start
 end
 
+Coveralls::RakeTask.new
 RSpec::Core::RakeTask.new(:spec)
 Cucumber::Rake::Task.new(:cucumber)
 
 EXAMPLE_PATH = './tmp/example_app'
 
 namespace :clobber do
+  desc "clobber coverage"
+  task :coverage do
+    rm_rf File.expand_path('../coverage', __FILE__)
+  end
+
   desc "clobber the generated app"
   task :app do
     in_example_app "bin/spring stop" if File.exist?("#{EXAMPLE_PATH}/bin/spring")
@@ -35,7 +42,7 @@ namespace :generate do
 
   desc "generate a bunch of stuff with generators"
   task :stuff do
-    in_example_app "bin/rake rails:template LOCATION='../../templates/generate_stuff.rb'"
+    in_example_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
   end
 end
 
@@ -48,7 +55,7 @@ def in_example_app(command)
 end
 
 desc 'destroys & recreates new test app'
-task :regenerate => ["clobber:app", "generate:app", "generate:stuff"]
+task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generate:stuff"]
 
-task :default => [:spec, :regenerate, :cucumber]
+task :default => [:spec, :regenerate, :cucumber, 'coveralls:push']
 

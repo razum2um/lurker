@@ -51,6 +51,29 @@ append_to_file 'config/environment.rb' do
   CODE
 end
 
+prepend_to_file 'spec/spec_helper.rb' do
+  <<-CODE
+  require 'simplecov'
+
+  if simplecov_root = ENV['SIMPLECOV_ROOT']
+    SimpleCov.root simplecov_root
+  end
+
+  if simplecov_cmdname = ENV['SIMPLECOV_CMDNAME']
+    SimpleCov.command_name simplecov_cmdname
+    SimpleCov.start do
+      filters.clear # This will remove the :root_filter that comes via simplecov's defaults
+      add_filter do |src|
+        !(src.filename =~ /\\/lib\\/lurker/ && src.filename =~ /^\#{SimpleCov.root}/)
+      end
+    end
+  else
+    SimpleCov.start
+  end
+
+  CODE
+end
+
 file 'spec/support/fixme.rb', <<-CODE
   require 'lurker/spec_watcher'
   RSpec.configure do |c|

@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("pry-debugger")
   spec.add_development_dependency("pry-stack_explorer")
   spec.add_development_dependency("fuubar")
-  spec.add_development_dependency("simplecov")
+  spec.add_development_dependency("simplecov", "~> 0.7.1")
   spec.add_development_dependency("coveralls")
   spec.add_development_dependency("rails", "~> 4.1.0.rc2")
 

@@ -1,9 +1,8 @@
 ENV['RAILS_ENV'] = 'test'
+require 'lurker'
 
-require 'coveralls'
-Coveralls.wear!
-
-require File.expand_path("../dummy/config/environment", __FILE__)
+require 'simplecov'
+SimpleCov.start
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
