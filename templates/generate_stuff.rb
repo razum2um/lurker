@@ -1,19 +1,39 @@
 generate 'rspec:install'
-generate 'model User name:string'
+generate 'model User name:string --no-timestamps'
+generate 'model Repo user:references name:string --no-timestamps'
 
 route <<-ROUTE
   namespace :api do
     namespace :v1 do
-      resources :users
+      resources :users do
+        resources :repos
+      end
     end
   end
 ROUTE
 
+inject_into_class 'app/models/user.rb', 'User' do
+  <<-CODE
+    has_many :repos
+    validates :name, presence: true
+  CODE
+end
+
+inject_into_class 'app/controllers/application_controller.rb', 'ApplicationController' do
+  <<-CODE
+    before_filter :set_format
+
+    private
+
+    def set_format
+      request.format = :json
+    end
+  CODE
+end
+
 file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController' do
   <<-CODE
-    class Api::V1::UsersController < ActionController::Base
-      before_filter :set_format
-
+    class Api::V1::UsersController < ApplicationController
       def index
         @users = User.all
         render json: @users
@@ -34,11 +54,38 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController' do
         @user.destroy
         render head: :ok
       end
+    end
+  CODE
+end
+
+file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController' do
+  <<-CODE
+    class Api::V1::ReposController < ApplicationController
+
+      def index
+        render json: user.repos
+      end
+
+      def create
+        @user = User.create(params[:user])
+        render json: @user
+      end
+
+      def show
+        @user = User.find(params[:id])
+        render json: @user
+      end
+
+      def destroy
+        @user = User.find(params[:id])
+        @user.destroy
+        render head: :ok
+      end
 
       private
 
-      def set_format
-        request.format = :json
+      def user
+        @user ||= User.find(params[:user_id])
       end
     end
   CODE
@@ -82,8 +129,4 @@ file 'spec/support/fixme.rb', <<-CODE
 CODE
 
 run 'rake db:migrate'
-run %q{bin/rails r "User.create(name: 'admin')"}
-
 run 'RAILS_ENV=test rake db:migrate'
-run %q{RAILS_ENV=test bin/rails r "User.create(name: 'admin')"}
-
