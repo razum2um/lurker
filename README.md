@@ -1,5 +1,7 @@
 # Lurker
 
+The new de-facto for API testing
+
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
 [![Dependency Status][DS img]][Dependency Status]
@@ -17,7 +19,7 @@ Add this line to your application's Gemfile:
 ## Usage
 
 Write your [contorller][controler_spec_example] or [request][request_spec_example] specs as usual,
-but add `:lurker` mark. Please, commit your [json-schemas][json_schema] under Rails.root/lurker directory.
+but add `:lurker` mark. Please, commit your [json-schemas][json_schema] under `Rails.root/lurker` directory.
 
 Now, every test run lurker will look into your requests and [vaditate them][validation_example]!
 
@@ -27,11 +29,11 @@ Now, you can test your API on-line (for real)
 
 ## Features
 
-- Autoscaffolding for non-covered API endpoints
+- [Autoscaffolding for non-covered API endpoints][controler_spec_example]
 - Autotesting for covered endpoint once written (both request & response!)
 - Pretty HTML documentation based on your schemas
 - Pretty submit form to test API endpoints (live) based on schemas
-- Handling URLs with dynamic segments (such as `api/v1/:user_id/repos`)
+- [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
 - Multiple docs for many test cases
 - JSON-Schema partials (inline reference to other schemas)
 - ERB support inside `.json.yml.erb`
@@ -46,12 +48,14 @@ You can clone the repo & run `rake regenerate`. It will generate testing rails a
 
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
+- XML api testing via *.xsd
 - More unit tests
 
 [json_schema]: http://json-schema.org/
 [validation_example]: http://
 [html_schema_example]: http://
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
+[nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/nested-schema-scaffolding
 [request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
 
 [Gem Version]: https://rubygems.org/gems/lurker
