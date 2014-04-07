@@ -56,5 +56,8 @@ end
 desc 'destroys & recreates new test app'
 task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generate:stuff"]
 
+desc 'run cucumber in a fresh env'
+task :features => [:regenerate, :cucumber]
+
 task :default => [:spec, :regenerate, :cucumber, 'coveralls:push']
 
