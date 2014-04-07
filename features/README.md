@@ -1,4 +1,4 @@
-This is the official documentation site for [![Lurker][Github]]
+This is the official documentation site for [Lurker][Github]
 
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
