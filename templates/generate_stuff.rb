@@ -84,6 +84,6 @@ CODE
 run 'rake db:migrate'
 run %q{bin/rails r "User.create(name: 'admin')"}
 
-run 'rake db:migrate', env: 'test'
-run %q{bin/rails r "User.create(name: 'admin')"}, env: 'test'
+run 'RAILS_ENV=test rake db:migrate'
+run %q{RAILS_ENV=test bin/rails r "User.create(name: 'admin')"}
 
