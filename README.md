@@ -1,6 +1,6 @@
 # Lurker
 
-The new de-facto for API testing
+The new de-facto for API testing your Rails application
 
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
@@ -18,8 +18,8 @@ Add this line to your application's Gemfile:
 
 ## Usage
 
-Write your [contorller][controler_spec_example] or [request][request_spec_example] specs as usual,
-but add `:lurker` mark.
+Write your [RSpec][rspec] [controller][rspec_controller_spec] or [request][rspec_request_spec] specs as usual,
+but add `:lurker` mark (like documented [controller example][controler_spec_example] or [request spec example][request_spec_example]).
 
     describe Api::V1::UsersController, :lurker do
       ...
@@ -27,7 +27,8 @@ but add `:lurker` mark.
 And run the specs. That's all, easy!
 
 Please, commit your files under `Rails.root/lurker` directory.
-Feel free to edit them according to [json-schema][json_schema] standart,
+Feel free to edit them according to [json-schema][json_schema] standart.
+It can be very strict and flexible if you wish: see [example][json_schema_example],
 but scaffolded schemas are pretty good by default.
 
     A  lurker/ExampleApp.service.yml
@@ -88,13 +89,17 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 
 ## TODO
 
+- More tests
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
 - Better Diff expected-schema vs recorded schema
 - XML api testing via *.xsd
-- More unit tests
 
+[rspec]: https://github.com/rspec/rspec-rails
+[rspec_controller_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs
+[rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
 [json_schema]: http://json-schema.org/
+[json_schema_example]: http://json-schema.org/example2.html
 [validation_example]: http://
 [html_schema_example]: http://
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
