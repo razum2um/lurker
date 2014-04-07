@@ -80,6 +80,7 @@ Now, you can test your API on-line (for real)
 - ERB support inside `.json.yml.erb`
 - HTTP-Auth authorization for your online docs
 - Capistrano integration
+- Separate API-services generated within one test suite
 
 ## Demo application
 
