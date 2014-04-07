@@ -19,9 +19,45 @@ Add this line to your application's Gemfile:
 ## Usage
 
 Write your [contorller][controler_spec_example] or [request][request_spec_example] specs as usual,
-but add `:lurker` mark. Please, commit your [json-schemas][json_schema] under `Rails.root/lurker` directory.
+but add `:lurker` mark.
 
-Now, every test run lurker will look into your requests and [vaditate them][validation_example]!
+    describe Api::V1::UsersController, :lurker do
+      ...
+
+Please, commit your files under `Rails.root/lurker` directory.
+Feel free to edit them according to [json-schemas][json_schema] standart!
+
+    A  lurker/ExampleApp.service.yml
+    A lurker/api/v1/users-GET.json.yml
+    A  lurker/api/v1/users/__user_id/repos-GET.json.yml
+
+Now, every test run lurker will look into your requests and [vaditate them][validation_example]
+and it fails if your code changes the api!
+
+    Failure/Error: post :create, {
+    Fdoc::ValidationError:
+      Request
+      - The property '#/' contains additional properties ["social_network"] outside of the schema when none are allowed in schema c0ec70af-3d75-5a46-8206-a73a2b6250b3#
+      Response
+      - The property '#/user/last_sign_in_at' of type String did not match the following type: null in schema 83b0e4ef-4f9e-567e-ab37-8941366c0126#
+      Diff
+             required: []
+      +    social_network:
+      +      type: object
+      +      properties:
+      +        provider:
+      +          type: string
+      +        uid:
+      +          type: string
+      +      required: []
+         required: []
+               last_sign_in_at:
+      -          type: 'null'
+      -      required:
+      -      - email
+      +          type: string
+      +      required: []
+         required: []
 
 Let's run your `rails s` and visit [http://localhost:3000/lurker] (or see [example][html_schema_example])
 
@@ -40,14 +76,15 @@ Now, you can test your API on-line (for real)
 - HTTP-Auth authorization for your online docs
 - Capistrano integration
 
-## Demo
+## Demo application
 
-You can clone the repo & run `rake regenerate`. It will generate testing rails application for some api
+You can clone the repo & run `rake features`. It will generate testing rails application for some api
 
 ## TODO
 
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
+- Better Diff expected-schema vs recorded schema
 - XML api testing via *.xsd
 - More unit tests
 
