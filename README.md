@@ -25,9 +25,28 @@ Let's run your `rails s` and visit [http://localhost:3000/lurker] (or see [examp
 
 Now, you can test your API on-line (for real)
 
+## Features
+
+- Autoscaffolding for non-covered API endpoints
+- Autotesting for covered endpoint once written (both request & response!)
+- Pretty HTML documentation based on your schemas
+- Pretty submit form to test API endpoints (live) based on schemas
+- Handling URLs with dynamic segments (such as `api/v1/:user_id/repos`)
+- Multiple docs for many test cases
+- JSON-Schema partials (inline reference to other schemas)
+- ERB support inside `.json.yml.erb`
+- HTTP-Auth authorization for your online docs
+- Capistrano integration
+
 ## Demo
 
-...
+You can clone the repo & run `rake regenerate`. It will generate testing rails application for some api
+
+## TODO
+
+- Auto extraction for models into json-schema partials (in responses at least)
+- Auto marking of attributes as required if `strong_params` are used
+- More unit tests
 
 [json_schema]: http://json-schema.org/
 [validation_example]: http://
