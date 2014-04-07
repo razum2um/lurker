@@ -27,7 +27,7 @@ but add `:lurker` mark.
 And run the specs. That's all, easy!
 
 Please, commit your files under `Rails.root/lurker` directory.
-Feel free to edit them according to [json-schemas][json_schema] standart,
+Feel free to edit them according to [json-schema][json_schema] standart,
 but scaffolded schemas are pretty good by default.
 
     A  lurker/ExampleApp.service.yml
