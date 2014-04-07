@@ -8,7 +8,6 @@ desc 'pry console for gem'
 task :c do
   require 'pry'
   require 'lurker'
-  require File.expand_path("../spec/dummy/config/environment", __FILE__)
   ARGV.clear
   Pry.start
 end

@@ -82,6 +82,8 @@ file 'spec/support/fixme.rb', <<-CODE
 CODE
 
 run 'rake db:migrate'
-run 'rake db:migrate', env: 'test'
 run %q{bin/rails r "User.create(name: 'admin')"}
+
+run 'rake db:migrate', env: 'test'
+run %q{bin/rails r "User.create(name: 'admin')"}, env: 'test'
 

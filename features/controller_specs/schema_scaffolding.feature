@@ -22,7 +22,7 @@ Feature: schema scaffolding
    When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
    Then the example should pass
    Then the file "lurker/api/v1/users-GET.json.yml" should contain:
-     """yml
+     """
      ---
      prefix: ''
      description: ''
