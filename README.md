@@ -14,25 +14,26 @@ Add this line to your application's Gemfile:
 
     gem 'lurker'
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install lurker
-
 ## Usage
 
-TODO: Write usage instructions here
+Write your [contorller][controler_spec_example] or [request][request_spec_example] specs as usual,
+but add `:lurker` mark. Please, commit your [json-schemas][json_schema] under Rails.root/lurker directory.
 
-## Contributing
+Now, every test run lurker will look into your requests and [vaditate them][validation_example]!
 
-1. Fork it ( http://github.com/<my-github-username>/lurker/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Let's run your `rails s` and visit [http://localhost:3000/lurker] (or see [example][html_schema_example])
+
+Now, you can test your API on-line (for real)
+
+## Demo
+
+...
+
+[json_schema]: http://json-schema.org/
+[validation_example]: http://
+[html_schema_example]: http://
+[controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
+[request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
