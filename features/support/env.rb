@@ -1,5 +1,7 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'example_app'
+end
 
 require 'fileutils'
 require 'aruba/cucumber'

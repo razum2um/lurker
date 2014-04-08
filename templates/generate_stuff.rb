@@ -118,7 +118,7 @@ prepend_to_file 'spec/spec_helper.rb' do
     SimpleCov.start do
       filters.clear # This will remove the :root_filter that comes via simplecov's defaults
       add_filter do |src|
-        !(src.filename =~ /\\/lib\\/lurker/ && src.filename =~ /^\#{SimpleCov.root}/)
+        !(src.filename =~ /^\#{SimpleCov.root}\\/lib\\/lurker/)
       end
     end
   else
