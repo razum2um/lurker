@@ -69,8 +69,12 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController' do
       end
 
       def create
-        @user = User.create(params[:user])
-        render json: @user
+        @user = User.new(params[:user])
+        if @user.save
+          render json: @user
+        else
+          render json: { errors: @user.errors }, status: 401
+        end
       end
 
       def show
@@ -127,6 +131,9 @@ file 'spec/support/fixme.rb', <<-CODE
   require 'lurker/spec_watcher'
   RSpec.configure do |c|
     c.treat_symbols_as_metadata_keys_with_true_values = true
+    c.backtrace_exclusion_patterns += [
+      /\\/lib\\/lurker/
+    ]
   end
 CODE
 

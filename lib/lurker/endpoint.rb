@@ -134,12 +134,21 @@ class Lurker::Endpoint
 
   def raise_errors!
     unless errors.empty?
-      raise Lurker::ValidationError.new((
-        ['Schema', "- #{endpoint_path}"] +
-        errors +
-        ['Diff', current_scaffold.schema.diff(schema)]
-      ).join("\n"))
+      raise Lurker::ValidationError.new(word_wrap((
+        # ['Schema', "- #{endpoint_path}"] +
+        errors
+        # + ['Diff', current_scaffold.schema.diff(schema)]
+      ).join("\n")))
     end
+  end
+
+  # actionpack/lib/action_view/helpers/text_helper.rb, line 216
+  def word_wrap(text, options = {})
+    line_width = options.fetch(:line_width, 80)
+
+    text.split("\n").collect do |line|
+      line.length > line_width ? line.gsub(/(.{1,#{line_width}})(\s+|$)/, "\\1\n").strip : line
+    end * "\n"
   end
 
   # default additionalProperties on objects to false

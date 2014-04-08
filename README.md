@@ -46,24 +46,6 @@ and it fails if your code changes the api!
       Response
       - The property '#/user/last_sign_in_at' of type String did not match the following type:
         null in schema 83b0e4ef-4f9e-567e-ab37-8941366c0126#
-      Diff
-             required: []
-      +    social_network:
-      +      type: object
-      +      properties:
-      +        provider:
-      +          type: string
-      +        uid:
-      +          type: string
-      +      required: []
-         required: []
-               last_sign_in_at:
-      -          type: 'null'
-      -      required:
-      -      - email
-      +          type: string
-      +      required: []
-         required: []
 
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/) (or see [example][html_schema_example])
 
