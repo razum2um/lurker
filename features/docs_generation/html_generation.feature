@@ -68,3 +68,8 @@ Feature: html generation
    And I submit it
 
   Then I should see JSON response with "Jim"
+
+  When I fill in the submit form with ""
+   And I submit it
+
+  Then I should see JSON response with "can't be blank"
