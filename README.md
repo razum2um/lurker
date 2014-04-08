@@ -35,7 +35,7 @@ but scaffolded schemas are pretty good by default.
     A  lurker/api/v1/users-GET.json.yml
     A  lurker/api/v1/users/__user_id/repos-GET.json.yml
 
-Now, every test run lurker will look into your requests and [vaditate them][validation_example]
+Now, every test run lurker will look into your requests and [vaditate them][failed_spec_example]
 and it fails if your code changes the api!
 
     Failure/Error: post :create, {
@@ -79,18 +79,19 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 
 ## Acknoledgements
 
-Sponsored by [Evil Martians][evil_martians].
+Sponsored by [Evil Martians][evil_martians], thanks!
 
 This gem is quite opinionated and relies on rails & rspec - if you're
-using anything else, please take a look at more liberal gems `api_taster` or `fdoc`,
+interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
 This gem is heavily inspirated by them. Thanks, @square & @fredwu
 
 [rspec]: https://github.com/rspec/rspec-rails
+[api_taster]: https://github.com/fredwu/api_taster
+[fdoc]: https://github.com/square/fdoc
 [rspec_controller_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs
 [rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
 [json_schema]: http://json-schema.org/
 [json_schema_example]: http://json-schema.org/example2.html
-[validation_example]: http://
 [html_schema_example]: http://
 [failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/test-endpoint
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
