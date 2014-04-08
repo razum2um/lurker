@@ -14,6 +14,9 @@ group :development do
   gem 'fuubar-cucumber', github: 'martinciu/fuubar-cucumber', branch: 'master'
   gem 'selenium-webdriver'
 
+  # deploy site
+  gem 'highline'
+
   # build template static
   # run `rake assets:precompile`
   # to get bundled application.(js|css)

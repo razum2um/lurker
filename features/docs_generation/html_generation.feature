@@ -4,14 +4,13 @@ Feature: html generation
   with `protect_from_forgery :null_session`
 
   @javascript
-  Scenario: json schema gets generated into html preview
-    Given an empty directory named "lurker"
-    And an empty directory named "html"
+  Scenario: json schema gets generated into html preview using "users/create"
+    Given an empty directory named "html"
     And a file named "lurker/api/v1/users-POST.json.yml" with:
       """yml
       ---
-      prefix: 'users management'
-      description: 'user creation'
+      prefix: users management
+      description: user creation
       responseCodes:
       - status: 200
         successful: true

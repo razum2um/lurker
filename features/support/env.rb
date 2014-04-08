@@ -14,9 +14,13 @@ require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'capybara/poltergeist'
 require File.expand_path('../../../tmp/lurker_app/config/environment', __FILE__)
+require 'database_cleaner'
+require 'database_cleaner/cucumber'
 
 Capybara.app = Rails.application
 Capybara.javascript_driver = :poltergeist
+
+DatabaseCleaner.strategy = :truncation
 
 # see: https://github.com/colszowka/simplecov/issues/234
 Aruba.configure do |config|
@@ -29,4 +33,9 @@ end
 Before do
   @dirs = ["tmp/lurker_app"]
   @aruba_timeout_seconds = 30
+  DatabaseCleaner.start
+end
+
+After do |scenario|
+  DatabaseCleaner.clean
 end

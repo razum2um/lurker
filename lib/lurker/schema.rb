@@ -4,6 +4,14 @@ require 'yaml'
 module Lurker
   class Schema
     KEY = 'extensions'
+    DESCRPTIONS = {
+      'index' => 'listing',
+      'show' => '',
+      'edit' => 'editing',
+      'create' => 'creation',
+      'update' => 'updating',
+      'destroy' => 'descruction'
+    }
     attr_reader :extensions
 
     def initialize(json_schema_hash, extensions={})
@@ -31,6 +39,13 @@ module Lurker
     end
 
     def write_to(path)
+      if @hash['prefix'].blank?
+        @hash['prefix'] = "#{default_subject} management"
+      end
+      if @hash['description'].blank?
+        @hash['description'] = default_descrption.strip
+      end
+
       dirname = File.dirname(path)
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
@@ -47,6 +62,16 @@ module Lurker
       @serialized_for_diff ||= YAML.dump(@hash).each_line.map do |l|
         l unless l.match(/description|example/)
       end.compact.join
+    end
+
+    private
+
+    def default_descrption
+      "#{default_subject.singularize} #{DESCRPTIONS[@extensions['action']]}"
+    end
+
+    def default_subject
+      "#{@extensions['controller'].to_s.split(/\//).last}"
     end
   end
 end

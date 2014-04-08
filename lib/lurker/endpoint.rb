@@ -62,9 +62,6 @@ class Lurker::Endpoint
 
   def verb
     @verb ||= endpoint_path.match(/([A-Z]*)\.json(\.yml)?(\.erb)?$/)[1]
-  rescue
-    require 'pry-debugger'
-    binding.pry
   end
 
   def path

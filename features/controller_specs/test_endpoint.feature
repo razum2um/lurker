@@ -50,7 +50,7 @@ Feature: test endpoint
         suffix: ''
       """
 
-  Scenario: json schema tests request and response
+  Scenario: json schema tests request and response using "users/create"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"
@@ -68,7 +68,7 @@ Feature: test endpoint
   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
   Then the example should pass
 
-  Scenario: json schema tests request parameters and tell what fails
+  Scenario: json schema tests request parameters and tell what fails using "users/create"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"
@@ -93,7 +93,7 @@ Feature: test endpoint
     1 example, 1 failure
     """
 
-  Scenario: json schema tests response parameters and tell what fails
+  Scenario: json schema tests response parameters and tell what fails using "users/create"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"

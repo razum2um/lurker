@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("aruba")
   spec.add_development_dependency("capybara")
   spec.add_development_dependency("poltergeist")
+  spec.add_development_dependency("database_cleaner")
 
   spec.add_development_dependency('simplecov', '~> 0.7.1')
   spec.add_development_dependency('coveralls')
@@ -41,5 +42,5 @@ Gem::Specification.new do |spec|
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn't getting used, but lib's one
   spec.add_development_dependency("rspec-rails")
-  spec.add_development_dependency("sqlite3")
+  spec.add_development_dependency("pg")
 end

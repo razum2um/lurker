@@ -1,5 +1,5 @@
 language: ruby
-install: bundle install --path vendor/bundle
+install: bundle install -j4 --path vendor/bundle
 cache:
   directories:
     - vendor/bundle

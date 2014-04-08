@@ -5138,3 +5138,6 @@ legend {
   vertical-align: top; }
   #show-api-response-div table td.name {
     text-align: right; }
+
+.panel-title > a {
+  text-transform: capitalize; }

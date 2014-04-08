@@ -1,0 +1,3 @@
+[submodule "app"]
+	path = tmp/lurker_app
+	url = git@heroku.com:lurker-app.git

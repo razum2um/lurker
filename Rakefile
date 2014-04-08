@@ -15,17 +15,11 @@ end
 namespace :assets do
   desc 'compiles static css & js for web'
   task :precompile do
-    begin
-      require 'pathname'
-      require 'logger'
-      require 'fileutils'
-      require 'sprockets'
-      require 'sass'
-    rescue LoadError
-      puts 'Run this task as:'
-      puts 'BUNDLE_GEMFILE=Gemfile.local rake assets:precompile'
-      raise
-    end
+    require 'pathname'
+    require 'logger'
+    require 'fileutils'
+    require_with_help 'sprockets'
+    require_with_help 'sass'
 
     ROOT        = Pathname(File.dirname(__FILE__))
     LOGGER      = Logger.new(STDOUT)
@@ -76,7 +70,8 @@ Cucumber::Rake::Task.new(:cucumber) do |t|
   t.cucumber_opts = "features --format progress --tags ~@wip"
 end
 
-EXAMPLE_PATH = './tmp/lurker_app'
+EXAMPLE_APP = 'tmp/lurker_app'
+EXAMPLE_PATH = File.expand_path("../#{EXAMPLE_APP}", __FILE__)
 
 namespace :clobber do
   desc "clobber coverage"
@@ -87,15 +82,20 @@ namespace :clobber do
   desc "clobber the generated app"
   task :app do
     in_lurker_app "bin/spring stop" if File.exist?("#{EXAMPLE_PATH}/bin/spring")
-    rm_rf EXAMPLE_PATH
+    Dir.chdir EXAMPLE_PATH do
+      Dir.glob("*", File::FNM_DOTMATCH).each do |fname|
+        next if fname == '.' || fname == '..' || fname == '.git'
+        FileUtils.rm_rf fname
+      end
+    end
   end
 end
 
 namespace :generate do
   desc "generate a fresh app with rspec installed"
   task :app do |t|
-    unless File.directory?(EXAMPLE_PATH)
-      sh "bundle exec rails new #{EXAMPLE_PATH} -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps --quiet"
+    if needs_generation?
+      sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps --quiet"
     end
   end
 
@@ -113,14 +113,47 @@ def in_lurker_app(command)
   end
 end
 
+def needs_generation?
+  !File.exists?("#{EXAMPLE_PATH}/Gemfile")
+end
+
+def require_with_help(name)
+  begin
+    require name
+  rescue LoadError
+    puts "Incorrect Gemfile, run: `bundle --gemfile Gemfile.local` and"
+    puts "BUNDLE_GEMFILE=$PWD/Gemfile.local #{$0}"
+    raise
+  end
+end
+
 desc 'destroys & recreates new test app'
 task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generate:stuff"]
 
-desc 'pushes example lurker_app to heroku'
-task :deploy => [:regenerate]
-
 desc 'run cucumber in a fresh env'
 task :features => [:regenerate, :cucumber]
+
+desc 'pushes example lurker_app to heroku'
+task :deploy => [:features] do
+  require_with_help 'highline/import'
+  in_lurker_app "echo 'bin/lurker' > .gitignore"
+  in_lurker_app "echo 'log' >> .gitignore"
+  # commit migration and deploy by hand first time
+  in_lurker_app "echo 'db/*' >> .gitignore"
+
+  in_lurker_app "bin/lurker convert"
+
+  in_lurker_app "git add -A"
+  in_lurker_app "git status"
+  choose do |menu|
+    menu.prompt = 'Commit & push & deploy?'
+    menu.choice(:yes) {
+      in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
+      in_lurker_app "git push origin master"
+    }
+    menu.choice(:no) { say("Exit") }
+  end
+end
 
 task :default => [:spec, :regenerate, :cucumber, 'coveralls:push']
 
