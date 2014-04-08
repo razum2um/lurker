@@ -111,8 +111,14 @@ Feature: test endpoint
       """
 
   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
-  Then the output should contain "1 example, 1 failure"
-  Then the output should contain "The property '#/name' of type Fixnum did not match the following type: string"
+  Then the output should contain:
+    """
+    1 example, 1 failure
+    """
+  Then the output should contain:
+    """
+    The property '#/name' of type Fixnum did not match the following type: string
+    """
 
   Scenario: json schema tests response parameters and tell what fails
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
@@ -168,5 +174,11 @@ Feature: test endpoint
       """
 
   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
-  Then the output should contain "1 example, 1 failure"
-  Then the output should contain "The property '#/' did not contain a required property of 'role'"
+  Then the output should contain:
+    """
+    1 example, 1 failure
+    """
+  Then the output should contain:
+    """
+    The property '#/' did not contain a required property of 'role'
+    """
