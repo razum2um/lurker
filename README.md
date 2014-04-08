@@ -35,6 +35,8 @@ but scaffolded schemas are pretty good by default.
     A  lurker/api/v1/users-GET.json.yml
     A  lurker/api/v1/users/__user_id/repos-GET.json.yml
 
+## Profit!
+
 Now, every test run lurker will look into your requests and [vaditate them][failed_spec_example]
 and it fails if your code changes the api!
 
