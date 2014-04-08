@@ -1,4 +1,7 @@
 language: ruby
-cache: bundler
+install: bundle install --path vendor/bundle
+cache:
+  directories:
+    - vendor/bundle
 rvm:
   - 2.1.1
