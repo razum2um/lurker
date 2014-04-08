@@ -77,8 +77,10 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 To get new version of bundled `bootstrap` or to use debugger in specs run:
 
     bundle --gemfile Gemfile.local
-    export BUNDLE_GEMFILE=Gemfile.local
-    rake assets:precompile
+    export BUNDLE_GEMFILE=$PWD/Gemfile.local
+
+    rake assets:precompile # to build assets
+    cucumber some/feature  # to use pry-debugger
 
 ## Todo
 
