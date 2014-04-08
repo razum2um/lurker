@@ -76,7 +76,7 @@ Cucumber::Rake::Task.new(:cucumber) do |t|
   t.cucumber_opts = "features --format progress --tags ~@wip"
 end
 
-EXAMPLE_PATH = './tmp/example_app'
+EXAMPLE_PATH = './tmp/lurker_app'
 
 namespace :clobber do
   desc "clobber coverage"
@@ -86,7 +86,7 @@ namespace :clobber do
 
   desc "clobber the generated app"
   task :app do
-    in_example_app "bin/spring stop" if File.exist?("#{EXAMPLE_PATH}/bin/spring")
+    in_lurker_app "bin/spring stop" if File.exist?("#{EXAMPLE_PATH}/bin/spring")
     rm_rf EXAMPLE_PATH
   end
 end
@@ -95,17 +95,17 @@ namespace :generate do
   desc "generate a fresh app with rspec installed"
   task :app do |t|
     unless File.directory?(EXAMPLE_PATH)
-      sh "bundle exec rails new #{EXAMPLE_PATH} -m #{File.expand_path '../templates/example_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps --quiet"
+      sh "bundle exec rails new #{EXAMPLE_PATH} -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps --quiet"
     end
   end
 
   desc "generate a bunch of stuff with generators"
   task :stuff do
-    in_example_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
+    in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
   end
 end
 
-def in_example_app(command)
+def in_lurker_app(command)
   Dir.chdir(EXAMPLE_PATH) do
     Bundler.with_clean_env do
       sh command
@@ -115,6 +115,9 @@ end
 
 desc 'destroys & recreates new test app'
 task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generate:stuff"]
+
+desc 'pushes example lurker_app to heroku'
+task :deploy => [:regenerate]
 
 desc 'run cucumber in a fresh env'
 task :features => [:regenerate, :cucumber]

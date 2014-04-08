@@ -1,6 +1,6 @@
 require 'simplecov'
 SimpleCov.start do
-  add_filter 'example_app'
+  add_filter 'lurker_app'
 end
 
 require 'fileutils'
@@ -13,7 +13,7 @@ require 'capybara'
 require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'capybara/poltergeist'
-require File.expand_path('../../../tmp/example_app/config/environment', __FILE__)
+require File.expand_path('../../../tmp/lurker_app/config/environment', __FILE__)
 
 Capybara.app = Rails.application
 Capybara.javascript_driver = :poltergeist
@@ -27,6 +27,6 @@ Aruba.configure do |config|
 end
 
 Before do
-  @dirs = ["tmp/example_app"]
+  @dirs = ["tmp/lurker_app"]
   @aruba_timeout_seconds = 30
 end

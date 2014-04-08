@@ -1,5 +1,5 @@
 Given /^an empty directory named "([^"]*)"$/ do |dir_name|
-  FileUtils.rm_rf File.expand_path("../../../tmp/example_app/#{dir_name}", __FILE__)
+  FileUtils.rm_rf File.expand_path("../../../tmp/lurker_app/#{dir_name}", __FILE__)
   create_dir(dir_name)
 end
 
