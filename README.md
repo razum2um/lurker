@@ -54,7 +54,7 @@ Now, you can test your API on-line (for real)
 ## Features
 
 - [Autoscaffolding for non-covered API endpoints][controler_spec_example]
-- Autotesting for covered endpoint once written (both request & response!)
+- [Autotesting for covered endpoint once written][failed_spec_example] (both request & response!)
 - Pretty HTML documentation based on your schemas
 - Pretty submit form to test API endpoints (live) based on schemas
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
@@ -84,6 +84,7 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 [json_schema_example]: http://json-schema.org/example2.html
 [validation_example]: http://
 [html_schema_example]: http://
+[failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/test-endpoint
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
 [nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/nested-schema-scaffolding
 [request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
