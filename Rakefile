@@ -133,15 +133,19 @@ task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generat
 desc 'run cucumber in a fresh env'
 task :features => [:regenerate, :cucumber]
 
+desc 'convert docs for example app'
+task :build_example_docs => :features do
+  in_lurker_app "bin/lurker convert"
+end
+
 desc 'pushes example lurker_app to heroku'
-task :deploy => [:features] do
+task :deploy => :build_example_docs do
   require_with_help 'highline/import'
   in_lurker_app "echo 'bin/lurker' > .gitignore"
   in_lurker_app "echo 'log' >> .gitignore"
   # commit migration and deploy by hand first time
   in_lurker_app "echo 'db/*' >> .gitignore"
 
-  in_lurker_app "bin/lurker convert"
 
   in_lurker_app "git add -A"
   in_lurker_app "git status"

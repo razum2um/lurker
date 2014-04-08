@@ -76,7 +76,9 @@ Now, you can test your API on-line (for real)
 
 ## Demo application
 
-You can clone the repo & run `rake features`. It will generate testing rails application for some api
+You can clone the repo & run `rake build_example_docs`.
+It will generate testing rails application under `tmp/lurker_app`.
+Currently it is deployed [here][demo_app].
 
 ## Contributions
 
@@ -120,6 +122,7 @@ This gem is heavily inspirated by them. Thanks, @square & @fredwu
 [request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
 [html_generation_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/html-generation
 [evil_martians]: http://evilmartians.com/
+[demo_app]: http://lurker-app.herokuapp.com/lurker/
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
