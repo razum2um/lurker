@@ -40,17 +40,14 @@ Feature: html generation
       """
 
   When I successfully run `bin/lurker convert`
-  And I run `find html`
   Then the output should contain:
     """
-    html
-    html/api
-    html/api/v1
+    Converting lurker to html
+    """
+  When I run `find html`
+  Then the output should contain:
+    """
     html/api/v1/users-POST.html
-    html/index.html
-    html/public
-    html/public/application.css
-    html/public/application.js
     """
   When I go to "/lurker"
   Then I should see "Users"
