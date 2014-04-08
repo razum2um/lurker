@@ -12,22 +12,27 @@ task :c do
   Pry.start
 end
 
-# asset building
-require 'pathname'
-require 'logger'
-require 'fileutils'
-require 'sprockets'
-require 'sass'
-
-ROOT        = Pathname(File.dirname(__FILE__))
-LOGGER      = Logger.new(STDOUT)
-BUNDLES     = %w( application.css application.js )
-BUILD_DIR   = ROOT.join("lib/lurker/templates/public")
-SOURCE_DIR  = ROOT.join("lib/lurker/templates")
-
 namespace :assets do
   desc 'compiles static css & js for web'
   task :precompile do
+    begin
+      require 'pathname'
+      require 'logger'
+      require 'fileutils'
+      require 'sprockets'
+      require 'sass'
+    rescue LoadError
+      puts 'Run this task as:'
+      puts 'BUNDLE_GEMFILE=Gemfile.local rake assets:precompile'
+      raise
+    end
+
+    ROOT        = Pathname(File.dirname(__FILE__))
+    LOGGER      = Logger.new(STDOUT)
+    BUNDLES     = %w( application.css application.js )
+    BUILD_DIR   = ROOT.join("lib/lurker/templates/public")
+    SOURCE_DIR  = ROOT.join("lib/lurker/templates")
+
     FileUtils.rm_rf(BUILD_DIR)
     FileUtils.mkdir_p(BUILD_DIR)
 
