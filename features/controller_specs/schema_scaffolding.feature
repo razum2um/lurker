@@ -1,6 +1,8 @@
 Feature: schema scaffolding
 
   Scenario: scaffold a json schema for a controller spec
+    Given an empty directory named "lurker"
+    Given an empty directory named "spec/controllers"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"

@@ -3,7 +3,9 @@ Feature: nested schema scaffolding
   If your API endpoint has some dynamic segment - Lurker can handle it as well!
 
   Scenario: scaffold a json schema for a nested controller spec
-    Given a file named "spec/requests/repos_controller_spec.rb" with:
+    Given an empty directory named "lurker"
+    Given an empty directory named "spec/requests"
+    Given a file named "spec/requests/repos_spec.rb" with:
       """ruby
       require "spec_helper"
 
@@ -22,7 +24,7 @@ Feature: nested schema scaffolding
       end
       """
 
-  When I run `bin/rspec spec/requests/repos_controller_spec.rb`
+  When I run `bin/rspec spec/requests/repos_spec.rb`
   Then the example should pass
   Then a file named "lurker/api/v1/users/__user_id/repos-GET.json.yml" should exist
   Then the file "lurker/api/v1/users/__user_id/repos-GET.json.yml" should contain exactly:
@@ -35,11 +37,7 @@ Feature: nested schema scaffolding
       successful: true
       description: ''
     requestParameters:
-      properties:
-        user_id:
-          description: ''
-          type: integer
-          example: 1
+      properties: {}
       required: []
     responseParameters:
       type: array

@@ -1,6 +1,7 @@
 require 'simplecov'
 SimpleCov.start
 
+require 'fileutils'
 require 'aruba/cucumber'
 
 # see: https://github.com/colszowka/simplecov/issues/234

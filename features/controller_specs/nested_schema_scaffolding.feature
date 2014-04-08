@@ -3,6 +3,8 @@ Feature: nested schema scaffolding
   If your API endpoint has some dynamic segment - Lurker can handle it as well!
 
   Scenario: scaffold a json schema for a nested controller spec
+    Given an empty directory named "lurker"
+    Given an empty directory named "spec/controllers"
     Given a file named "spec/controllers/api/v1/repos_controller_spec.rb" with:
       """ruby
       require "spec_helper"

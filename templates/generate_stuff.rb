@@ -1,6 +1,8 @@
+gsub_file 'config/database.yml', /database: db\/development\.sqlite3/, 'database: db/test.sqlite3'
+
 generate 'rspec:install'
-generate 'model User name:string --no-timestamps'
-generate 'model Repo user:references name:string --no-timestamps'
+generate 'model User name:string --no-timestamps --no-test-framework'
+generate 'model Repo user:references name:string --no-timestamps --no-test-framework'
 
 route <<-ROUTE
   namespace :api do
@@ -129,4 +131,3 @@ file 'spec/support/fixme.rb', <<-CODE
 CODE
 
 run 'rake db:migrate'
-run 'RAILS_ENV=test rake db:migrate'
