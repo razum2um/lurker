@@ -25,13 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency("diffy")
   spec.add_dependency("sinatra")
 
-  # build template static
-  spec.add_development_dependency("sprockets")
-  spec.add_development_dependency("sass-rails")
-  spec.add_development_dependency("bootstrap-sass", '~> 3.1.1')
-  spec.add_development_dependency("jquery-rails")
-  spec.add_development_dependency("remotipart")
-
   # testing
   spec.add_development_dependency("bundler", "~> 1.5")
   spec.add_development_dependency("rails", "~> 4.1.0.rc2")
@@ -41,21 +34,12 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("aruba")
   spec.add_development_dependency("capybara")
   spec.add_development_dependency("poltergeist")
-  #spec.add_development_dependency("selenium-webdriver")
 
-  # tools
-  spec.add_development_dependency("pry-debugger")
-  spec.add_development_dependency("pry-stack_explorer")
-  spec.add_development_dependency("fuubar")
-  spec.add_development_dependency("simplecov", "~> 0.7.1")
-  spec.add_development_dependency("coveralls")
+  spec.add_development_dependency('simplecov', '~> 0.7.1')
+  spec.add_development_dependency('coveralls')
 
-  # need for cucumber: not loaded inner bundle
+  # FIXME: these gems are needed while cucumber runs
+  # inner Gemfile isn't getting used, but lib's one
   spec.add_development_dependency("rspec-rails")
   spec.add_development_dependency("sqlite3")
-  spec.add_development_dependency("jbuilder")
-
-  # aruba generation
-  spec.add_development_dependency("bcat")
-  spec.add_development_dependency("rdiscount")
 end
