@@ -50,7 +50,7 @@ and it fails if your code changes the api!
       - The property '#/user/last_sign_in_at' of type String did not match the following type:
         null in schema file:///.../lurker/api/v1/users-POST.json.yml#
 
-Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/) (or see [example][html_schema_example])
+Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/) (or see [demo][demo_app])
 
 Now, you can test your API on-line (for real)
 
@@ -116,7 +116,6 @@ This gem is heavily inspirated by them. Thanks, @square & @fredwu
 [rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
 [json_schema]: http://json-schema.org/
 [json_schema_example]: http://json-schema.org/example2.html
-[html_schema_example]: http://
 [failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/test-endpoint
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
 [nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/nested-schema-scaffolding
