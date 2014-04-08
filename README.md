@@ -75,6 +75,7 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 ## TODO
 
 - More tests
+- More docs
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
 - Sinatra support
