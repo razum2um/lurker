@@ -61,8 +61,8 @@ Now, you can test your API on-line (for real)
 - Pretty submit form to test API endpoints (live) based on schemas
 - Live API testing in sandbox mode
 
-    \# make sure it's not production!
-    \# e.g. config/environtents/staging.rb
+    # make sure it's not production!
+    # e.g. config/environtents/staging.rb
     config.middleware.use Lurker::Sandbox
 
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
