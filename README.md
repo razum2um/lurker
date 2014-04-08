@@ -59,6 +59,12 @@ Now, you can test your API on-line (for real)
 - [Autotesting for covered endpoint once written][failed_spec_example] (both request & response!)
 - [Pretty HTML documentation based on your schemas][html_generation_example]
 - Pretty submit form to test API endpoints (live) based on schemas
+- Live API testing in sandbox mode
+
+    # make sure it's not production!
+    # e.g. config/environtents/staging.rb
+    config.middleware.use Lurker::Sandbox
+
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
 - Multiple docs for many test cases
 - JSON-Schema partials (inline reference to other schemas)

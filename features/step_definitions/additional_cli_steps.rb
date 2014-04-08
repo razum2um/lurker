@@ -1,3 +1,8 @@
+Given /^an empty directory named "([^"]*)"$/ do |dir_name|
+  FileUtils.rm_rf File.expand_path("../../../tmp/example_app/#{dir_name}", __FILE__)
+  create_dir(dir_name)
+end
+
 When /^I go to "([^"]*)"$/ do |url|
   visit(url)
 end
@@ -6,9 +11,13 @@ When /^I click on "([^"]*)"$/ do |text|
   find(:xpath, "//*[contains(text(),'#{text}')]").click
 end
 
-Given /^an empty directory named "([^"]*)"$/ do |dir_name|
-  FileUtils.rm_rf File.expand_path("../../../tmp/example_app/#{dir_name}", __FILE__)
-  create_dir(dir_name)
+When(/^I fill in the submit form with "([^"]*)"$/) do |name|
+  find(:xpath, "//*[contains(text(), 'LURK')]").click
+  fill_in('user[name]', with: name)
+end
+
+When(/^I submit it$/) do
+  find(:xpath, "//*[@type='submit']").click
 end
 
 Then /^the example(s)? should( all)? pass$/ do |_, _|
@@ -31,11 +40,17 @@ Then /^I should see "([^"]*)" within "([^"]*)"$/ do |text, selector|
   expect(find(:xpath, "//#{selector}[contains(text(),'#{text}')]")).to be
 end
 
-Then /^the output should contain failures:$/ do |failures|
+Then /^the output should contain (failures|these lines):$/ do |_, lines|
   out = all_output.dup
-  failures.split(/\n/).map(&:strip).each do |failure|
-    next if failure.blank?
-    expect(out).to match /#{Regexp.escape(failure)}/
-    out.gsub!(/.*?#{Regexp.escape(failure)}/m, '')
+  lines.split(/\n/).map(&:strip).each do |line|
+    next if line.blank?
+    expect(out).to match /#{Regexp.escape(line)}/
+    out.gsub!(/.*?#{Regexp.escape(line)}/m, '')
+  end
+end
+
+Then(/^I should see JSON response with "([^"]*)"$/) do |name|
+  within(find(:xpath, "//*[@id='show-api-response-div']")) do
+    expect(page).to have_content name
   end
 end

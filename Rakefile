@@ -67,8 +67,14 @@ end
 # testing
 
 Coveralls::RakeTask.new
-RSpec::Core::RakeTask.new(:spec)
-Cucumber::Rake::Task.new(:cucumber)
+
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.rspec_opts = "--format progress"
+end
+
+Cucumber::Rake::Task.new(:cucumber) do |t|
+  t.cucumber_opts = "features --format progress --tags ~@wip"
+end
 
 EXAMPLE_PATH = './tmp/example_app'
 

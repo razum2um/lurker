@@ -127,6 +127,12 @@ append_to_file 'config/environment.rb' do
   CODE
 end
 
+inject_into_class 'config/application.rb', 'Application' do
+  <<-CODE
+    config.middleware.use Lurker::Sandbox
+  CODE
+end
+
 prepend_to_file 'spec/spec_helper.rb' do
   <<-CODE
   require 'simplecov'

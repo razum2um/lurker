@@ -10,18 +10,23 @@ Feature: html generation
     And a file named "lurker/api/v1/users-POST.json.yml" with:
       """yml
       ---
-      prefix: 'Users'
-      description: 'User creation'
+      prefix: 'users management'
+      description: 'user creation'
       responseCodes:
       - status: 200
         successful: true
         description: ''
       requestParameters:
         properties:
-          name:
+          user:
             description: ''
-            type: string
-            example: Bob
+            type: object
+            properties:
+              name:
+                description: ''
+                type: string
+                example: Bob
+            required: []
         required: []
       responseParameters:
         properties:
@@ -43,17 +48,23 @@ Feature: html generation
       """
 
   When I successfully run `bin/lurker convert`
-  Then the output should contain:
+  Then the output should contain these lines:
     """
-    Converting lurker to html
+            Converting lurker to html
+     using  lurker
+    inside  /Users/razum2um/Code/lurker/tmp/example_app/html
+    create  index.html
+    create  api/v1/users-POST.html
     """
-  When I run `find html`
-  Then the output should contain:
-    """
-    html/api/v1/users-POST.html
-    """
-  When I go to "/lurker"
-  Then I should see "Users"
-  When I click on "Users"
-  Then I should see "User creation"
 
+  When I go to "/lurker"
+  Then I should see "users management"
+
+  When I click on "users management"
+  Then I should see "user creation"
+
+  When I click on "user creation"
+   And I fill in the submit form with "Jim"
+   And I submit it
+
+  Then I should see JSON response with "Jim"
