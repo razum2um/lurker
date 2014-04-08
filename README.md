@@ -7,6 +7,7 @@ The new de-facto for API testing your Rails application (Rails 4 compatible, Rai
 [![Dependency Status][DS img]][Dependency Status]
 [![Code Climate][CC img]][Code Climate]
 [![Coverage Status][CS img]][Coverage Status]
+[![Inline docs](http://inch-pages.github.io/github/razum2um/lurker.png)](http://inch-pages.github.io/github/razum2um/lurker)
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/87ced56265849ad6386c2ba0a78f8038 "githalytics.com")](http://githalytics.com/razum2um/lurker)
 
 
