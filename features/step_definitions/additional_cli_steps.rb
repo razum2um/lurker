@@ -30,3 +30,12 @@ end
 Then /^I should see "([^"]*)" within "([^"]*)"$/ do |text, selector|
   expect(find(:xpath, "//#{selector}[contains(text(),'#{text}')]")).to be
 end
+
+Then /^the output should contain failures:$/ do |failures|
+  out = all_output.dup
+  failures.split(/\n/).map(&:strip).each do |failure|
+    next if failure.blank?
+    expect(out).to match /#{Regexp.escape(failure)}/
+    out.gsub!(/.*?#{Regexp.escape(failure)}/m, '')
+  end
+end

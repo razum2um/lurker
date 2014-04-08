@@ -12,20 +12,11 @@ World(RSpec::Matchers)
 require 'capybara'
 require 'capybara/dsl'
 require 'capybara/cucumber'
+require 'capybara/poltergeist'
 require File.expand_path('../../../tmp/example_app/config/environment', __FILE__)
 
 Capybara.app = Rails.application
-
-begin
-  require 'selenium-webdriver'
-  # sorry for such a debug
-  if File.exists?(ff = '/opt/homebrew-cask/Caskroom/firefox/latest/Firefox.app/Contents/MacOS/firefox')
-    Selenium::WebDriver::Firefox::Binary.path = ff
-  end
-rescue LoadError
-  require 'capybara/poltergeist'
-  Capybara.javascript_driver = :poltergeist
-end
+Capybara.javascript_driver = :poltergeist
 
 # see: https://github.com/colszowka/simplecov/issues/234
 Aruba.configure do |config|

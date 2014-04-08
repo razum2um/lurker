@@ -8,7 +8,10 @@ group :development do
   # tools
   gem 'pry-debugger'
   gem 'pry-stack_explorer'
+  # rspec --format fuubar
   gem 'fuubar'
+  # cucumber --format fuubar
+  gem 'fuubar-cucumber', github: 'martinciu/fuubar-cucumber', branch: 'master'
   gem 'selenium-webdriver'
 
   # build template static

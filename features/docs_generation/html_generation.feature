@@ -1,5 +1,8 @@
 Feature: html generation
 
+  When testing your api ensure that CSRF protection is handled properly
+  with `protect_from_forgery :null_session`
+
   @javascript
   Scenario: json schema gets generated into html preview
     Given an empty directory named "lurker"

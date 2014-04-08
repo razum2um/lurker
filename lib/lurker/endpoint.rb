@@ -145,13 +145,8 @@ class Lurker::Endpoint
     end
   end
 
-  # actionpack/lib/action_view/helpers/text_helper.rb, line 216
-  def word_wrap(text, options = {})
-    line_width = options.fetch(:line_width, 80)
-
-    text.split("\n").collect do |line|
-      line.length > line_width ? line.gsub(/(.{1,#{line_width}})(\s+|$)/, "\\1\n").strip : line
-    end * "\n"
+  def word_wrap(text)
+    text.gsub(/\s+in schema/m, "\n  in schema")
   end
 
   # default additionalProperties on objects to false

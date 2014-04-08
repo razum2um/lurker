@@ -22,14 +22,17 @@ inject_into_class 'app/models/user.rb', 'User' do
   CODE
 end
 
-inject_into_class 'app/controllers/application_controller.rb', 'ApplicationController' do
+file 'app/controllers/application_controller.rb', 'ApplicationController', force: true do
   <<-CODE
-    before_filter :set_format
+    class ApplicationController < ActionController::Base
+      protect_from_forgery with: :null_session
+      before_filter :set_format
 
-    private
+      private
 
-    def set_format
-      request.format = :json
+      def set_format
+        request.format = :json
+      end
     end
   CODE
 end
@@ -38,24 +41,36 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController' do
   <<-CODE
     class Api::V1::UsersController < ApplicationController
       def index
-        @users = User.all
-        render json: @users
+        render json: User.all
       end
 
       def create
-        @user = User.create(params[:user])
-        render json: @user
+        @user = User.new(user_params)
+        if @user.save
+          render json: @user
+        else
+          render json: { errors: @user.errors }
+        end
       end
 
       def show
-        @user = User.find(params[:id])
-        render json: @user
+        render json: User.find(params[:id])
       end
 
       def destroy
-        @user = User.find(params[:id])
-        @user.destroy
+        User.find(params[:id]).destroy
         render head: :ok
+      end
+
+      private
+
+      def user_params
+        @user_params = params[:user]
+        if @user_params.respond_to? :permit
+          @user_params.permit(:name)
+        else
+          @user_params
+        end
       end
     end
   CODE
@@ -70,22 +85,20 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController' do
       end
 
       def create
-        @user = User.new(params[:user])
-        if @user.save
-          render json: @user
+        @repo = user.repos.build(repo_params)
+        if @repo.save
+          render json: @repo
         else
-          render json: { errors: @user.errors }, status: 401
+          render json: { errors: @repo.errors }, status: 401
         end
       end
 
       def show
-        @user = User.find(params[:id])
-        render json: @user
+        render json: Repo.find(params[:id])
       end
 
       def destroy
-        @user = User.find(params[:id])
-        @user.destroy
+        Repo.find(params[:id]).destroy
         render head: :ok
       end
 
@@ -93,6 +106,15 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController' do
 
       def user
         @user ||= User.find(params[:user_id])
+      end
+
+      def repo_params
+        @repo_params = params[:repo]
+        if @repo_params.respond_to? :permit
+          @repo_params.permit(:name, :user_id)
+        else
+          @repo_params
+        end
       end
     end
   CODE

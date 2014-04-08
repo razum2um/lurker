@@ -95,11 +95,12 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def path
-    if (@path = @endpoint.schema.extensions.try(:[], 'path_info')).present?
-      return @path
+    return @path if @path
+    unless (@path = @endpoint.schema.extensions.try(:[], 'path_info')).present?
+      @path = @endpoint.path.gsub(/__/, ':')
+      @path = @path.gsub(/-#{@end}/) if @endpoint.schema.extensions.try(:[], 'suffix').present?
     end
-    @path = @endpoint.path.gsub(/__/, ':')
-    @path = @path.gsub(/-#{@end}/) if @endpoint.schema.extensions.try(:[], 'suffix').present?
+    @path = '/' + @path.split('/').select(&:present?).join('/')
     @path
   end
 
