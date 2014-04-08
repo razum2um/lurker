@@ -39,13 +39,13 @@ Now, every test run lurker will look into your requests and [vaditate them][vali
 and it fails if your code changes the api!
 
     Failure/Error: post :create, {
-    Fdoc::ValidationError:
+    Lurker::ValidationError:
       Request
       - The property '#/' contains additional properties ["social_network"] outside of the schema
-        when none are allowed in schema c0ec70af-3d75-5a46-8206-a73a2b6250b3#
+        when none are allowed in schema file:///.../lurker/api/v1/users-POST.json.yml#
       Response
       - The property '#/user/last_sign_in_at' of type String did not match the following type:
-        null in schema 83b0e4ef-4f9e-567e-ab37-8941366c0126#
+        null in schema file:///.../lurker/api/v1/users-POST.json.yml#
 
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/) (or see [example][html_schema_example])
 
@@ -77,6 +77,14 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 - Better Diff expected-schema vs recorded schema
 - XML api testing via *.xsd
 
+## Acknoledgements
+
+Sponsored by [Evil Martians][evil_martians].
+
+This gem is quite opinionated and relies on rails & rspec - if you're
+using anything else, please take a look at more liberal gems `api_taster` or `fdoc`,
+This gem is heavily inspirated by them. Thanks, @square & @fredwu
+
 [rspec]: https://github.com/rspec/rspec-rails
 [rspec_controller_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs
 [rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
@@ -88,6 +96,7 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
 [nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/nested-schema-scaffolding
 [request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
+[evil_martians]: http://evilmartians.com/
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
