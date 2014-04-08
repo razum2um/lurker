@@ -153,7 +153,7 @@ module Lurker
       def html_options
         {
           :static_html => true,
-          :url_base_path => options[:url_base_path].presence || Lurker::DEFAULT_SERVICE_PATH,
+          :url_base_path => options[:url_base_path].presence || Lurker::DEFAULT_URL_BASE,
           :template_directory => template_path,
           :html_directory => destination_root
         }

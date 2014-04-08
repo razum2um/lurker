@@ -1,7 +1,7 @@
 $:.unshift(File.dirname(__FILE__))
 
 module Lurker
-  DEFAULT_SERVICE_PATH = "lurker"
+  DEFAULT_SERVICE_PATH = DEFAULT_URL_BASE = "lurker"
 
   def self.scaffold_mode?
     ENV['LURKER_SCAFFOLD']

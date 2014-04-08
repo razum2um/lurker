@@ -26,7 +26,7 @@ module Lurker
     end
 
     def self.to_rack(options = {})
-      default_path = options[:path] || 'lurker'
+      default_path = options[:path] || Lurker::DEFAULT_SERVICE_PATH
 
       Class.new(Sinatra::Base) do
 
