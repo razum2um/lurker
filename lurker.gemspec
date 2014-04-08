@@ -32,17 +32,23 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("jquery-rails")
   spec.add_development_dependency("remotipart")
 
+  # testing
   spec.add_development_dependency("bundler", "~> 1.5")
+  spec.add_development_dependency("rails", "~> 4.1.0.rc2")
   spec.add_development_dependency("rake")
   spec.add_development_dependency("rspec")
   spec.add_development_dependency("cucumber")
   spec.add_development_dependency("aruba")
+  spec.add_development_dependency("capybara")
+  spec.add_development_dependency("poltergeist")
+  #spec.add_development_dependency("selenium-webdriver")
+
+  # tools
   spec.add_development_dependency("pry-debugger")
   spec.add_development_dependency("pry-stack_explorer")
   spec.add_development_dependency("fuubar")
   spec.add_development_dependency("simplecov", "~> 0.7.1")
   spec.add_development_dependency("coveralls")
-  spec.add_development_dependency("rails", "~> 4.1.0.rc2")
 
   # need for cucumber: not loaded inner bundle
   spec.add_development_dependency("rspec-rails")

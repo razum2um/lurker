@@ -19,7 +19,7 @@ module Lurker
       File.expand_path("../templates", __FILE__)
     end
 
-    desc "convert LURKER_PATH", "Convert lurker to HTML or Markdowns"
+    desc "convert [LURKER_PATH]", "Convert lurker to HTML or Markdowns"
     method_option :rails, :type => :boolean, :desc => "Includes Rails environment"
     method_option :exclude, :aliases => "-e", :desc => "Select endpoints by given regexp, if NOT matching prefix"
     method_option :select, :aliases => "-s", :desc => "Select endpoints by given regexp, matching prefix"
@@ -27,7 +27,7 @@ module Lurker
     method_option :url_base_path, :aliases => "-u", :desc => "URL base path"
     method_option :format, :aliases => "-f", :desc => "Format in html or markdown, defaults to html", :default => "html"
     method_option :templates, :aliases => "-t", :desc => "Template overrides path"
-    def convert(lurker_path)
+    def convert(lurker_path=Lurker::DEFAULT_SERVICE_PATH)
       say_status nil, "Converting lurker to #{options[:format]}"
 
       self.origin_path = File.expand_path(lurker_path)
@@ -153,7 +153,7 @@ module Lurker
       def html_options
         {
           :static_html => true,
-          :url_base_path => options[:url_base_path],
+          :url_base_path => options[:url_base_path].presence || Lurker::DEFAULT_SERVICE_PATH,
           :template_directory => template_path,
           :html_directory => destination_root
         }

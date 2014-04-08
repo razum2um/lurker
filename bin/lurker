@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+if File.exist?(File.expand_path('../../Gemfile', __FILE__))
+  # inside app dir with binstub
+  require 'bundler/setup'
+elsif File.directory?(lib_dir = File.expand_path('../../lib', __FILE__))
+  # inside gem
+  $:.unshift lib_dir
+end
+
+require 'lurker'
+require 'lurker/cli'
+
+Lurker::Cli.start

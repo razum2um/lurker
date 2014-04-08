@@ -1,4 +1,5 @@
 gsub_file 'config/database.yml', /database: db\/development\.sqlite3/, 'database: db/test.sqlite3'
+create_link "bin/lurker", "#{File.expand_path '../../bin/lurker', __FILE__}"
 
 generate 'rspec:install'
 generate 'model User name:string --no-timestamps --no-test-framework'

@@ -40,7 +40,7 @@ but scaffolded schemas are pretty good by default.
 Now, every test run lurker will look into your requests and [vaditate them][failed_spec_example]
 and it fails if your code changes the api!
 
-    Failure/Error: post :create, {
+    Failure/Error: post :create [...]
     Lurker::ValidationError:
       Request
       - The property '#/' contains additional properties ["social_network"] outside of the schema
@@ -64,8 +64,9 @@ Now, you can test your API on-line (for real)
 - JSON-Schema partials (inline reference to other schemas)
 - ERB support inside `.json.yml.erb`
 - HTTP-Auth authorization for your online docs
-- Capistrano integration
 - Separate API-services generated within one test suite
+- Capistrano integration
+- JSON-Schema draft-v4 support
 
 ## Demo application
 
@@ -76,6 +77,7 @@ You can clone the repo & run `rake features`. It will generate testing rails app
 - More tests
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
+- Sinatra support
 - Better Diff expected-schema vs recorded schema
 - XML api testing via *.xsd
 

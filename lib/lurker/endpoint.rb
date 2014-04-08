@@ -61,13 +61,16 @@ class Lurker::Endpoint
   end
 
   def verb
-    @verb ||= endpoint_path.match(/([A-Z]*)\.lurker/)[1]
+    @verb ||= endpoint_path.match(/([A-Z]*)\.json(\.yml)?(\.erb)?$/)[1]
+  rescue
+    require 'pry-debugger'
+    binding.pry
   end
 
   def path
     @path ||= endpoint_path.
                 gsub(service.service_dir, "").
-                match(/\/?(.*)[-\/][A-Z]+\.lurker(\.erb)?/)[1]
+                match(/\/?(.*)[-\/][A-Z]+\.json(\.yml)?(\.erb)?$/)[1]
   end
 
   def url_params
