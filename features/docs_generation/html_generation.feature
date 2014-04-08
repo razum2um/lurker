@@ -51,7 +51,7 @@ Feature: html generation
     """
             Converting lurker to html
      using  lurker
-    inside  /Users/razum2um/Code/lurker/tmp/lurker_app/html
+
     create  index.html
     create  api/v1/users-POST.html
     """
