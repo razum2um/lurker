@@ -72,7 +72,15 @@ Now, you can test your API on-line (for real)
 
 You can clone the repo & run `rake features`. It will generate testing rails application for some api
 
-## TODO
+## Contributions
+
+To get new version of bundled `bootstrap` or to use debugger in specs run:
+
+    bundle --gemfile Gemfile.local
+    export BUNDLE_GEMFILE=Gemfile.local
+    rake assets:precompile
+
+## Todo
 
 - More tests
 - More docs
