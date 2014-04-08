@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency("diffy")
   spec.add_dependency("sinatra")
 
-  # build template
+  # build template static
   spec.add_development_dependency("sprockets")
   spec.add_development_dependency("sass-rails")
   spec.add_development_dependency("bootstrap-sass", '~> 3.1.1')
