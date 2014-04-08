@@ -3,10 +3,10 @@ Feature: test endpoint
   If your API is stable and the new code isn't breaking it
   you'll see nothing special, just passing specs
 
-  NOTE: the second request example is expecting a nonsuccessful response and it is,
+  **NOTE:** the second request example is expecting a nonsuccessful response and it is,
   but specs are NOT passing because of nonsufficient `name` parameter
 
-  NOTE: the third response example is expecting a successful response and it is,
+  **NOTE:** the third response example is expecting a successful response and it is,
   but specs are NOT passing because of nonsufficient `role` attribute
 
   Background:
