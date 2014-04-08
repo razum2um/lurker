@@ -62,8 +62,8 @@ Now, you can test your API on-line (for real)
 - Live API testing in sandbox mode
 
 
-    # make sure it's not production!
-    # e.g. config/environtents/staging.rb
+    \# make sure it's not production!
+    \# e.g. config/environtents/staging.rb
     config.middleware.use Lurker::Sandbox
 
 
