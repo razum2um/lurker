@@ -68,6 +68,7 @@ Now, you can test your API on-line (for real)
 - Separate API-services generated within one test suite
 - Capistrano integration
 - JSON-Schema draft-v4 support
+- Static site building (you can generate html into your `public` folder)
 
 ## Sandbox mode for Live API testing
 
@@ -95,6 +96,7 @@ To get new version of bundled `bootstrap` or to use debugger in specs run:
 
 - More tests
 - More docs
+- Production middleware to validate real input/output
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
 - Sinatra support
