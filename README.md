@@ -97,6 +97,7 @@ To get new version of bundled `bootstrap` or to use debugger in specs run:
 - More tests
 - More docs
 - Production middleware to validate real input/output
+- Render dosc like these: [gh_api][gh_api]
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
 - Sinatra support
@@ -111,6 +112,7 @@ This gem is quite opinionated and relies on rails & rspec - if you're
 interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
 This gem is heavily inspirated by them. Thanks, @square & @fredwu
 
+[gh_api]: https://developer.github.com/v3/meta/
 [rspec]: https://github.com/rspec/rspec-rails
 [api_taster]: https://github.com/fredwu/api_taster
 [fdoc]: https://github.com/square/fdoc
