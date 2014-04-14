@@ -102,7 +102,7 @@ To get new version of bundled `bootstrap` or to use debugger in specs run:
 - Auto marking of attributes as required if `strong_params` are used
 - Sinatra support
 - Better Diff expected-schema vs recorded schema
-- XML api testing via *.xsd
+- XML api testing via .xsd
 
 ## Acknoledgements
 
