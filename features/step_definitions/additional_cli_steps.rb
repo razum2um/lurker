@@ -12,7 +12,7 @@ When /^I click on "([^"]*)"$/ do |text|
 end
 
 When(/^I fill in the submit form with "([^"]*)"$/) do |name|
-  find(:xpath, "//*[contains(text(), 'LURK')]").click
+  find(:xpath, "//*[contains(text(), 'Lurk!')]").click
   fill_in('user[name]', with: name)
 end
 
