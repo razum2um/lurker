@@ -97,6 +97,8 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     zws_ify(@endpoint.service.base_path)
   end
 
+  # for live form WITH values
+  # TODO: remove in favor of named_path
   def path
     return @path if @path
     unless (@path = @endpoint.schema.extensions.try(:[], 'path_info')).present?
@@ -107,8 +109,9 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     @path
   end
 
+  # for live form WITH :placeholders
   def named_path
-    endpoint.path.gsub(/__/, ':')
+    base_path.sub(/\/?$/, '/') + endpoint.path.gsub(/__/, ':')
   end
 
   def verb

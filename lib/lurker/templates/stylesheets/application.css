@@ -4,4 +4,16 @@
  *= require plugins/morris/morris-0.4.3.min
  *= require plugins/timeline/timeline
  *= require sb-admin
+ *
+ *= require prettify
+ *= require prettify-desert
+ *= require_self
  */
+#show-api-response-div table td {
+  vertical-align: top;
+  white-space:pre;
+}
+.nav > li > a.hovered {
+  text-decoration: none;
+  background-color: #eee;
+}

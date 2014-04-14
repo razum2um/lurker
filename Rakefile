@@ -51,12 +51,12 @@ namespace :assets do
     sprockets.append_path(SOURCE_DIR.join('javascripts').to_s)
     sprockets.append_path(SOURCE_DIR.join('stylesheets').to_s)
 
-    #%w[jquery-rails bootstrap-sass remotipart].each do |gem|
-    #  gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
-    #  %w[javascripts stylesheets].each do |prefix|
-    #    sprockets.append_path(gem_path.join('vendor', 'assets', prefix).to_s)
-    #  end
-    #end
+    %w[jquery-rails bootstrap-sass remotipart].each do |gem|
+      gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
+      %w[javascripts stylesheets].each do |prefix|
+        sprockets.append_path(gem_path.join('vendor', 'assets', prefix).to_s)
+      end
+    end
 
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)

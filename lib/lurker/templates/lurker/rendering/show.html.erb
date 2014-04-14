@@ -1,98 +1,90 @@
-<div id="main-container" class="row-fluid">
-  <div id="list-api-div" class="col-sm-3 col-md-3">
-    <div class="panel-group" id="accordion">
-      <%= render 'left_menu', service_presenter: @endpoint_presenter.service_presenter %>
-    </div>
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="page-header"><%= @endpoint_presenter.description %></h1>
   </div>
-  <div id="show-api-div" class="col-sm-9 col-md-9">
-  <%# render 'breadcrumb',
-    :parent     => @endpoint_presenter[:reqs][:controller].humanize,
-    :current    => @endpoint_presenter[:path],
-    :label      => @endpoint_presenter[:verb],
-    :label_type => 'important'
-  %>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <pre><%= @endpoint_presenter.verb %> <%= @endpoint_presenter.named_path %></pre>
 
-  <% if @params.is_a?(Hash) && @params.has_key?(:undefined) %>
-    <%= render 'undefined_route', :route => @params[:undefined] %>
-  <% else %>
-
-    <% if @comment %>
-      <div class="well">
-        <%= markdown @comment %>
+    <div id="show-api-response-div" class="panel panel-default" style="display: none;">
+      <div class="panel-heading">
+          <p class="lead">Live Response</p>
+          <table class="small" ref="response-info">
+            <tr class="status">
+              <td class="name">Status:</td>
+              <td class="value"></td>
+            </tr>
+            <tr class="time">
+              <td class="name">Time:</td>
+              <td class="value"></td>
+            </tr>
+            <tr class="headers">
+              <td class="name">Headers:</td>
+              <td class="value"></td>
+            </tr>
+          </table>
       </div>
-    <% end %>
+      <div class="panel-body">
+        <pre class="prettyprint nowrap" ref="response-json" style="display: none;"></pre>
+        <pre class="prettyprint" ref="response-raw" style="display: none;"></pre>
+      </div>
+    </div> <!-- ./#show-api-response-div -->
 
+    <div class="panel panel-default">
+      <div class="panel-heading">Response</div>
+      <div class="panel-body">
+        <%= raw @endpoint_presenter.example_response.to_html %>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Request Schema</div>
+      <div class="panel-body">
+        <%= raw @endpoint_presenter.request_parameters.to_html %>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Response Schema</div>
+      <div class="panel-body">
+        <%= raw @endpoint_presenter.response_parameters.to_html %>
+      </div>
+    </div>
+  </div> <!-- ./col-md-8 -->
+  <div id="show-api-div" class="col-md-4">
     <% @params.each do |param| %>
-      <%= form_tag @endpoint_presenter.path, :method => @endpoint_presenter.verb, :class => 'well form-horizontal', :remote => true do %>
+      <%= form_tag @endpoint_presenter.named_path, :method => @endpoint_presenter.verb, :class => 'form-horizontal', :remote => true do %>
 
-        <% if param[:url_params].empty? && param[:post_params].empty? %>
-          <div class="alert alert-info">
-            No params specified.
-          </div>
-        <% else %>
-          <ul class="nav nav-tabs">
-            <li class="nav-label">Request</li>
-
-            <li class="active"><a href="#" id="info">INFO</a></li>
+        <div class="panel panel-default">
+          <div class="panel-heading">Lurk!</div>
+          <ul class="panel-body list-group">
             <% if param[:url_params].present? %>
-              <li<% unless param[:post_params].present? %> class="active"<% end %>><a href="#" id="url-params">URL</a></li>
+              <li class="list-group-item">
+                <p>URL Params</p>
+                <fieldset ref="url-params">
+                  <% param[:url_params].each do |label, value| %>
+                    <%= render 'param_form_element', :label => "[_url_params]#{label}", :value => value, :label_text => label %>
+                  <% end %>
+                </fieldset>
+              </li>
             <% end %>
+
             <% if param[:post_params].present? %>
-              <li><a href="#" id="post-params">LURK</a></li>
+              <li class="list-group-item">
+                <p>Payload</p>
+                <fieldset ref="post-params">
+                  <%= Lurker::FormBuilder.new(param[:post_params]).html.html_safe %>
+                </fieldset>
+              </li>
             <% end %>
+
+            <li class="list-group-item form-actions">
+              <input id="submit-api" type="submit" class="btn btn-primary pull-right"></input>
+            </div>
           </ul>
-        <% end %>
-
-        <fieldset ref="info">
-          <%= render 'endpoint' %>
-        </fieldset>
-
-        <% if param[:url_params].present? %>
-          <fieldset ref="url-params">
-            <% param[:url_params].each do |label, value| %>
-              <%= render 'param_form_element', :label => "[api_taster_url_params]#{label}", :value => value, :label_text => label %>
-            <% end %>
-          </fieldset>
-        <% end %>
-
-        <% if param[:post_params].present? %>
-          <fieldset ref="post-params">
-            <%= Lurker::FormBuilder.new(param[:post_params]).html.html_safe %>
-          </fieldset>
-        <% end %>
-
-        <div class="form-actions">
-          <input id="submit-api" type="submit" class="btn btn-primary pull-right"></input>
-        </div>
-
+        </div> <!-- ./panel -->
       <% end %>
     <% end %>
-  <% end %>
-
-  <div id="show-api-response-div" class="well" style='display: none;'>
-    <ul class="nav nav-tabs">
-      <li class="nav-label">Response</li>
-      <li><a href="#" id="response-info">Info</a></li>
-      <li><a href="#" id="response-json">JSON</a></li>
-      <li class="active"><a href="#" id="response-raw">Raw</a></li>
-    </ul>
-    <pre ref="response-info">
-      <table>
-        <tr class="status">
-          <td class="name">Status:</td>
-          <td class="value str"></td>
-        </tr>
-        <tr class="time">
-          <td class="name">Time:</td>
-          <td class="value str"></td>
-        </tr>
-        <tr class="headers">
-          <td class="name">Headers:</td>
-          <td class="value str"></td>
-        </tr>
-      </table>
-    </pre>
-    <pre class="prettyprint nowrap" ref="response-json"></pre>
-    <pre class="prettyprint" ref="response-raw"></pre>
-  </div>
+  </div> <!-- ./col-md-4 -->
 </div>
