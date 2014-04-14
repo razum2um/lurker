@@ -1,6 +1,6 @@
 # Lurker
 
-The new de-facto for API testing your Rails application (Rails 4 compatible, Rails 3 unknown)
+The new de-facto for API testing your Rails application (Rails 3 & 4 both compatible)
 
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
