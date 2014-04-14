@@ -147,24 +147,30 @@ task :build_example_docs => :features do
   in_lurker_app "bin/lurker convert"
 end
 
-desc 'pushes example lurker_app to heroku'
-task :deploy => :build_example_docs do
-  require_with_help 'highline/import'
-  in_lurker_app "echo 'bin/lurker' > .gitignore"
-  in_lurker_app "echo 'log' >> .gitignore"
-  # commit migration and deploy by hand first time
-  in_lurker_app "echo 'db/*' >> .gitignore"
+namespace :heroku do
+  desc 'pushes example lurker_app to heroku'
+  task :push do
+    require_with_help 'highline/import'
+    in_lurker_app "echo 'bin/lurker' > .gitignore"
+    in_lurker_app "echo 'log' >> .gitignore"
+    # commit migration and deploy by hand first time
+    in_lurker_app "echo 'db/*' >> .gitignore"
 
 
-  in_lurker_app "git add -A"
-  in_lurker_app "git status"
-  choose do |menu|
-    menu.prompt = 'Commit & push & deploy?'
-    menu.choice(:yes) {
-      in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
-      in_lurker_app "git push origin master"
-    }
-    menu.choice(:no) { say("Exit") }
+    in_lurker_app "git add -A"
+    in_lurker_app "git status"
+    choose do |menu|
+      menu.prompt = 'Commit & push & deploy?'
+      menu.choice(:yes) {
+        in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
+        in_lurker_app "git push origin master"
+      }
+      menu.choice(:no) { say("Exit") }
+    end
+  end
+
+  desc 'rebuilds & pushes app to heroku'
+  task :deploy => [:build_example_docs, 'heroku:push'] do
   end
 end
 
