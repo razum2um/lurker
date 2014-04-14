@@ -1,0 +1,16 @@
+<% @service_presenter.endpoints_by_prefix.each do |prefix, endpoints| %>
+  <li>
+      <a href="#"><%= prefix %><span class="fa arrow"></span></a>
+      <ul class="nav nav-second-level">
+          <% endpoints.each do |endpoint| %>
+            <li>
+                <a href="<%= endpoint.url %>">
+                  <span class="btn btn-<%= endpoint.verb_colorname %> btn-xs"><%= endpoint.verb %>&nbsp;<%= endpoint.named_path %></span>
+                  <br>
+                  <span><%= endpoint.description %></span>
+                </a>
+            </li>
+          <% end %>
+      </ul>
+  </li>
+<% end %>

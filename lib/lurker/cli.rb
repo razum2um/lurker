@@ -19,6 +19,10 @@ module Lurker
       File.expand_path("../templates", __FILE__)
     end
 
+    def self.precompiled_static_root
+      File.expand_path("../templates/public", __FILE__)
+    end
+
     desc "convert [LURKER_PATH]", "Convert lurker to HTML or Markdowns"
     method_option :rails, :type => :boolean, :desc => "Includes Rails environment"
     method_option :exclude, :aliases => "-e", :desc => "Select endpoints by given regexp, if NOT matching prefix"
@@ -52,7 +56,12 @@ module Lurker
     no_tasks do
       def convert_to_html
         in_root do
-          FileUtils.cp_r("#{self.class.source_root}/public", destination)
+          # js, css, fonts
+          FileUtils.cp_r(
+            Dir["#{self.class.precompiled_static_root}/*"],
+            destination
+          )
+
           create_file("index.html", meta_presenter.to_html) if has_meta_service?
         end
 
@@ -61,8 +70,8 @@ module Lurker
             create_file("index.html", service_presenter.to_html, force: true)
 
             service_presenter.endpoints.each do |endpoint_prefix_group|
-              endpoint_prefix_group.each do |endpoint|
-                create_file(endpoint.url, endpoint.to_html, force: true)
+              endpoint_prefix_group.each do |endpoint_presenter|
+                create_file(endpoint_presenter.relative_path, endpoint_presenter.to_html, force: true)
               end
             end
           end

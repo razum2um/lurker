@@ -1,36 +1,67 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>API Taster</title>
-  <script src="<%= @service_presenter.html_directory %>/public/application.js"></script>
-  <link href="<%= @service_presenter.html_directory %>/public/application.css" media="all" rel="stylesheet">
-  <%= csrf_meta_tags %>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><%= @service_presenter.title %></title>
+    <link href="<%= @service_presenter.html_directory %>/application.css" media="all" rel="stylesheet">
+    <style type="text/css">
+      @font-face {
+        font-family: 'FontAwesome';
+        src: url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.eot?v=4.0.3");
+        src: url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3") format("embedded-opentype"),
+             url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.woff?v=4.0.3") format("woff"),
+             url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.ttf?v=4.0.3") format("truetype"),
+             url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular") format("svg");
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
 </head>
+
 <body>
 
-  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="<%= @service_presenter.index_path %>">Lurker</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a href="/" target="_blank"><%= @service_presenter.name %> <i class="icon-share-alt icon-white"></i></a>
-          </li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </div>
+    <div id="wrapper">
 
-  <div id="wrapper" class="container-fluid">
-    <%= yield %>
-  </div>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><%= @service_presenter.name %></a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <%#= render 'layouts/navbar_right' %>
+
+            <div class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <%#= render 'layouts/sidesearch' %>
+                        <%= render 'layouts/sidemenu' %>
+                    </ul>
+                    <!-- /#side-menu -->
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+          <%= yield %>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <script src="<%= @service_presenter.html_directory %>/application.js"></script>
 </body>
 </html>

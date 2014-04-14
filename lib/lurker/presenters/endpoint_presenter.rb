@@ -2,6 +2,9 @@
 class Lurker::EndpointPresenter < Lurker::BasePresenter
   attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
+  extend Forwardable
+  def_delegators :endpoint, :description
+
   def initialize(endpoint, options = {})
     super(options)
     @endpoint = endpoint
@@ -23,8 +26,12 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     render_erb('endpoint.md.erb')
   end
 
-  def url(extension = ".html")
+  def relative_path(extension = ".html")
     '%s%s-%s%s' % [ options[:prefix], endpoint.path, endpoint.verb, extension ]
+  end
+
+  def url(extension = ".html")
+    Pathname.new(html_directory).join(relative_path(extension)).to_s
   end
 
   def title
@@ -39,10 +46,6 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     # zero-width-space, makes long lines friendlier for breaking
     #str.gsub(/\//, '&#8203;/') if str
     str
-  end
-
-  def description
-    render_markdown(endpoint.description)
   end
 
   def root_path
@@ -104,8 +107,24 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     @path
   end
 
+  def named_path
+    endpoint.path.gsub(/__/, ':')
+  end
+
   def verb
-    @endpoint.verb
+    endpoint.verb
+  end
+
+  def verb_colorname
+    case endpoint.verb
+      when 'GET' then 'success'
+      when 'POST' then 'primary'
+      when 'PUT' then 'warning'
+      when 'PATCH' then 'warning'
+      when 'DELETE' then 'danger'
+    else
+      'default'
+    end
   end
 
   ATOMIC_TYPES = %w(string integer number boolean null)
