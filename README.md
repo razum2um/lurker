@@ -59,7 +59,7 @@ Now, you can test your API on-line (for real)
 - [Autoscaffolding for non-covered API endpoints][controler_spec_example]
 - [Autotesting for covered endpoint once written][failed_spec_example] (both request & response!)
 - [Pretty HTML documentation based on your schemas][html_generation_example]
-- Pretty submit form to test API endpoints (live) based on schemas
+- [Pretty submit form to test API endpoints (live) based on schemas][demo_live] (enter a name & press "Submit")
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
 - Multiple docs for many test cases
 - JSON-Schema partials (inline reference to other schemas)
@@ -127,6 +127,7 @@ This gem is heavily inspirated by them. Thanks, @square & @fredwu
 [html_generation_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/html-generation
 [evil_martians]: http://evilmartians.com/
 [demo_app]: http://lurker-app.herokuapp.com/lurker/
+[demo_live]: http://lurker-app.herokuapp.com/lurker/api/v1/users-POST.html
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
