@@ -97,6 +97,7 @@ To get new version of bundled `bootstrap` or to use debugger in specs run:
 - More tests
 - More docs
 - Production middleware to validate real input/output
+- Render lurker-app to gh-pages with arbitrary endpoint (my & heroku)
 - Render dosc like these: [gh_api][gh_api]
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
