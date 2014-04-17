@@ -1,11 +1,8 @@
 <div class="nav navbar-top-links navbar-right">
   <div class="btn-group domains">
-    <button type="button" class="btn btn-default current" data-domain="<%= @service_presenter.domains.keys.first %>">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-domain="<%= @service_presenter.domains.keys.first %>">
       <%= @service_presenter.domains.values.first %> (<%= @service_presenter.domains.keys.first %>)
-    </button>
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
       <span class="caret"></span>
-      <span class="sr-only current"><%= @service_presenter.domains.values.first %></span>
     </button>
     <ul class="dropdown-menu" role="menu">
       <% @service_presenter.domains.each do |url, name| %>

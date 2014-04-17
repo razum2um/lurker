@@ -63,24 +63,27 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
       end
 
       def update
-        @user = User.find(params[:id])
-        if @user.update(user_params)
-          render json: @user
+        if user.update(user_params)
+          render json: user
         else
-          render json: { errors: @user.errors }
+          render json: { errors: user.errors }
         end
       end
 
       def show
-        render json: User.find(params[:id])
+        render json: user
       end
 
       def destroy
-        User.find(params[:id]).destroy
-        render head: :ok
+        user.destroy
+        head :ok
       end
 
       private
+
+      def user
+        @user ||= (User.find_by_name(params[:id] || User.find(params[:id]))
+      end
 
       def user_params
         @user_params = params[:user]
@@ -131,13 +134,13 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
 
       def destroy
         Repo.find(params[:id]).destroy
-        render head: :ok
+        head :ok
       end
 
       private
 
       def user
-        @user ||= User.find(params[:user_id])
+        @user ||= (User.find_by_name(params[:user_id] || User.find(params[:user_id]))
       end
 
       def repo_params

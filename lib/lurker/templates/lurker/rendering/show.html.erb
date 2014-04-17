@@ -70,7 +70,8 @@
           <% end %>
         </form>
 
-        <form accept-charset="UTF-8" action="<%= @endpoint_presenter.named_path %>" id="payload" class="form-horizontal" data-remote="true" method="<%= @endpoint_presenter.verb %>">
+        <form accept-charset="UTF-8" action="<%= @endpoint_presenter.named_path %>" id="payload" class="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
+          <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
           <% if @url_params.present? %>
             <li class="list-group-item">
               <p>URL Params</p>

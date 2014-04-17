@@ -117,6 +117,14 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     endpoint.verb
   end
 
+  def form_verb
+    if endpoint.verb == 'GET'
+      'GET'
+    else
+      'POST'
+    end
+  end
+
   def verb_colorname
     case endpoint.verb
       when 'GET' then 'success'
