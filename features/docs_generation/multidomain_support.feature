@@ -77,6 +77,6 @@ Feature: mutidomain support
   When I click on "user deletion"
    And I fill in the submit form url-field "id" with "razum2um"
    And I submit it
-   And I run `sleep 10`
 
   Then I should see JSON response with "200 OK"
+  Then I should see JSON response with "true"
