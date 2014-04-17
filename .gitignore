@@ -18,3 +18,4 @@ tmp
 vendor/bundle
 features/support/selenuim.rb
 Gemfile.local.lock
+_site
