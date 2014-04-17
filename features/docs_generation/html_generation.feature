@@ -5,7 +5,8 @@ Feature: html generation
 
   @javascript
   Scenario: json schema gets generated into html preview using "users/create"
-    Given a file named "lurker/api/v1/users-POST.json.yml" with:
+    Given an empty directory named "html"
+    And a file named "lurker/api/v1/users-POST.json.yml" with:
       """yml
       ---
       prefix: users management
