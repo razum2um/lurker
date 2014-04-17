@@ -3,8 +3,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   attr_reader :service
 
   extend Forwardable
-
-  def_delegators :service, :name, :service_dir, :meta_service
+  def_delegators :service, :name, :service_dir, :meta_service, :domains
 
 
   def initialize(service, options = {}, &block)

@@ -16,6 +16,8 @@ route <<-ROUTE
       end
     end
   end
+
+  root to: redirect('/lurker')
 ROUTE
 
 inject_into_class 'app/models/user.rb', 'User' do

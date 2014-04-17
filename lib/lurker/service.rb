@@ -21,7 +21,7 @@ class Lurker::Service
         'name'        => name,
         'basePath'    => '',
         'description' => '',
-        'domains'     => ['']
+        'domains'     => {'/' => 'This host'}
       })
     end
   end
@@ -110,5 +110,9 @@ class Lurker::Service
 
   def discussion
     @schema['discussion']
+  end
+
+  def domains
+    schema['domains']
   end
 end

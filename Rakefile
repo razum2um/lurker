@@ -155,6 +155,7 @@ namespace :heroku do
     in_lurker_app "echo 'log' >> .gitignore"
     # commit migration and deploy by hand first time
     in_lurker_app "echo 'db/*' >> .gitignore"
+    in_lurker_app "echo 'tmp/*' >> .gitignore"
 
 
     in_lurker_app "git add -A"

@@ -17,3 +17,6 @@
   text-decoration: none;
   background-color: #eee;
 }
+.navbar-right {
+  padding: 8px;
+}

@@ -13,7 +13,19 @@ Feature: mutidomain support
 
   @wip
   Scenario: json schema gets generated into html preview using "users/destroy"
-    Given a file named "lurker/api/v1/users/__id-DELETE.json.yml" with:
+    Given an empty directory named "html"
+    And a file named "lurker/LurkerApp.service.yml" with:
+      """yml
+      ---
+      basePath: ''
+      description: ''
+      domains:
+        '/': 'This host'
+        'http://lurker-app.herokuapp.com': 'Heroku'
+      name: LurkerApp
+      extensions: {}
+      """
+    And a file named "lurker/api/v1/users/__id-DELETE.json.yml" with:
       """yml
       ---
       prefix: users management
@@ -37,6 +49,7 @@ Feature: mutidomain support
         path_params:
           action: destroy
           controller: api/v1/users
+          id: 1
         suffix: ''
       """
 
