@@ -1,5 +1,8 @@
-gsub_file 'config/database.yml', /database: lurker_app.*/, 'database: lurker_app'
+# gsub_file 'config/database.yml', /database: lurker_app.*/, 'database: lurker_app'
 create_link "bin/lurker", "#{File.expand_path '../../bin/lurker', __FILE__}"
+
+remove_file 'spec/spec_helper.rb'
+remove_file 'app/models/user.rb'
 
 generate 'rspec:install'
 generate 'model User name:string --no-timestamps --no-test-framework'
@@ -37,11 +40,15 @@ file 'app/controllers/application_controller.rb', 'ApplicationController', force
   CODE
 end
 
-file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController' do
+file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', force: true do
   <<-CODE
     class Api::V1::UsersController < ApplicationController
       def index
-        render json: User.all
+        @users = User.all
+        if (limit = params[:limit]).to_s.match(/\\d+/)
+          @users = @users.limit(limit.to_i)
+        end
+        render json: @users
       end
 
       def create
@@ -76,12 +83,16 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController' do
   CODE
 end
 
-file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController' do
+file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', force: true do
   <<-CODE
     class Api::V1::ReposController < ApplicationController
 
       def index
-        render json: user.repos
+        @repos = user.repos
+        if (limit = params[:limit]).to_s.match(/\\d+/)
+          @repos = @repos.limit(limit.to_i)
+        end
+        render json: @repos
       end
 
       def create
@@ -133,39 +144,70 @@ inject_into_class 'config/application.rb', 'Application' do
   CODE
 end
 
-prepend_to_file 'spec/spec_helper.rb' do
+file 'spec/support/fixme.rb', force: true do
   <<-CODE
-  require 'simplecov'
+    require 'simplecov'
 
-  if simplecov_root = ENV['SIMPLECOV_ROOT']
-    SimpleCov.root simplecov_root
-  end
+    if simplecov_root = ENV['SIMPLECOV_ROOT']
+      SimpleCov.root simplecov_root
+    end
 
-  if simplecov_cmdname = ENV['SIMPLECOV_CMDNAME']
-    SimpleCov.command_name simplecov_cmdname
-    SimpleCov.start do
-      filters.clear # This will remove the :root_filter that comes via simplecov's defaults
-      add_filter do |src|
-        !(src.filename =~ /^\#{SimpleCov.root}\\/lib\\/lurker/)
+    if simplecov_cmdname = ENV['SIMPLECOV_CMDNAME']
+      SimpleCov.command_name simplecov_cmdname
+      SimpleCov.start do
+        filters.clear # This will remove the :root_filter that comes via simplecov's defaults
+        add_filter do |src|
+          !(src.filename =~ /^\#{SimpleCov.root}\\/lib\\/lurker/)
+        end
+      end
+    else
+      SimpleCov.start
+    end
+
+    require 'database_cleaner'
+    DatabaseCleaner.strategy = :truncation
+
+    require 'lurker/spec_watcher'
+
+    RSpec.configure do |c|
+      c.treat_symbols_as_metadata_keys_with_true_values = true
+      c.backtrace_exclusion_patterns += [
+        /\\/lib\\/lurker/
+      ]
+
+      c.before do
+        %w[repos_id_seq users_id_seq].each do |id|
+          ActiveRecord::Base.connection.execute "ALTER SEQUENCE \#{id} RESTART WITH 1"
+        end
+        DatabaseCleaner.start
+      end
+
+      c.after do
+        DatabaseCleaner.clean
       end
     end
-  else
-    SimpleCov.start
-  end
-
   CODE
 end
 
-file 'spec/support/fixme.rb', <<-CODE
-  require 'lurker/spec_watcher'
-  RSpec.configure do |c|
-    c.treat_symbols_as_metadata_keys_with_true_values = true
-    c.backtrace_exclusion_patterns += [
-      /\\/lib\\/lurker/
-    ]
-  end
-CODE
+file 'lib/tasks/db.rake', force: true do
+  <<-CODE
+    namespace :db do
+      desc 'fills in data'
+      task :import => :environment do
+        User.find_or_create_by!(name: "razum2um").repos.find_or_create_by!(name: "lurker")
+        User.find_or_create_by!(name: "razum2um").repos.find_or_create_by!(name: "resque-kalashnikov")
+        User.find_or_create_by!(name: "razum2um").repos.find_or_create_by!(name: "mutli_schema")
+      end
+    end
+  CODE
+end
 
-run 'rake db:drop'
-run 'rake db:create'
-run 'rake db:migrate'
+run 'bin/rake db:drop'
+run 'bin/rake db:create'
+run 'bin/rake db:migrate'
+run 'bin/rake db:import'
+
+run 'RAILS_ENV=test bin/rake db:drop'
+run 'RAILS_ENV=test bin/rake db:create'
+run 'RAILS_ENV=test bin/rake db:migrate'
+

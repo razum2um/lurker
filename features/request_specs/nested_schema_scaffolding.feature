@@ -7,7 +7,7 @@ Feature: nested schema scaffolding
       """ruby
       require "spec_helper"
 
-      describe 'Repo listing', :lurker do
+      describe Api::V1::ReposController, :lurker do
 
         let!(:user) do
           User.where(name: 'razum2um').first_or_create!.tap do |u|
@@ -15,7 +15,7 @@ Feature: nested schema scaffolding
           end
         end
 
-        it "lists all the repos of the user" do
+        it "shows a user's repo" do
           get "api/v1/users/#{user.id}/repos/#{user.repos.first.id}"
           expect(response).to be_success
         end
@@ -28,15 +28,15 @@ Feature: nested schema scaffolding
   Then the file "lurker/api/v1/users/__user_id/repos/__id-GET.json.yml" should contain exactly:
     """yml
     ---
-    prefix: repos management
     description: repo
+    prefix: repos management
+    requestParameters:
+      properties: {}
+      required: []
     responseCodes:
     - status: 200
       successful: true
       description: ''
-    requestParameters:
-      properties: {}
-      required: []
     responseParameters:
       properties:
         id:
@@ -53,12 +53,13 @@ Feature: nested schema scaffolding
           example: lurker
       required: []
     extensions:
-      action: show
-      controller: api/v1/repos
-      user_id: '1'
-      id: '1'
-      path_info: "/api/v1/users/1/repos/1"
       method: GET
+      path_info: "/api/v1/users/1/repos/1"
+      path_params:
+        action: show
+        controller: api/v1/repos
+        user_id: '1'
+        id: '1'
       suffix: ''
 
     """

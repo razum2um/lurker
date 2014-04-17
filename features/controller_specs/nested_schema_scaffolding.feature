@@ -12,13 +12,15 @@ Feature: nested schema scaffolding
 
         let!(:user) do
           User.where(name: 'razum2um').first_or_create!.tap do |u|
-            u.repos.create!(name: 'lurker')
+            u.repos.first_or_create!(name: 'lurker')
+            u.repos.first_or_create!(name: 'multi_schema')
           end
         end
 
         it "lists all the repos of the user" do
-          get :index, user_id: user.id
+          get :index, user_id: user.id, limit: 1
           expect(response).to be_success
+          expect(JSON.parse(response.body).size).to eq 1
         end
       end
       """
@@ -29,19 +31,23 @@ Feature: nested schema scaffolding
   Then the file "lurker/api/v1/users/__user_id/repos-GET.json.yml" should contain exactly:
     """yml
     ---
-    prefix: repos management
     description: repo listing
-    responseCodes:
-    - status: 200
-      successful: true
-      description: ''
+    prefix: repos management
     requestParameters:
       properties:
         user_id:
           description: ''
           type: integer
           example: 1
+        limit:
+          description: ''
+          type: integer
+          example: 1
       required: []
+    responseCodes:
+    - status: 200
+      successful: true
+      description: ''
     responseParameters:
       type: array
       items:
@@ -62,11 +68,14 @@ Feature: nested schema scaffolding
             example: lurker
         required: []
     extensions:
-      action: index
-      controller: api/v1/repos
-      user_id: '1'
-      path_info: "/api/v1/users/1/repos"
       method: GET
+      path_info: "/api/v1/users/1/repos"
+      path_params:
+        action: index
+        controller: api/v1/repos
+        user_id: '1'
+      query_params:
+        limit: '1'
       suffix: ''
 
     """

@@ -15,10 +15,9 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   def to_html
     @service_presenter = service_presenter
     @endpoint_presenter = self
-    @params = [{
-      url_params: endpoint.url_params,
-      post_params: example_request.json,
-    }]
+    @url_params = endpoint.url_params
+    @query_params = endpoint.query_params
+    @post_params = example_request.json
     render('show')
   end
 
@@ -80,7 +79,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   def example_request
     return if endpoint.request_parameters.empty?
     Lurker::JsonPresenter.new(
-      example_from_schema(endpoint.request_parameters).except(*@endpoint.url_params.keys)
+      example_from_schema(endpoint.request_parameters).except(*endpoint.url_params.keys).except(*endpoint.query_params.keys)
     )
   end
 

@@ -53,38 +53,49 @@
     </div>
   </div> <!-- ./col-md-8 -->
   <div id="show-api-div" class="col-md-4">
-    <% @params.each do |param| %>
-      <%= form_tag @endpoint_presenter.named_path, :method => @endpoint_presenter.verb, :class => 'form-horizontal', :remote => true do %>
+    <div class="panel panel-default">
+      <div class="panel-heading">Lurk!</div>
+      <ul class="panel-body list-group">
 
-        <div class="panel panel-default">
-          <div class="panel-heading">Lurk!</div>
-          <ul class="panel-body list-group">
-            <% if param[:url_params].present? %>
-              <li class="list-group-item">
-                <p>URL Params</p>
-                <fieldset ref="url-params">
-                  <% param[:url_params].each do |label, value| %>
-                    <%= render 'param_form_element', :label => "[_url_params]#{label}", :value => value, :label_text => label %>
-                  <% end %>
-                </fieldset>
-              </li>
-            <% end %>
+        <form id="query" action="." method="get" class="form-horizontal">
+          <% if @query_params.present? %>
+            <li class="list-group-item">
+              <p>Query</p>
+              <fieldset ref="query-params">
+                <% @query_params.each do |label, value| %>
+                  <%= render 'param_form_element', :label => label, :value => value, :label_text => label %>
+                <% end %>
+              </fieldset>
+            </li>
+          <% end %>
+        </form>
 
-            <% if param[:post_params].present? %>
-              <li class="list-group-item">
-                <p>Payload</p>
-                <fieldset ref="post-params">
-                  <%= Lurker::FormBuilder.new(param[:post_params]).html.html_safe %>
-                </fieldset>
-              </li>
-            <% end %>
+        <form accept-charset="UTF-8" action="<%= @endpoint_presenter.named_path %>" id="payload" class="form-horizontal" data-remote="true" method="get">
+          <% if @url_params.present? %>
+            <li class="list-group-item">
+              <p>URL Params</p>
+              <fieldset ref="url-params">
+                <% @url_params.each do |label, value| %>
+                  <%= render 'param_form_element', :label => "[_url_params]#{label}", :value => value, :label_text => label %>
+                <% end %>
+              </fieldset>
+            </li>
+          <% end %>
 
-            <li class="list-group-item form-actions">
-              <input id="submit-api" type="submit" class="btn btn-primary pull-right"></input>
-            </div>
-          </ul>
-        </div> <!-- ./panel -->
-      <% end %>
-    <% end %>
+          <% if @post_params.present? %>
+            <li class="list-group-item">
+              <p>Payload</p>
+              <fieldset ref="post-params">
+                <%= Lurker::FormBuilder.new(@post_params).html.html_safe %>
+              </fieldset>
+            </li>
+          <% end %>
+
+          <li class="list-group-item form-actions">
+            <input id="submit-api" type="submit" class="btn btn-primary pull-right"></input>
+          </div>
+        </form>
+      </ul>
+    </div> <!-- ./panel-default -->
   </div> <!-- ./col-md-4 -->
 </div>

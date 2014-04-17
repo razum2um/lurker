@@ -1,79 +1,35 @@
-require 'json'
-require 'lurker'
-
 module Lurker
   module SpecWatcher
     extend ActiveSupport::Concern
 
-    included do
-      # _describe = self # RSpec::ExampleGroups::... # class
-      actions = [:get, :post, :put, :delete]
-      actions << :patch if respond_to? :patch
-      actions.each do |verb|
-        send(:define_method, "#{verb}_with_lurker") do |*params|
-          @__action, @__request_params, @__env = params
+    private
 
-          check_rails_request_spec! if @__action.is_a?(Symbol)
-
-          if @__env
-            send("#{verb}_without_lurker", @__action, @__request_params, @__env)
-          else
-            send("#{verb}_without_lurker", @__action, @__request_params)
-          end
-
-          endpoint_path = explicit_path(@__example)
-
-          return if endpoint_path.nil? # not lurker
-
-          if inside_rails_controller_spec?
-            if endpoint_path == true
-              endpoint_path = path_regexp
-            elsif endpoint_path.to_s.match(/^[^\/]/)
-              endpoint_path = "#{path_regexp}-#{endpoint_path.gsub(/[^[[:alnum:]]]/, '_')}"
-            end
-          end
-
-          if endpoint_path.blank?
-            raise Lurker::ValidationError.new(<<-MSG.gsub(/^ {14}/, '')
-              cannot determine path for .lurker, please, do it explicitly:
-                it "tests", lurker: 'some-lurker-file-suffix' do
-                  ...
-                end
-              MSG
-            )
-          end
-
-          if successful = Lurker.decide_success(response_params, real_response.status)
-            @__request_params.try :stringify_keys! # FIXME
-            @__lurker_service.verify!(
-              verb, endpoint_path, path_params.merge(extensions),
-              parsed_request_params(@__request_params), response_params,
-              real_response.status, successful
-            )
-          end
-        end
-
-        send :alias_method_chain, verb, :lurker
+    def wrapper(example)
+      # _it = self # RSpec::ExampleGroups::... # instance
+      @__example = example
+      @__lurker_service = if defined?(Rails)
+        Lurker::Service.new(Rails.root.join(Lurker::DEFAULT_SERVICE_PATH).to_s, Rails.application.class.parent_name)
+      else
+        Lurker::Service.default_service
       end
 
-      around do |example|
-        # _it = self # RSpec::ExampleGroups::... # instance
-        @__example = example
-        @__lurker_service = if defined?(Rails)
-          Lurker::Service.new(Rails.root.join(Lurker::DEFAULT_SERVICE_PATH).to_s, Rails.application.class.parent_name)
-        else
-          Lurker::Service.default_service
-        end
-
-        example.run.tap do |result|
-          unless result.is_a? Exception
-            @__lurker_service.persist! #rescue nil
-          end
+      example.run.tap do |result|
+        unless result.is_a? Exception
+          @__lurker_service.persist! #rescue nil
         end
       end
     end
 
-    private
+    def verify(verb, endpoint_path)
+      if successful = Lurker.decide_success(response_params, real_response.status)
+        @__request_params.stringify_keys! # FIXME
+        @__lurker_service.verify!(
+          verb, endpoint_path, extensions.merge(path_params: path_params),
+          parsed_request_params(@__request_params), response_params,
+          real_response.status, successful
+        )
+      end
+    end
 
     def extensions
       @extensions = {
@@ -83,6 +39,9 @@ module Lurker
       }
       if (suffix = explicit_path(@__example)).is_a?(String)
         @extensions[:suffix] = suffix.gsub(/[^[[:alnum:]]]/, '_')
+      end
+      if @__query_params.present?
+        @extensions[:query_params] = @__query_params
       end
       @extensions
     end
@@ -138,16 +97,6 @@ module Lurker
       end
     end
 
-    def check_rails_request_spec!
-      return false unless @__example.metadata[:type] == :request
-      unless @__example.metadata.described_class.is_a?(Class)
-        raise 'cannot determine request url: provide proper described class like: "describe MyController do"'
-      end
-      controller_name = @__example.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
-      @__action = URI.parse(url_for({ controller: controller_name, action: @__action }.merge(@__request_params))).path
-      true
-    end
-
     def inside_rails_controller_spec?
       defined?(ActionController::Base) && respond_to?(:controller) && controller.is_a?(ActionController::Base)
     end
@@ -169,13 +118,7 @@ module Lurker
         {}
       end
     end
-
   end
 end
-
-if defined?(RSpec)
-  RSpec.configure do |config|
-    config.include Lurker::SpecWatcher, type: :controller
-    config.include Lurker::SpecWatcher, type: :request
-  end
-end
+require 'lurker/controller_spec_watcher'
+require 'lurker/request_spec_watcher'

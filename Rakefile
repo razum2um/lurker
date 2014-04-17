@@ -164,6 +164,7 @@ namespace :heroku do
       menu.choice(:yes) {
         in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
         in_lurker_app "git push origin master"
+        in_lurker_app "heroku run rake db:import --app lurker-app"
       }
       menu.choice(:no) { say("Exit") }
     end

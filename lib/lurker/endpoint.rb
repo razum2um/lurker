@@ -70,12 +70,6 @@ class Lurker::Endpoint
                 match(/\/?(.*)[-\/][A-Z]+\.json(\.yml)?(\.erb)?$/)[1]
   end
 
-  def url_params
-    @url_params ||= schema.extensions.except(
-      "format", "controller", "action", "path_info", "method"
-    )
-  end
-
   # properties
 
   def deprecated?
@@ -92,9 +86,11 @@ class Lurker::Endpoint
   end
 
   def url_params
-    @schema.extensions.try(
-      :except, "path_info", "method", "format", "action", "controller"
-    ) || {}
+    (schema.extensions['path_params'] || {}).except('action', 'controller')
+  end
+
+  def query_params
+    (schema.extensions['query_params'] || {})
   end
 
   def request_parameters

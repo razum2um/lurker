@@ -34,6 +34,10 @@ Before do
   @dirs = ["tmp/lurker_app"]
   @aruba_timeout_seconds = 30
   DatabaseCleaner.start
+  if ENV['CLEAN']
+    system "bin/spring stop"
+    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/lurker', __FILE__)
+  end
 end
 
 After do |scenario|

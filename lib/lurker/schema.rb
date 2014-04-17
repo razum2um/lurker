@@ -50,8 +50,8 @@ module Lurker
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
       File.open(path, "w") do |file|
-        YAML.dump(@hash.merge(
-          KEY => @extensions
+        YAML.dump(Hash[@hash.sort].merge(
+          KEY => Hash[@extensions.sort]
         ), file)
       end
     end
@@ -67,11 +67,15 @@ module Lurker
     private
 
     def default_descrption
-      "#{default_subject.singularize} #{DESCRPTIONS[@extensions['action']]}"
+      "#{default_subject.singularize} #{DESCRPTIONS[path_params['action']]}"
     end
 
     def default_subject
-      "#{@extensions['controller'].to_s.split(/\//).last}"
+      "#{path_params['controller'].to_s.split(/\//).last}"
+    end
+
+    def path_params
+      @extensions['path_params'] || {}
     end
   end
 end

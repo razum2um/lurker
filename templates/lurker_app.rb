@@ -5,6 +5,7 @@ CODE
 
 gem 'rspec-rails'
 gem 'spring-commands-rspec'
+gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
 gem 'pry-debugger', require: false
 gem 'pry-stack_explorer', require: false
