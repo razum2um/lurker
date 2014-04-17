@@ -82,7 +82,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
       private
 
       def user
-        @user ||= (User.find_by_name(params[:id] || User.find(params[:id]))
+        @user ||= (User.find_by_name(params[:id]) || User.find(params[:id]))
       end
 
       def user_params
@@ -140,7 +140,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
       private
 
       def user
-        @user ||= (User.find_by_name(params[:user_id] || User.find(params[:user_id]))
+        @user ||= (User.find_by_name(params[:user_id]) || User.find(params[:user_id]))
       end
 
       def repo_params
