@@ -68,7 +68,8 @@ Now, you can test your API on-line (for real)
 - Separate API-services generated within one test suite
 - Capistrano integration
 - JSON-Schema draft-v4 support
-- Static site building (you can generate html into your `public` folder)
+- Static site deploy and milti-domain support
+
 
 ## Sandbox mode for Live API testing
 

@@ -16,6 +16,10 @@ When(/^I fill in the submit form with "([^"]*)"$/) do |name|
   fill_in('user[name]', with: name)
 end
 
+When(/^I submit lurk form$/) do
+  find(:xpath, "//*[@type='submit']").click
+end
+
 When(/^I submit it$/) do
   find(:xpath, "//*[@type='submit']").click
 end

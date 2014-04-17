@@ -37,6 +37,7 @@ Before do
   if ENV['CLEAN']
     system "bin/spring stop"
     FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/lurker', __FILE__)
+    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/html', __FILE__)
   end
 end
 

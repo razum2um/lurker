@@ -20,7 +20,8 @@ class Lurker::Service
       Lurker::Schema.new({
         'name'        => name,
         'basePath'    => '',
-        'description' => ''
+        'description' => '',
+        'domains'     => ['']
       })
     end
   end

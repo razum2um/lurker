@@ -60,6 +60,15 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
         end
       end
 
+      def update
+        @user = User.find(params[:id])
+        if @user.update(user_params)
+          render json: @user
+        else
+          render json: { errors: @user.errors }
+        end
+      end
+
       def show
         render json: User.find(params[:id])
       end
@@ -108,6 +117,16 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
         render json: Repo.find(params[:id])
       end
 
+      def update
+        @repo = user.repos.find(params[:id])
+        if @repo.update(repo_params)
+          render json: @repo
+        else
+          render json: { errors: @repo.errors }
+        end
+      end
+
+
       def destroy
         Repo.find(params[:id]).destroy
         render head: :ok
@@ -141,6 +160,10 @@ end
 inject_into_class 'config/application.rb', 'Application' do
   <<-CODE
     config.middleware.use Lurker::Sandbox
+    config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Request-Method' => '*'
+    }
   CODE
 end
 

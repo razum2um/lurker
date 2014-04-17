@@ -5,16 +5,11 @@ Feature: html generation
 
   @javascript
   Scenario: json schema gets generated into html preview using "users/create"
-    Given an empty directory named "html"
-    And a file named "lurker/api/v1/users-POST.json.yml" with:
+    Given a file named "lurker/api/v1/users-POST.json.yml" with:
       """yml
       ---
       prefix: users management
       description: user creation
-      responseCodes:
-      - status: 200
-        successful: true
-        description: ''
       requestParameters:
         properties:
           user:
@@ -27,6 +22,10 @@ Feature: html generation
                 example: Bob
             required: []
         required: []
+      responseCodes:
+      - status: 200
+        successful: true
+        description: ''
       responseParameters:
         properties:
           id:
@@ -39,10 +38,11 @@ Feature: html generation
             example: Bob
         required: []
       extensions:
-        action: create
-        controller: api/v1/users
-        path_info: "/api/v1/users"
         method: POST
+        path_info: "/api/v1/users"
+        path_params:
+          action: create
+          controller: api/v1/users
         suffix: ''
       """
 
