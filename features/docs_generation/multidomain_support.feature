@@ -11,7 +11,7 @@ Feature: mutidomain support
   }
   ```
 
-  @selenium
+  @javascript
   Scenario: json schema gets generated into html preview using "users/destroy"
     Given an empty directory named "html"
     And a file named "lurker/LurkerApp.service.yml" with:
@@ -64,7 +64,12 @@ Feature: mutidomain support
     """
 
   When I go to "/lurker"
+  Then I should see "Local"
   Then I should see "users management"
+
+  When I click on "Local"
+  Then I should see "Heroku"
+  When I click on "Heroku"
 
   When I click on "users management"
   Then I should see "user deletion"
@@ -72,5 +77,6 @@ Feature: mutidomain support
   When I click on "user deletion"
    And I fill in the submit form url-field "id" with "razum2um"
    And I submit it
+   And I run `sleep 10`
 
   Then I should see JSON response with "200 OK"

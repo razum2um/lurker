@@ -12,12 +12,10 @@ When /^I click on "([^"]*)"$/ do |text|
 end
 
 When(/^I fill in the submit form field "([^"]*)" with "([^"]*)"$/) do |field, name|
-  find(:xpath, "//*[contains(text(), 'Lurk!')]").click
   fill_in("user[#{field}]", with: name)
 end
 
 When(/^I fill in the submit form url-field "([^"]*)" with "([^"]*)"$/) do |field, name|
-  find(:xpath, "//*[contains(text(), 'Lurk!')]").click
   fill_in("_url_params[#{field}]", with: name)
 end
 

@@ -76,7 +76,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
 
       def destroy
         user.destroy
-        head :ok
+        render json: true
       end
 
       private
@@ -134,7 +134,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
 
       def destroy
         Repo.find(params[:id]).destroy
-        head :ok
+        render json: true
       end
 
       private
