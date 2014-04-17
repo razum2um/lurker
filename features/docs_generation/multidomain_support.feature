@@ -11,7 +11,7 @@ Feature: mutidomain support
   }
   ```
 
-  @wip
+  @selenium
   Scenario: json schema gets generated into html preview using "users/destroy"
     Given an empty directory named "html"
     And a file named "lurker/LurkerApp.service.yml" with:
@@ -20,7 +20,7 @@ Feature: mutidomain support
       basePath: ''
       description: ''
       domains:
-        '/': 'This host'
+        '/': 'Local'
         'http://lurker-app.herokuapp.com': 'Heroku'
       name: LurkerApp
       extensions: {}
@@ -73,5 +73,4 @@ Feature: mutidomain support
    And I fill in the submit form url-field "id" with "razum2um"
    And I submit it
 
-   And I run `sleep 10`
-  Then I should see JSON response with "201"
+  Then I should see JSON response with "200 OK"
