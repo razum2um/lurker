@@ -167,7 +167,7 @@ inject_into_class 'config/application.rb', 'Application' do
     config.middleware.use Lurker::Sandbox
     config.action_dispatch.default_headers = {
       'Access-Control-Allow-Origin' => '*',
-      'Access-Control-Request-Method' => '*'
+      'Access-Control-Request-Method' => 'GET, PUT, POST, DELETE, OPTIONS'
     }
   CODE
 end

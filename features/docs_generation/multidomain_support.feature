@@ -7,7 +7,7 @@ Feature: mutidomain support
   ```ruby
   config.action_dispatch.default_headers = {
     'Access-Control-Allow-Origin' => '<YOUR STATIC SERVER>',
-    'Access-Control-Request-Method' => '*'
+    'Access-Control-Request-Method' => 'GET, PUT, POST, DELETE, OPTIONS'
   }
   ```
 
@@ -70,6 +70,8 @@ Feature: mutidomain support
   Then I should see "user deletion"
 
   When I click on "user deletion"
-   And I submit lurk form
+   And I fill in the submit form url-field "id" with "razum2um"
+   And I submit it
 
+   And I run `sleep 10`
   Then I should see JSON response with "201"

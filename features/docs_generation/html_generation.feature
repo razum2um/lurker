@@ -64,7 +64,7 @@ Feature: html generation
   Then I should see "user creation"
 
   When I click on "user creation"
-   And I fill in the submit form with "Jim"
+   And I fill in the submit form field "name" with "Jim"
    And I submit it
 
   Then I should see JSON response with "Jim"

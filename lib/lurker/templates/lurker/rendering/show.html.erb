@@ -77,7 +77,7 @@
               <p>URL Params</p>
               <fieldset ref="url-params">
                 <% @url_params.each do |label, value| %>
-                  <%= render 'param_form_element', :label => "[_url_params]#{label}", :value => value, :label_text => label %>
+                  <%= render 'param_form_element', :label => "_url_params[#{label}]", :value => value, :label_text => label %>
                 <% end %>
               </fieldset>
             </li>

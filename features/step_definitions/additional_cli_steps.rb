@@ -11,9 +11,14 @@ When /^I click on "([^"]*)"$/ do |text|
   find(:xpath, "//*[contains(text(),'#{text}')]").click
 end
 
-When(/^I fill in the submit form with "([^"]*)"$/) do |name|
+When(/^I fill in the submit form field "([^"]*)" with "([^"]*)"$/) do |field, name|
   find(:xpath, "//*[contains(text(), 'Lurk!')]").click
-  fill_in('user[name]', with: name)
+  fill_in("user[#{field}]", with: name)
+end
+
+When(/^I fill in the submit form url-field "([^"]*)" with "([^"]*)"$/) do |field, name|
+  find(:xpath, "//*[contains(text(), 'Lurk!')]").click
+  fill_in("_url_params[#{field}]", with: name)
 end
 
 When(/^I submit lurk form$/) do
