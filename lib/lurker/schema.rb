@@ -50,7 +50,7 @@ module Lurker
       FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
       File.open(path, "w") do |file|
-        File.write(YAML.dump(Hash[@hash.sort].merge(
+        file.write(YAML.dump(Hash[@hash.sort].merge(
           KEY => Hash[@extensions.sort]
         )))
       end
