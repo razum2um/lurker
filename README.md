@@ -103,6 +103,7 @@ To get new version of bundled `bootstrap` or to use debugger in specs run:
 - Auto extraction for models into json-schema partials (in responses at least)
 - Auto marking of attributes as required if `strong_params` are used
 - Sinatra support
+- Render to Middleman's markdown -> static site
 - Better Diff expected-schema vs recorded schema
 - XML api testing via .xsd
 
