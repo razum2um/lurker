@@ -69,14 +69,4 @@ Feature: mutidomain support
 
   When I click on "Local"
   Then I should see "Heroku"
-  When I click on "Heroku"
 
-  When I click on "users management"
-  Then I should see "user deletion"
-
-  When I click on "user deletion"
-   And I fill in the submit form url-field "id" with "razum2um"
-   And I submit it
-
-  Then I should see JSON response with "200 OK"
-  Then I should see JSON response with "true"
