@@ -7,30 +7,28 @@
   <div class="col-md-8">
     <pre><%= @endpoint_presenter.verb %> <%= @endpoint_presenter.named_path %></pre>
 
-    <div id="show-api-response-div">
-      <div class="panel panel-default" style="display: none;">
-        <div class="panel-heading">
-            <p class="lead">Live Response</p>
-            <table class="small" ref="response-info">
-              <tr class="status">
-                <td class="name">Status:</td>
-                <td class="value"></td>
-              </tr>
-              <tr class="time">
-                <td class="name">Time:</td>
-                <td class="value"></td>
-              </tr>
-              <tr class="headers">
-                <td class="name">Headers:</td>
-                <td class="value"></td>
-              </tr>
-            </table>
-        </div>
-        <div class="panel-body">
-          <pre class="prettyprint nowrap" ref="response-json" style="display: none;"></pre>
-          <pre class="prettyprint" ref="response-raw" style="display: none;"></pre>
-        </div>
-      </div> <!-- ./#show-api-response-div -->
+    <div id="show-api-response-div" class="panel panel-default" style="display: none;">
+      <div class="panel-heading">
+          <p class="lead">Live Response</p>
+          <table class="small" ref="response-info">
+            <tr class="status">
+              <td class="name">Status:</td>
+              <td class="value"></td>
+            </tr>
+            <tr class="time">
+              <td class="name">Time:</td>
+              <td class="value"></td>
+            </tr>
+            <tr class="headers">
+              <td class="name">Headers:</td>
+              <td class="value"></td>
+            </tr>
+          </table>
+      </div>
+      <div class="panel-body">
+        <pre class="prettyprint nowrap" ref="response-json" style="display: none;"></pre>
+        <pre class="prettyprint" ref="response-raw" style="display: none;"></pre>
+      </div>
     </div> <!-- ./#show-api-response-div -->
 
     <div class="panel panel-default">
