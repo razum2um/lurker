@@ -1,4 +1,5 @@
 language: ruby
+gemfile: Gemfile.ci
 install: bundle install -j4 --path vendor/bundle
 cache:
   directories:
