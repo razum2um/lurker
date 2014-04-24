@@ -69,6 +69,7 @@ Now, you can test your API on-line (for real)
 - Capistrano integration
 - JSON-Schema draft-v4 support
 - Static site deploy and milti-domain support
+- Builtin Rack middlware `Lurker::Server.to_rack` serves cached digested assets
 
 
 ## Sandbox mode for Live API testing
