@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title><%= @service_presenter.title %></title>
-    <link href="<%= @service_presenter.html_directory %>/application.css" media="all" rel="stylesheet">
+    <link href="<%= @service_presenter.html_directory %>/application-<%= @service_presenter.options['css'] %>.css" media="all" rel="stylesheet">
     <style type="text/css">
       @font-face {
         font-family: 'FontAwesome';
@@ -62,6 +62,6 @@
     </div>
     <!-- /#wrapper -->
 
-    <script src="<%= @service_presenter.html_directory %>/application.js"></script>
+    <script src="<%= @service_presenter.html_directory %>/application-<%= @service_presenter.options['js'] %>.js"></script>
 </body>
 </html>

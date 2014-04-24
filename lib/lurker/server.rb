@@ -39,6 +39,10 @@ module Lurker
         use TryStatic,
          :root => "#{::Rails.root}/#{default_path}",  # static files root dir
          :urls => %w[/],     # match all requests
+         :header_rules => [
+           [%w(css js), {'Cache-Control' => 'public, max-age=31536000'}],
+           [:fonts, {'Access-Control-Allow-Origin' => '*'}]
+         ],
          :try => ['.html', 'index.html', '/index.html'] # try these postfixes sequentially
       end
     end

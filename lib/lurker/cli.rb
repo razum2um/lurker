@@ -1,4 +1,5 @@
 require 'thor'
+require 'digest/sha1'
 require 'lurker/service'
 require 'lurker/meta_service'
 
@@ -57,10 +58,17 @@ module Lurker
       def convert_to_html
         in_root do
           # js, css, fonts
-          FileUtils.cp_r(
-            Dir["#{self.class.precompiled_static_root}/*"],
-            destination
-          )
+          Dir["#{self.class.precompiled_static_root}/*"].each do |fname|
+            if match = fname.match(/application\.(js|css)$/)
+              sha1 = Digest::SHA1.hexdigest(open(fname).read)
+              html_options.merge! match[1] => sha1
+              to = destination.join("application-#{sha1}.#{match[1]}").to_s
+              FileUtils.cp_r fname, to
+              spawn "cat #{to} | gzip -9 > #{to}.gz"
+            else
+              FileUtils.cp_r fname, destination.to_s
+            end
+          end
 
           create_file("index.html", meta_presenter.to_html) if has_meta_service?
         end
@@ -160,7 +168,7 @@ module Lurker
       end
 
       def html_options
-        {
+        @html_options ||= {
           :static_html => true,
           :url_base_path => options[:url_base_path].presence || "/#{Lurker::DEFAULT_URL_BASE}",
           :template_directory => template_path,
