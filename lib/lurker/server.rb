@@ -36,6 +36,8 @@ module Lurker
           end
         end
 
+        use Rack::Deflater
+
         use TryStatic,
          :root => "#{::Rails.root}/#{default_path}",  # static files root dir
          :urls => %w[/],     # match all requests
@@ -44,6 +46,7 @@ module Lurker
            [:fonts, {'Access-Control-Allow-Origin' => '*'}]
          ],
          :try => ['.html', 'index.html', '/index.html'] # try these postfixes sequentially
+
       end
     end
   end
