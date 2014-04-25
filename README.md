@@ -86,7 +86,7 @@ are increasing notwithstanding ROLLBACK is called. As such:
 
 - run all your specs with **the same** testing token
 - ensure the same token to be accepted on your demo application
-- insert `Lurker::Sandbox` and the recorded exmaples
+- insert `Lurker::Sandbox` and the recorded examples should be ok to sumbit again
 
 ## Demo application
 
