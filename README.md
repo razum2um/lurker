@@ -61,8 +61,8 @@ Now, you can test your API on-line (for real)
 - [Pretty HTML documentation based on your schemas][html_generation_example]
 - [Pretty submit form to test API endpoints (live) based on schemas][demo_live] (enter a name & press "Submit")
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
+- [JSON-Schema partials][partial_example], also in YAML format ([demo][partial_example_demo])
 - Multiple docs for many test cases
-- JSON-Schema partials (inline reference to other schemas)
 - ERB support inside `.json.yml.erb`
 - HTTP-Auth authorization for your online docs
 - Separate API-services generated within one test suite
@@ -133,6 +133,8 @@ This gem is heavily inspirated by them. Thanks, @square & @fredwu
 [nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/nested-schema-scaffolding
 [request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
 [html_generation_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/html-generation
+[partial_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/partials
+[partial_example_demo]: http://lurker-app.herokuapp.com/lurker/api/v1/users/__user_id/repos-POST.html
 [evil_martians]: http://evilmartians.com/
 [demo_app]: http://lurker-app.herokuapp.com/lurker/
 [demo_live]: http://lurker-app.herokuapp.com/lurker/api/v1/users-POST.html
