@@ -71,18 +71,29 @@ Now, you can test your API on-line (for real)
 - Static site deploy and milti-domain support
 - Builtin Rack middlware `Lurker::Server.to_rack` serves cached digested assets
 
+## Token authentication with sandbox
 
-## Sandbox mode for Live API testing
+`Lurker::Sandbox` allows you to test services with token authentication:
 
     # make sure it's not production!
     # e.g. config/environtents/staging.rb
     config.middleware.use Lurker::Sandbox
+
+E.g. demo application runs with it: when creating, updating repos or users
+ids getting increased, but if you look into GET #index,
+new items are NOT showing up. **This is NOT a bug!** - sequences in postgres
+are increasing notwithstanding ROLLBACK is called. As such:
+
+- run all your specs with **the same** testing token
+- ensure the same token to be accepted on your demo application
+- insert `Lurker::Sandbox` and the recorded exmaples
 
 ## Demo application
 
 You can clone the repo & run `rake build_example_docs`.
 It will generate testing rails application under `tmp/lurker_app`.
 Currently it is deployed [here][demo_app].
+
 
 ## Contributions
 
