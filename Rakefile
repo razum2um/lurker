@@ -8,6 +8,7 @@ desc 'pry console for gem'
 task :c do
   require 'pry'
   require 'lurker'
+  require 'lurker/cli'
   ARGV.clear
   Pry.start
 end
@@ -34,8 +35,8 @@ namespace :assets do
     FileUtils.mkdir_p(BUILD_DIR)
 
     # raw copy
-    %w[fonts].each do |subdir|
-      FileUtils.cp_r(SOURCE_DIR.join(subdir), BUILD_DIR.join(subdir))
+    %w[fonts bootstrap.css.map].each do |subdir|
+      FileUtils.cp_r(SOURCE_DIR.join(subdir), BUILD_DIR)
     end
 
     sprockets = Sprockets::Environment.new(ROOT) do |env|

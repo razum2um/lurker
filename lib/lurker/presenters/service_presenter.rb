@@ -3,7 +3,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   attr_reader :service
 
   extend Forwardable
-  def_delegators :service, :name, :service_dir, :meta_service, :domains
+  def_delegators :service, :name, :service_dir, :meta_service
 
 
   def initialize(service, options = {}, &block)
@@ -24,6 +24,11 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
 
   def title
     "Lurker | #{name}"
+  end
+
+  def domains
+    return service.domains if service.domains.present?
+    { '' => 'Default'}
   end
 
   def name_as_link(options = {})

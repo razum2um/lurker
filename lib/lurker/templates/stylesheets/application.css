@@ -20,3 +20,7 @@
 .navbar-right {
   padding: 8px;
 }
+.panel .list-group .list-group-item {
+  border-width: 0;
+  padding: 0;
+}

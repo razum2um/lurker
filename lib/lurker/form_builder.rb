@@ -6,7 +6,7 @@ module Lurker
     end
 
     def html
-      "<legend class=\"hero-legend\"></legend>#{@_buffer}"
+      @_buffer
     end
 
     private

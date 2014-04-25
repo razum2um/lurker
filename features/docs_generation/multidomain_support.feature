@@ -22,6 +22,7 @@ Feature: mutidomain support
       basePath: ''
       description: ''
       domains:
+        '/': 'Local'
         'http://lurker-app.herokuapp.com': 'Heroku'
       name: LurkerApp
       extensions: {}
@@ -65,5 +66,8 @@ Feature: mutidomain support
     """
 
   When I go to "/lurker"
+  Then I should see "Local"
+
+  When I click on "Local"
   Then I should see "Heroku"
 

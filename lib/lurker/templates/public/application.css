@@ -7682,3 +7682,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
 .navbar-right {
   padding: 8px;
 }
+.panel .list-group .list-group-item {
+  border-width: 0;
+  padding: 0;
+}
