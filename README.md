@@ -88,11 +88,15 @@ Currently it is deployed [here][demo_app].
 
 To get new version of bundled `bootstrap` or to use debugger in specs run:
 
-    bundle --gemfile Gemfile.local
-    export BUNDLE_GEMFILE=$PWD/Gemfile.local
-
     rake assets:precompile # to build assets
     cucumber some/feature  # to use pry-debugger
+
+If you write features keep in mind to generate different files with aruba,
+because they are kept in `lurker_app` directory to be deployed as a demo.
+
+To run cucumber in a clean `lurker` & `html` directories run:
+
+    CLEAN=1 cucumber features
 
 ## Todo
 
