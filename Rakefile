@@ -144,7 +144,7 @@ task :features => [:regenerate, :cucumber]
 
 desc 'convert docs for example app'
 task :build_example_docs => :features do
-  in_lurker_app "bin/lurker convert #{File.expand_path('../README.md', __FILE__)}"
+  in_lurker_app "bin/lurker convert -c #{File.expand_path('../README.md', __FILE__)}"
 end
 
 namespace :heroku do
