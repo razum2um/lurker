@@ -112,7 +112,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
       def create
         @repo = user.repos.build(repo_params)
         if @repo.save
-          render json: @repo
+          render json: @repo.to_json(include: 'user', except: 'user_id')
         else
           render json: { errors: @repo.errors }, status: 401
         end

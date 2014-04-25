@@ -162,6 +162,16 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
   end
 
   def properties_html
+    properties = if (props = @schema["properties"]).present?
+      props
+    elsif (ref_path = @schema["$ref"]).present?
+      ref = Lurker::RefObject.new(ref_path, options[:root_path])
+      options[:root_path] = options[:root_path].merge(ref_path.sub(/#[^#]*?$/, ''))
+      ref.schema["properties"]
+    else
+      nil
+    end
+
     return unless properties
 
     html = ""
@@ -183,18 +193,5 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
 
   def schema_slug(key, property)
     "#{key}-#{property.hash}"
-  end
-
-  private
-
-  def properties
-    if (props = @schema["properties"]).present?
-      props
-    elsif (ref_path = @schema["$ref"]).present?
-      ref_schema = Lurker::RefObject.new(ref_path, options[:root_path]).schema
-      ref_schema["properties"]
-    else
-      nil
-    end
   end
 end

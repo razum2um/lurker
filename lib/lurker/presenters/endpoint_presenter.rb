@@ -79,13 +79,15 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   def example_request
     return if endpoint.request_parameters.empty?
     Lurker::JsonPresenter.new(
-      example_from_schema(endpoint.request_parameters).except(*endpoint.url_params.keys).except(*endpoint.query_params.keys)
+      example_from_schema(endpoint.request_parameters, endpoint.schema)
+        .except(*endpoint.url_params.keys)
+        .except(*endpoint.query_params.keys)
     )
   end
 
   def example_response
     return if endpoint.response_parameters.empty?
-    Lurker::JsonPresenter.new(example_from_schema(endpoint.response_parameters))
+    Lurker::JsonPresenter.new(example_from_schema(endpoint.response_parameters, endpoint.schema))
   end
 
   def deprecated?
@@ -139,7 +141,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
 
   ATOMIC_TYPES = %w(string integer number boolean null)
 
-  def example_from_schema(schema)
+  def example_from_schema(schema, parent=nil)
     if schema.nil?
       return nil
     end
@@ -147,20 +149,21 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     type = Array(schema["type"])
 
     if type.any? { |t| ATOMIC_TYPES.include?(t) }
-      schema["example"] || schema["default"] || example_from_atom(schema)
+      schema["example"] || schema["default"] || example_from_atom(schema, parent)
     elsif type.include?("object") || schema["properties"]
-      example_from_object(schema)
+      example_from_object(schema, parent)
     elsif type.include?("array") || schema["items"]
-      example_from_array(schema)
+      example_from_array(schema, parent)
     elsif (ref_path = schema['$ref'])
-      ref_schema = Lurker::RefObject.new(ref_path, root_path).schema
-      example_from_object(ref_schema)
+      root_path = parent.respond_to?(:abs_path) ? parent.abs_path : send(:root_path)
+      ref_schema = Lurker::RefObject.new(ref_path, root_path)
+      example_from_object(ref_schema.schema, ref_schema)
     else
       {}
     end
   end
 
-  def example_from_atom(schema)
+  def example_from_atom(schema, parent=nil)
     type = Array(schema["type"])
     hash = schema.hash
 
@@ -177,31 +180,31 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     end
   end
 
-  def example_from_object(object)
+  def example_from_object(object, parent=nil)
     example = {}
     if object["properties"]
       object["properties"].each do |key, value|
-        example[key] = example_from_schema(value)
+        example[key] = example_from_schema(value, parent)
       end
     end
     example
   end
 
-  def example_from_array(array)
+  def example_from_array(array, parent=nil)
     if array["items"].kind_of? Array
       example = []
       array["items"].each do |item|
-        example << example_from_schema(item)
+        example << example_from_schema(item, parent)
       end
       example
     elsif (array["items"] || {})["type"].kind_of? Array
       example = []
       array["items"]["type"].each do |item|
-        example << example_from_schema(item)
+        example << example_from_schema(item, parent)
       end
       example
     else
-      [ example_from_schema(array["items"]) ]
+      [ example_from_schema(array["items"], parent) ]
     end
   end
 end

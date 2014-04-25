@@ -23,6 +23,10 @@ class Lurker::Endpoint
     )
   end
 
+  def indexed?
+    prefix.present? && description.present?
+  end
+
   def consume!(request_params, response_params, status_code, successful=true)
     consume_request(request_params, successful)
     consume_response(response_params, status_code, successful)

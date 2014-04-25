@@ -67,9 +67,9 @@ class Lurker::Service
   end
 
   def endpoints
-    endpoint_paths.map do |path|
+    @endpoints ||= endpoint_paths.map do |path|
       Lurker::Endpoint.new(path, {}, self)
-    end
+    end.select(&:indexed?).compact
   end
 
   def path_for(verb, path)
