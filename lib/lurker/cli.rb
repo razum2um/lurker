@@ -36,7 +36,7 @@ module Lurker
     def convert(lurker_path=Lurker::DEFAULT_SERVICE_PATH)
       say_status nil, "Converting lurker to #{options[:format]}"
 
-      self.content = get_content(File.expand_path(options[:content]))
+      self.content = get_content(options[:content])
       self.origin_path = File.expand_path(lurker_path)
       raise Lurker::NotFound.new(origin_path) unless has_valid_origin?
       say_status :using, lurker_path
@@ -184,6 +184,7 @@ module Lurker
 
     def get_content(content_fname)
       return unless content_fname
+      content_fname = File.expand_path(content_fname)
       if content_fname.ends_with? 'md'
         require 'kramdown'
         Kramdown::Document.new(open(content_fname).read).to_html
