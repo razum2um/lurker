@@ -14,7 +14,7 @@ module Lurker
   class Cli < Thor
     include Thor::Actions
 
-    attr_accessor :origin_path
+    attr_accessor :origin_path, :content
 
     def self.source_root
       File.expand_path("../templates", __FILE__)
@@ -32,9 +32,11 @@ module Lurker
     method_option :url_base_path, :aliases => "-u", :desc => "URL base path"
     method_option :format, :aliases => "-f", :desc => "Format in html or markdown, defaults to html", :default => "html"
     method_option :templates, :aliases => "-t", :desc => "Template overrides path"
+    method_option :content, :aliases => "-c", :desc => "Content to be rendered into html-docs main page"
     def convert(lurker_path=Lurker::DEFAULT_SERVICE_PATH)
       say_status nil, "Converting lurker to #{options[:format]}"
 
+      self.content = get_content(File.expand_path(options[:content]))
       self.origin_path = File.expand_path(lurker_path)
       raise Lurker::NotFound.new(origin_path) unless has_valid_origin?
       say_status :using, lurker_path
@@ -172,12 +174,23 @@ module Lurker
           :static_html => true,
           :url_base_path => options[:url_base_path].presence || "/#{Lurker::DEFAULT_URL_BASE}",
           :template_directory => template_path,
-          :html_directory => destination_root
+          :html_directory => destination_root,
+          :content => self.content
         }
       end
     end
 
     private
+
+    def get_content(content_fname)
+      return unless content_fname
+      if content_fname.ends_with? 'md'
+        require 'kramdown'
+        Kramdown::Document.new(open(content_fname).read).to_html
+      else
+        ''
+      end
+    end
 
     def services
       @services ||=
