@@ -113,6 +113,7 @@ To run cucumber in a clean `lurker` & `html` directories run:
 
 - More tests
 - More docs
+- cURL command building
 - Production middleware to validate real input/output
 - Render lurker-app to gh-pages with arbitrary endpoint (my & heroku)
 - Render dosc like these: [gh_api][gh_api]
