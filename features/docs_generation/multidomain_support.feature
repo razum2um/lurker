@@ -1,7 +1,9 @@
 Feature: mutidomain support
 
-  to deploy statically on other domain and be able to send API requests
-  you shouldturn off Access-Control-Allow-Origin restriction
+  In your `.service.yml` list you domains in form `url: hostname`
+
+  To deploy statically on other domain and be able to send API requests
+  you should turn off Access-Control-Allow-Origin restriction
   in config/application.rb (Rails 4)
 
   ```ruby
@@ -20,7 +22,6 @@ Feature: mutidomain support
       basePath: ''
       description: ''
       domains:
-        '/': 'Local'
         'http://lurker-app.herokuapp.com': 'Heroku'
       name: LurkerApp
       extensions: {}
@@ -64,9 +65,5 @@ Feature: mutidomain support
     """
 
   When I go to "/lurker"
-  Then I should see "Local"
-  Then I should see "users management"
-
-  When I click on "Local"
   Then I should see "Heroku"
 
