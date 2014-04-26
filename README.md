@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/razum2um/lurker.png?label=ready&title=Ready)](https://waffle.io/razum2um/lurker)
 # Lurker
 
 The new de-facto for API testing your Rails application (Rails 3 & 4 both compatible)
