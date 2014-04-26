@@ -96,7 +96,7 @@ Currently it is deployed [here][demo_app].
 [![Code Climate][CC img]][Code Climate]
 [![Coverage Status][CS img]][Coverage Status]
 [![Inline docs](http://inch-pages.github.io/github/razum2um/lurker.png)](http://inch-pages.github.io/github/razum2um/lurker)
-[![Stories in Ready](https://badge.waffle.io/razum2um/lurker.png?label=ready&title=Ready)][waffle]
+[![Stories in Ready](https://badge.waffle.io/razum2um/lurker.png?label=ready&title=Ready&_=1)][waffle]
 
 I try to use [Waffle][waffle] to develop this gem, if you want to help:
 
