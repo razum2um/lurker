@@ -60,15 +60,15 @@
         <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
           <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" disabled />
           <li className="list-group-item">
-            <p>Host</p>
-            <select className="form-control" valueLink={this.linkState('host')}>
+            <label forHtml="hostname">Host</label>
+            <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
               <% @service_presenter.domains.each do |url, name| %>
-                <option value="<%= url %>"><%= name %> ({this.getHostname("<%= url %>")})</option>
+                <option value="<%= url %>"><%= name %></option>
               <% end %>
             </select>
           </li>
 
-          <li className="list-group-item">
+          <li id="curl" className="list-group-item">
             <p>cURL</p>
             <pre>{this.state.curl}</pre>
           </li>
@@ -106,9 +106,9 @@
     }
   });
 
-  React.renderComponent(
-    <SubmitForm template="<%= @endpoint_presenter.named_path %>" data="<%= @url_params.to_json %>" />,
-    document.getElementById('submit-form')
-  );
+  var submitForm = <SubmitForm template="<%= @endpoint_presenter.named_path %>" />;
+  // FIXME: see multidomain feature - cannot select node in phantomjs
+  window.submitForm = submitForm;
+  React.renderComponent(submitForm, document.getElementById('submit-form'));
 </script>
 <div id='submit-form'></div>

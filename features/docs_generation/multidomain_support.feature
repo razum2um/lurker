@@ -23,7 +23,7 @@ Feature: mutidomain support
       description: ''
       domains:
         '/': 'Local'
-        'http://lurker-app.herokuapp.com': 'Heroku (sandbox)'
+        'http://lurker-app.herokuapp.com': '[Sandbox] Heroku'
       name: LurkerApp
       extensions: {}
       """
@@ -65,9 +65,10 @@ Feature: mutidomain support
     create  api/v1/users/__id-DELETE.html
     """
 
-  When I go to "/lurker"
-  Then I should see "Local"
-
-  When I click on "Local"
-  Then I should see "Heroku"
+  When I go to "/lurker/api/v1/users/__id-DELETE.html"
+  When I select "[Sandbox] Heroku" hostname
+  Then I should see:
+    """
+    curl -X DELETE "http://lurker-app.herokuapp.com/api/v1/users/1"
+    """
 

@@ -11,6 +11,15 @@ When /^I click on "([^"]*)"$/ do |text|
   find(:xpath, "//*[contains(text(),'#{text}')]").click
 end
 
+When /^I select "([^"]*)" hostname$/ do |host|
+  within(:xpath, "//*[@id='hostname']") do
+    select(host)
+  end
+  # FIXME: see multidomain feature - cannot select node in phantomjs
+  page.execute_script("window.submitForm.setState({host: jQuery('#hostname').val()});")
+  page.execute_script("window.submitForm.afterSetPartialState()")
+end
+
 When(/^I fill in the submit form field "([^"]*)" with "([^"]*)"$/) do |field, name|
   fill_in("user[#{field}]", with: name)
 end
@@ -40,7 +49,11 @@ Then /^the file "([^"]*)" should contain JSON-Schema:$/ do |file, schema|
 end
 
 Then /^I should see "([^"]*)"$/ do |text|
-  expect(find(:xpath, "//*[contains(text(),'#{text}')]")).to be
+  expect(page).to have_content text
+end
+
+Then /^I should see:$/ do |text|
+  expect(page).to have_content text
 end
 
 Then /^I should see "([^"]*)" within "([^"]*)"$/ do |text, selector|
