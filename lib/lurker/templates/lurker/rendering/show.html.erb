@@ -56,20 +56,6 @@
     <div class="panel panel-default">
       <div class="panel-heading">Lurk!</div>
       <ul class="panel-body list-group">
-
-        <form id="query" action="." method="get" class="form-horizontal">
-          <% if @query_params.present? %>
-            <li class="list-group-item">
-              <p>Query</p>
-              <fieldset ref="query-params">
-                <% @query_params.each do |label, value| %>
-                  <%= render 'param_form_element', :label => label, :value => value, :label_text => label %>
-                <% end %>
-              </fieldset>
-            </li>
-          <% end %>
-        </form>
-
         <%= render 'submit_form' %>
       </ul>
     </div> <!-- ./panel-default -->

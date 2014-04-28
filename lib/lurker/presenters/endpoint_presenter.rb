@@ -16,7 +16,6 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     @service_presenter = service_presenter
     @endpoint_presenter = self
     @url_params = endpoint.url_params
-    @query_params = endpoint.query_params
     @post_params = example_request.json
     render('show')
   end
@@ -81,7 +80,6 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     Lurker::JsonPresenter.new(
       example_from_schema(endpoint.request_parameters, endpoint.schema)
         .except(*endpoint.url_params.keys)
-        .except(*endpoint.query_params.keys)
     )
   end
 
