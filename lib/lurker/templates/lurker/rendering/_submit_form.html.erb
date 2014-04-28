@@ -47,7 +47,7 @@
     afterSetPartialState: function() {
       this.setState({
         action: this.renderAction(this.state.host, this.state.template, this.state.values),
-        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#payload').serialize())
+        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#post-payload').serialize())
       });
     },
     handleSubmit: function() {
@@ -58,7 +58,7 @@
     render: function() {
       return (
         <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
-          <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" disabled />
+          <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
           <li className="list-group-item">
             <label forHtml="hostname">Host</label>
             <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
