@@ -64,8 +64,13 @@ Feature: html generation
   Then I should see "user creation"
 
   When I click on "user creation"
-   And I fill in the submit form field "name" with "Jim"
-   And I submit it
+  And I fill in the submit form field "name" with "Jim"
+  Then I should see:
+    """
+    curl -X POST -d "user%5Bname%5D=Jim"
+    """
+
+   And I submit lurk form
 
   Then I should see JSON response with "Jim"
 
