@@ -28,9 +28,13 @@
         });
       }
     },
+    handleSubmit: function() {
+      Lurker.onSubmit($('#payload'));
+      return false;
+    },
     render: function() {
       return (
-        <form accept-charset="UTF-8" action={this.state.action} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
+        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
           <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
           <li className="list-group-item">
             <p>Submit path</p>
@@ -42,7 +46,7 @@
               <fieldset ref="url-params">
                 <% @url_params.each_with_index do |(label, value), i| %>
                   <div className="form-group">
-                    <label className="control-label col-sm-3" for="<%= label %>"><%= label %></label>
+                    <label className="control-label col-sm-3" htmlFor="<%= label %>"><%= label %></label>
                     <div className="col-sm-9">
                       <input type="text" valueLink={this.linkState('values.<%= i %>.value')} className="form-control"></input>
                     </div>
