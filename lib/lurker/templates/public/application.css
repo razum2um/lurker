@@ -7685,4 +7685,5 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
 .panel .list-group .list-group-item {
   border-width: 0;
   padding: 0;
+  margin-bottom: 10px;
 }

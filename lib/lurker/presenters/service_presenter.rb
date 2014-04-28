@@ -28,7 +28,12 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
 
   def domains
     return service.domains if service.domains.present?
-    { '' => 'Default'}
+    { '/' => 'Local'}
+  end
+
+  def default_domain
+    return service.domains.to_a[0][0] if service.domains.present?
+    '/'
   end
 
   def name_as_link(options = {})

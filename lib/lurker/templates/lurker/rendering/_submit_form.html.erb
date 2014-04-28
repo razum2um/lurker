@@ -6,40 +6,73 @@
       var state = {};
       var values = JSON.parse('<%= @url_params.map { |k,v| { label:k, value: v} } .to_json.html_safe %>');
       var template = '<%= @endpoint_presenter.named_path %>';
+      var method = '<%= @endpoint_presenter.verb %>';
+      var host = '<%= @service_presenter.default_domain %>';
 
+      state.host = host;
+      state.method = method;
       state.values = values;
       state.template = template;
-      state.action = this.renderAction(template, values)
+      state.action = this.renderAction(host, template, values);
+      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('<%= @post_params.to_json.html_safe %>')));
       return state;
     },
-    renderAction: function(template, values) {
+    getPayload: function() {
+      // FIXME
+      return jQuery('#payload').serialize();
+    },
+    getHostname: function(host) {
+      if (host == '/') {
+        return window.location.origin;
+      } else {
+        return host.replace(/\$/, '');
+      }
+    },
+    renderAction: function(host, template, values) {
       var action = template;
       var i;
       for (i in values) {
         action = action.replace(new RegExp(':' + values[i].label), values[i].value);
       }
-      return action;
+      return this.getHostname(host) + action;
+    },
+    renderCurl: function(method, host, template, values, payload) {
+      var url = '"' + this.renderAction(host, template, values) + '"';
+      if (payload.length > 0) {
+        url = '-d "' + (payload || this.getPayload()) + '" ' + url;
+      }
+      return 'curl -X ' + method + " " + url;
     },
     // see react-catalyst.js
-    afterSetPartialState: function(path, value) {
-      if (/value$/.test(path)) {
-        this.setState({
-          action: this.renderAction(this.state.template, this.state.values)
-        });
-      }
+    afterSetPartialState: function() {
+      this.setState({
+        action: this.renderAction(this.state.host, this.state.template, this.state.values),
+        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#payload').serialize())
+      });
     },
     handleSubmit: function() {
-      Lurker.onSubmit($('#payload'));
+      // FIXME
+      Lurker.onSubmit(jQuery('#payload'));
       return false;
     },
     render: function() {
       return (
         <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
-          <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
+          <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" disabled />
           <li className="list-group-item">
-            <p>Submit path</p>
-            <pre>{this.state.action}</pre>
+            <p>Host</p>
+            <select className="form-control" valueLink={this.linkState('host')}>
+              <% @service_presenter.domains.each do |url, name| %>
+                <option value="<%= url %>"><%= name %> ({this.getHostname("<%= url %>")})</option>
+              <% end %>
+            </select>
           </li>
+
+          <li className="list-group-item">
+            <p>cURL</p>
+            <pre>{this.state.curl}</pre>
+          </li>
+
           <% if @url_params.present? %>
             <li className="list-group-item">
               <p>URL Params</p>
@@ -57,7 +90,7 @@
           <% end %>
 
           <% if @post_params.present? %>
-            <li className="list-group-item">
+            <li className="list-group-item" id="post-payload">
               <p>Payload</p>
               <fieldset ref="post-params">
                 <%= Lurker::FormBuilder.new(@post_params).html.html_safe %>

@@ -23,7 +23,7 @@ Feature: mutidomain support
       description: ''
       domains:
         '/': 'Local'
-        'http://lurker-app.herokuapp.com': 'Heroku'
+        'http://lurker-app.herokuapp.com': 'Heroku (sandbox)'
       name: LurkerApp
       extensions: {}
       """

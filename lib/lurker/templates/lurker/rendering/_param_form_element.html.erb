@@ -1,10 +1,10 @@
 <div className="form-group">
-  <label className="control-label col-sm-3" for="<%= label %>"><%= defined?(label_text) ? label_text : label %></label>
+  <label className="control-label col-sm-3" htmlFor="<%= label %>"><%= defined?(label_text) ? label_text : label %></label>
   <div className="col-sm-9">
     <% if value === :file %>
         <input type="file" name="<%= label %>" ></input>
     <% else %>
-        <input type="text" name="<%= label %>" defaultValue="<%= value.to_s %>" className="form-control"></input>
+        <input type="text" name="<%= label %>" defaultValue="<%= value.to_s %>" className="form-control" onChange={this.afterSetPartialState}></input>
     <% end %>
   </div>
 </div>
