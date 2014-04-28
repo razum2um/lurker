@@ -194,7 +194,7 @@ namespace :razum2um do
     in_lurker_app "echo 'log' >> .gitignore"
     # commit migration and deploy by hand first time
     in_lurker_app "echo 'db/*' >> .gitignore"
-    in_lurker_app "echo 'tmp/*' >> .gitignore"
+    in_lurker_app "echo 'tmp/*log' >> .gitignore"
     in_lurker_app "echo '.bundle/*' >> .gitignore"
 
     in_lurker_app "git add -A"
@@ -203,6 +203,7 @@ namespace :razum2um do
       menu.prompt = 'Commit & push & deploy?'
       menu.choice(:yes) {
         puts 'Deploy lurker.razum2um.me'
+        in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
         in_lurker_app "git push razum2um master"
         %w[database secrets].each do |fname|
           on_razum2um_me "cp ~/#{fname}.yml config/#{fname}.yml"
