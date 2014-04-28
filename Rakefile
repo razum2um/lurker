@@ -124,7 +124,8 @@ def in_lurker_app(command)
 end
 
 def on_razum2um_me(command)
-  system %Q{ssh lurker@razum2um.me "(cd ~/lurker; #{command})"}
+  puts "About to run: #{command}"
+  system %Q{ssh lurker@razum2um.me 'bash -l -c "source ~/.bashrc; cd ~/lurker; rvm use 2.1.1; #{command}"'}
 end
 
 def needs_generation?
@@ -207,8 +208,8 @@ namespace :razum2um do
           on_razum2um_me "cp ~/#{fname}.yml config/#{fname}.yml"
         end
         on_razum2um_me "bundle install"
-        on_razum2um_me "RAILS_ENV=production rake db:migrate"
-        on_razum2um_me "RAILS_ENV=production rake db:import"
+        on_razum2um_me "RAILS_ENV=production bin/rake db:migrate"
+        on_razum2um_me "RAILS_ENV=production bin/rake db:import"
         on_razum2um_me "touch tmp/restart.txt"
       }
       menu.choice(:no) { say("Exit") }
