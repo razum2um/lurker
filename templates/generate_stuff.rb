@@ -164,7 +164,9 @@ end
 
 inject_into_class 'config/application.rb', 'Application' do
   <<-CODE
-    config.middleware.use Lurker::Sandbox
+    if ENV['DATEBASE_URL'].present? # heroku
+      config.middleware.use Lurker::Sandbox
+    end
     config.action_dispatch.default_headers = {
       'Access-Control-Allow-Origin' => '*',
       'Access-Control-Request-Method' => 'GET, PUT, POST, DELETE, OPTIONS'
