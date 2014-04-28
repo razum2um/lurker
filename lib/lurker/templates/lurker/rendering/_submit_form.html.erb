@@ -1,0 +1,77 @@
+<script type="text/jsx">
+  /** @jsx React.DOM */
+  var SubmitForm = React.createClass({
+    mixins: [ReactCatalyst.LinkedStateMixin],
+    getInitialState: function() {
+      var state = {};
+      var values = JSON.parse('<%= @url_params.map { |k,v| { label:k, value: v} } .to_json.html_safe %>');
+      var template = '<%= @endpoint_presenter.named_path %>';
+
+      state.values = values;
+      state.template = template;
+      state.action = this.renderAction(template, values)
+      return state;
+    },
+    renderAction: function(template, values) {
+      var action = template;
+      var i;
+      for (i in values) {
+        action = action.replace(new RegExp(':' + values[i].label), values[i].value);
+      }
+      return action;
+    },
+    // see react-catalyst.js
+    afterSetPartialState: function(path, value) {
+      if (/value$/.test(path)) {
+        this.setState({
+          action: this.renderAction(this.state.template, this.state.values)
+        });
+      }
+    },
+    render: function() {
+      return (
+        <form accept-charset="UTF-8" action={this.state.action} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
+          <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
+          <li className="list-group-item">
+            <p>Submit path</p>
+            <pre>{this.state.action}</pre>
+          </li>
+          <% if @url_params.present? %>
+            <li className="list-group-item">
+              <p>URL Params</p>
+              <fieldset ref="url-params">
+                <% @url_params.each_with_index do |(label, value), i| %>
+                  <div className="form-group">
+                    <label className="control-label col-sm-3" for="<%= label %>"><%= label %></label>
+                    <div className="col-sm-9">
+                      <input type="text" valueLink={this.linkState('values.<%= i %>.value')} className="form-control"></input>
+                    </div>
+                  </div>
+                <% end %>
+              </fieldset>
+            </li>
+          <% end %>
+
+          <% if @post_params.present? %>
+            <li className="list-group-item">
+              <p>Payload</p>
+              <fieldset ref="post-params">
+                <%= Lurker::FormBuilder.new(@post_params).html.html_safe %>
+              </fieldset>
+            </li>
+          <% end %>
+
+          <li className="list-group-item form-actions">
+            <input id="submit-api" type="submit" className="btn btn-primary pull-right"></input>
+          </li>
+        </form>
+      );
+    }
+  });
+
+  React.renderComponent(
+    <SubmitForm template="<%= @endpoint_presenter.named_path %>" data="<%= @url_params.to_json %>" />,
+    document.getElementById('submit-form')
+  );
+</script>
+<div id='submit-form'></div>
