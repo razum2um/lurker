@@ -123,6 +123,10 @@ def in_lurker_app(command)
   end
 end
 
+def on_razum2um_me(command)
+  system %Q{ssh lurker@razum2um.me "(cd ~/lurker; #{command})"}
+end
+
 def needs_generation?
   !File.exists?("#{EXAMPLE_PATH}/Gemfile")
 end
@@ -166,6 +170,7 @@ namespace :heroku do
     choose do |menu|
       menu.prompt = 'Commit & push & deploy?'
       menu.choice(:yes) {
+        puts 'Deploy lurker-app.herokuapp.com'
         in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
         in_lurker_app "git push origin master"
         in_lurker_app "heroku run rake db:import --app lurker-app"
@@ -176,6 +181,42 @@ namespace :heroku do
 
   desc 'rebuilds & pushes app to heroku'
   task :deploy => [:build_example_docs, 'heroku:push'] do
+  end
+end
+
+namespace :razum2um do
+  desc 'pushes example lurker_app to razum2um'
+  task :push do
+    require_with_help 'highline/import'
+
+    in_lurker_app "echo 'bin/lurker' > .gitignore"
+    in_lurker_app "echo 'log' >> .gitignore"
+    # commit migration and deploy by hand first time
+    in_lurker_app "echo 'db/*' >> .gitignore"
+    in_lurker_app "echo 'tmp/*' >> .gitignore"
+    in_lurker_app "echo '.bundle/*' >> .gitignore"
+
+    in_lurker_app "git add -A"
+    in_lurker_app "git status"
+    choose do |menu|
+      menu.prompt = 'Commit & push & deploy?'
+      menu.choice(:yes) {
+        puts 'Deploy lurker.razum2um.me'
+        in_lurker_app "git push razum2um master"
+        %w[database secrets].each do |fname|
+          on_razum2um_me "cp ~/#{fname}.yml config/#{fname}.yml"
+        end
+        on_razum2um_me "bundle install"
+        on_razum2um_me "RAILS_ENV=production rake db:migrate"
+        on_razum2um_me "RAILS_ENV=production rake db:import"
+        on_razum2um_me "touch tmp/restart.txt"
+      }
+      menu.choice(:no) { say("Exit") }
+    end
+  end
+
+  desc 'rebuilds & pushes app to razum2um.me'
+  task :deploy => [:build_example_docs, 'razum2um:push'] do
   end
 end
 
