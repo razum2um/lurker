@@ -23,6 +23,7 @@ Feature: mutidomain support
       description: ''
       domains:
         '[Sandbox] Heroku': 'http://lurker-app.herokuapp.com'
+        '[Real] razum2um.me': 'http://lurker.razum2um.me'
       name: LurkerApp
       extensions: {}
       """

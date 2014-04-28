@@ -32,7 +32,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def default_domain
-    return service.domains.to_a[0][0] if service.domains.present?
+    return service.domains.to_a[0][1] if service.domains.present?
     '/'
   end
 
