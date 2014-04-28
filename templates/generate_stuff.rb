@@ -50,7 +50,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
         if (limit = params[:limit]).to_s.match(/\\d+/)
           @users = @users.limit(limit.to_i)
         end
-        render json: @users
+        render json: @users.order('id ASC')
       end
 
       def create
@@ -106,7 +106,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
         if (limit = params[:limit]).to_s.match(/\\d+/)
           @repos = @repos.limit(limit.to_i)
         end
-        render json: @repos
+        render json: @repos.order('id ASC')
       end
 
       def create
