@@ -43,4 +43,5 @@ end
 
 After do |scenario|
   DatabaseCleaner.clean
+  save_and_open_page if scenario.failed? && !ENV['BUNDLE_GEMFILE'].match(/Gemfile\.ci/)
 end

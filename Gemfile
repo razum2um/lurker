@@ -24,4 +24,5 @@ group :development do
   gem 'bootstrap-sass', '~> 3.1.1'
   gem 'jquery-rails'
   gem 'remotipart'
+  gem "launchy"
 end
