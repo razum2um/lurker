@@ -164,7 +164,7 @@ end
 
 inject_into_class 'config/application.rb', 'Application' do
   <<-CODE
-    if ENV['DATEBASE_URL'].present? # heroku
+    if ENV['DATABASE_URL'].present? # heroku
       config.middleware.use Lurker::Sandbox
     end
     config.action_dispatch.default_headers = {

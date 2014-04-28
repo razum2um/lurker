@@ -153,31 +153,32 @@ task :build_example_docs => :features do
   in_lurker_app "bin/lurker convert -c #{File.expand_path('../README.md', __FILE__)}"
 end
 
-namespace :heroku do
-  desc 'pushes example lurker_app to heroku'
-  task :push do
+def ask_for_deploy(name, callback)
+  if ENV['FORCE_DEPLOY']
+    puts "Deploy to #{name}"
+    callback.call
+  else
     require_with_help 'highline/import'
-
-    in_lurker_app "echo 'bin/lurker' > .gitignore"
-    in_lurker_app "echo 'log' >> .gitignore"
-    # commit migration and deploy by hand first time
-    in_lurker_app "echo 'db/*' >> .gitignore"
-    in_lurker_app "echo 'tmp/*' >> .gitignore"
-    in_lurker_app "echo '.bundle/*' >> .gitignore"
-
-
-    in_lurker_app "git add -A"
-    in_lurker_app "git status"
     choose do |menu|
-      menu.prompt = 'Commit & push & deploy?'
+      menu.prompt = "Commit & push & deploy to #{name}?"
       menu.choice(:yes) {
-        puts 'Deploy lurker-app.herokuapp.com'
-        in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
-        in_lurker_app "git push origin master"
-        in_lurker_app "heroku run rake db:import --app lurker-app"
+        ENV['FORCE_DEPLOY'] = '1'
+        callback.call
       }
       menu.choice(:no) { say("Exit") }
     end
+  end
+end
+
+namespace :heroku do
+  desc 'pushes example lurker_app to heroku'
+  task :push => :predeploy do
+    do_deploy = Proc.new {
+      in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'" rescue nil
+      in_lurker_app "git push origin master"
+      in_lurker_app "heroku run rake db:import --app lurker-app"
+    }
+    ask_for_deploy("heroku", do_deploy)
   end
 
   desc 'rebuilds & pushes app to heroku'
@@ -187,34 +188,19 @@ end
 
 namespace :razum2um do
   desc 'pushes example lurker_app to razum2um'
-  task :push do
-    require_with_help 'highline/import'
-
-    in_lurker_app "echo 'bin/lurker' > .gitignore"
-    in_lurker_app "echo 'log' >> .gitignore"
-    # commit migration and deploy by hand first time
-    in_lurker_app "echo 'db/*' >> .gitignore"
-    in_lurker_app "echo 'tmp/*log' >> .gitignore"
-    in_lurker_app "echo '.bundle/*' >> .gitignore"
-
-    in_lurker_app "git add -A"
-    in_lurker_app "git status"
-    choose do |menu|
-      menu.prompt = 'Commit & push & deploy?'
-      menu.choice(:yes) {
-        puts 'Deploy lurker.razum2um.me'
-        in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'"
-        in_lurker_app "git push razum2um master"
-        %w[database secrets].each do |fname|
-          on_razum2um_me "cp ~/#{fname}.yml config/#{fname}.yml"
-        end
-        on_razum2um_me "bundle install"
-        on_razum2um_me "RAILS_ENV=production bin/rake db:migrate"
-        on_razum2um_me "RAILS_ENV=production bin/rake db:import"
-        on_razum2um_me "touch tmp/restart.txt"
-      }
-      menu.choice(:no) { say("Exit") }
-    end
+  task :push => :predeploy do
+    do_deploy = Proc.new {
+      in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'" rescue nil
+      in_lurker_app "git push razum2um master"
+      %w[database secrets].each do |fname|
+        on_razum2um_me "cp ~/#{fname}.yml config/#{fname}.yml"
+      end
+      on_razum2um_me "bundle install"
+      on_razum2um_me "RAILS_ENV=production bin/rake db:migrate"
+      on_razum2um_me "RAILS_ENV=production bin/rake db:import"
+      on_razum2um_me "touch tmp/restart.txt"
+    }
+    ask_for_deploy("razum2um.me", do_deploy)
   end
 
   desc 'rebuilds & pushes app to razum2um.me'
@@ -223,6 +209,25 @@ namespace :razum2um do
 end
 
 task :default => [:spec, :regenerate, :cucumber, 'coveralls:push']
+
+desc 'commits lurker app'
+task :predeploy do
+  in_lurker_app "echo 'bin/lurker' > .gitignore"
+  in_lurker_app "echo 'log' >> .gitignore"
+  # commit migration and deploy by hand first time
+  in_lurker_app "echo 'db/*' >> .gitignore"
+  in_lurker_app "echo 'tmp/*log' >> .gitignore"
+  in_lurker_app "echo '.bundle/*' >> .gitignore"
+
+  in_lurker_app "git add -A"
+  in_lurker_app "git status"
+end
+
+desc 'deploys everything'
+task :deploy => ["razum2um:deploy", "heroku:deploy"]
+
+desc 'pushes everything'
+task :push => ["razum2um:push", "heroku:push"]
 
 desc 'releases gem & updates docs'
 task :publish do
