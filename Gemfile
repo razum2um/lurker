@@ -20,6 +20,7 @@ group :development do
   # to get bundled application.(js|css)
   gem 'sprockets'
   gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'bootstrap-sass', '~> 3.1.1'
   gem 'jquery-rails'
   gem 'remotipart'
