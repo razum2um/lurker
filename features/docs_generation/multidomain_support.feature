@@ -1,6 +1,6 @@
 Feature: mutidomain support
 
-  In your `.service.yml` list you domains in form `url: hostname`
+  In your `.service.yml` list you domains in form `hostname: url`
 
   To deploy statically on other domain and be able to send API requests
   you should turn off Access-Control-Allow-Origin restriction
@@ -22,8 +22,7 @@ Feature: mutidomain support
       basePath: ''
       description: ''
       domains:
-        '/': 'Local'
-        'http://lurker-app.herokuapp.com': '[Sandbox] Heroku'
+        '[Sandbox] Heroku': 'http://lurker-app.herokuapp.com'
       name: LurkerApp
       extensions: {}
       """

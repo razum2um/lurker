@@ -2,14 +2,40 @@
   /** @jsx React.DOM */
   var SubmitForm = React.createClass({
     mixins: [ReactCatalyst.LinkedStateMixin],
+    runsOnLocalhost: function() {
+      return window.location.hostname == '127.0.0.1' || window.location.hostname == 'localhost'
+    },
     getInitialState: function() {
       var state = {};
       var values = JSON.parse('<%= @url_params.map { |k,v| { label:k, value: v} } .to_json.html_safe %>');
       var template = '<%= @endpoint_presenter.named_path %>';
       var method = '<%= @endpoint_presenter.verb %>';
+      var hosts = JSON.parse('<%= @service_presenter.domains.to_json.html_safe %>');
       var host = '<%= @service_presenter.default_domain %>';
 
+      var i;
+      var includesLocalhost = false;
+      for (i in hosts) {
+        if (hosts[i] == '/') {
+          includesLocalhost = true;
+          if (this.runsOnLocalhost()) {
+            host = hosts[i] = window.location.origin;
+          }
+        } else {
+          hosts[i] = hosts[i].replace(/\$/, '');
+        }
+
+        if (window.location.origin == hosts[i]) {
+          host = hosts[i];
+        }
+      };
+
+      if (!includesLocalhost && this.runsOnLocalhost()) {
+        host = hosts['Local'] = window.location.origin;
+      }
+
       state.host = host;
+      state.hosts = hosts;
       state.method = method;
       state.values = values;
       state.template = template;
@@ -22,11 +48,7 @@
       return jQuery('#post-payload input').serialize();
     },
     getHostname: function(host) {
-      if (host == '/') {
-        return window.location.origin;
-      } else {
-        return host.replace(/\$/, '');
-      }
+      return host;
     },
     renderAction: function(host, template, values) {
       var action = template;
@@ -56,15 +78,19 @@
       return false;
     },
     render: function() {
+      var hostOptions = [];
+      var name;
+      for (name in this.state.hosts) {
+        var hostUrl = this.state.hosts[name];
+        hostOptions.push(<option value={hostUrl}>{name}</option>);
+      };
       return (
         <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
           <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
           <li className="list-group-item">
             <label forHtml="hostname">Host</label>
             <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
-              <% @service_presenter.domains.each do |url, name| %>
-                <option value="<%= url %>"><%= name %></option>
-              <% end %>
+              {hostOptions}
             </select>
           </li>
 
