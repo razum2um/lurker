@@ -19,7 +19,7 @@
     },
     getPayload: function() {
       // FIXME
-      return jQuery('#payload').serialize();
+      return jQuery('#post-payload input').serialize();
     },
     getHostname: function(host) {
       if (host == '/') {
@@ -47,7 +47,7 @@
     afterSetPartialState: function() {
       this.setState({
         action: this.renderAction(this.state.host, this.state.template, this.state.values),
-        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#post-payload').serialize())
+        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#post-payload input').serialize())
       });
     },
     handleSubmit: function() {
@@ -74,7 +74,7 @@
           </li>
 
           <% if @url_params.present? %>
-            <li className="list-group-item">
+            <li className="list-group-item" id="url-payload">
               <p>URL Params</p>
               <fieldset ref="url-params">
                 <% @url_params.each_with_index do |(label, value), i| %>
