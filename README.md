@@ -120,6 +120,9 @@ To run cucumber in a clean `lurker` & `html` directories run:
 
     CLEAN=1 cucumber features
 
+**NOTE:** template partial `submit_form.html.erb` and it's partials is a big `jsx` script for `React`
+so there are `<label htmlFor` instead of `<label for>` and `<div className` instead of `<div class`
+
 ## Acknoledgements
 
 Sponsored by [Evil Martians][evil_martians], thanks!
@@ -128,10 +131,13 @@ This gem is quite opinionated and relies on rails & rspec - if you're
 interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
 This gem is heavily inspirated by them. Thanks, @square & @fredwu
 
+Also thanks to [React.js][reactjs] for two-way binding.
+
 [waffle]: https://waffle.io/razum2um/lurker
 [gh_api]: https://developer.github.com/v3/meta/
 [rspec]: https://github.com/rspec/rspec-rails
 [api_taster]: https://github.com/fredwu/api_taster
+[reactjs]: http://facebook.github.io/react/
 [fdoc]: https://github.com/square/fdoc
 [rspec_controller_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs
 [rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
