@@ -5,9 +5,14 @@ module Lurker
     end
 
     def call(env)
-      ActiveRecord::Base.transaction do
+      orig_path = env['PATH_INFO']
+      if orig_path.ends_with?('.js') || orig_path.ends_with?('css') || orig_path.ends_with?('css.map')
         @result = @app.call(env)
-        raise ActiveRecord::Rollback if called_from_lurker?(env)
+      else
+        ActiveRecord::Base.transaction do
+          @result = @app.call(env)
+          raise ActiveRecord::Rollback if called_from_lurker?(env)
+        end
       end
       @result
     end
