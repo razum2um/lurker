@@ -234,11 +234,13 @@ task :publish do
   require 'lurker'
   version = Lurker::VERSION
 
-  system "git tag v#{version}"
-  system "relish versions:add razum2um/lurker:#{version}"
-  system "relish push razum2um/lurker:#{version}"
-  system "gem build lurker.gemspec --sign"
-  system "git push --tags"
-  system "gem push lurker-#{version}.gem"
+  Bundler.with_clean_env do
+    system "git tag v#{version}"
+    system "relish versions:add razum2um/lurker:#{version}"
+    system "relish push razum2um/lurker:#{version}"
+    system "gem build lurker.gemspec --sign"
+    system "git push --tags"
+    system "gem push lurker-#{version}.gem"
+  end
 end
 
