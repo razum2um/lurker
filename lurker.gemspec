@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency("sinatra", "~> 1.4")
 
   # testing
+  spec.add_development_dependency("psych", "~> 2.0")
   spec.add_development_dependency("bundler", "~> 1.3")
   spec.add_development_dependency("rails", "~> 4.1")
   spec.add_development_dependency("rake", "~> 10.2")
