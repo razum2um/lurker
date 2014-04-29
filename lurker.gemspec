@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
 
   # testing
   spec.add_development_dependency("bundler", "~> 1.3")
-  spec.add_development_dependency("rails", "~> 4.1.0")
+  spec.add_development_dependency("rails", "~> 4.1")
   spec.add_development_dependency("rake", "~> 10.2")
   spec.add_development_dependency("rspec", "~> 2.14")
   spec.add_development_dependency("cucumber", "~> 1.3")
@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("poltergeist", "~> 1.5")
   spec.add_development_dependency("database_cleaner", "~> 1.2")
 
-  spec.add_development_dependency("simplecov", "~> 0.7.1")
+  spec.add_development_dependency("simplecov", "~> 0.7")
   spec.add_development_dependency("coveralls", "~> 0.7")
 
   # FIXME: these gems are needed while cucumber runs
