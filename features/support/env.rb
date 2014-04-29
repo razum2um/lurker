@@ -43,5 +43,8 @@ end
 
 After do |scenario|
   DatabaseCleaner.clean
+end
+
+After('@selenium') do |scenario|
   save_and_open_page if scenario.failed? && !ENV['BUNDLE_GEMFILE'].match(/Gemfile\.ci/)
 end
