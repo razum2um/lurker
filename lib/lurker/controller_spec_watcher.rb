@@ -13,6 +13,7 @@ module Lurker
       actions.each do |verb|
         send(:define_method, "#{verb}_with_lurker") do |*params|
           @__action, @__request_params = params
+          @__request_params ||= {}
 
           send("#{verb}_without_lurker", @__action, @__request_params)
 
