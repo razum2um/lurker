@@ -18,29 +18,29 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency("json")
+  spec.add_dependency("json", "~> 1.7")
   spec.add_dependency("json-schema", "~> 2.2")
-  spec.add_dependency("kramdown")
-  spec.add_dependency("thor")
-  spec.add_dependency("diffy")
-  spec.add_dependency("sinatra")
+  spec.add_dependency("kramdown", "~> 1.3")
+  spec.add_dependency("thor", "~> 0.19")
+  spec.add_dependency("diffy", "~> 3.0")
+  spec.add_dependency("sinatra", "~> 1.4")
 
   # testing
-  spec.add_development_dependency("bundler")
-  spec.add_development_dependency("rails", "~> 4.1.0.rc2")
-  spec.add_development_dependency("rake")
-  spec.add_development_dependency("rspec")
-  spec.add_development_dependency("cucumber")
-  spec.add_development_dependency("aruba")
-  spec.add_development_dependency("capybara")
-  spec.add_development_dependency("poltergeist")
-  spec.add_development_dependency("database_cleaner")
+  spec.add_development_dependency("bundler", "~> 1.3")
+  spec.add_development_dependency("rails", "~> 4.1.0")
+  spec.add_development_dependency("rake", "~> 10.2")
+  spec.add_development_dependency("rspec", "~> 2.14")
+  spec.add_development_dependency("cucumber", "~> 1.3")
+  spec.add_development_dependency("aruba", "~> 0.5")
+  spec.add_development_dependency("capybara", "~> 2.2")
+  spec.add_development_dependency("poltergeist", "~> 1.5")
+  spec.add_development_dependency("database_cleaner", "~> 1.2")
 
-  spec.add_development_dependency('simplecov', '~> 0.7.1')
-  spec.add_development_dependency('coveralls')
+  spec.add_development_dependency("simplecov", "~> 0.7.1")
+  spec.add_development_dependency("coveralls", "~> 0.7")
 
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn't getting used, but lib's one
-  spec.add_development_dependency("rspec-rails")
-  spec.add_development_dependency("pg")
+  spec.add_development_dependency("rspec-rails", "~> 2.14")
+  spec.add_development_dependency("pg", "~> 0.16")
 end
