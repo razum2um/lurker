@@ -22,7 +22,7 @@ class Lurker::EndpointScaffold < Lurker::Endpoint
   end
 
   def persist!
-    schema.write_to(endpoint_path)
+    schema.ordered!.write_to(endpoint_path)
   end
 
   def consume_request(params, successful = true)

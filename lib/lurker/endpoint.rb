@@ -23,6 +23,11 @@ class Lurker::Endpoint
     )
   end
 
+  def persist!
+    return unless ENV['LURKER_UPGRADE']
+    schema.write_to(endpoint_path)
+  end
+
   def indexed?
     prefix.present? && description.present?
   end
