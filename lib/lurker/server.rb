@@ -28,15 +28,15 @@ module Lurker
     def self.to_rack(options = {})
       default_path = options[:path] || Lurker::DEFAULT_SERVICE_PATH
 
-      Class.new(Sinatra::Base) do
+      cls = Class.new(Sinatra::Base) do
 
         if !Rails.env.development? && (username, password = options.values_at(:username, :password)).all?(&:present?)
-          use Rack::Auth::Basic, "Protected Area" do |u, p|
+          use ::Rack::Auth::Basic, "Protected Area" do |u, p|
             username == u && password == p
           end
         end
 
-        use Rack::Deflater
+        use ::Rack::Deflater
 
         use TryStatic,
          :root => "#{::Rails.root}/#{default_path}",  # static files root dir
@@ -48,6 +48,8 @@ module Lurker
          :try => ['.html', 'index.html', '/index.html'] # try these postfixes sequentially
 
       end
+      Lurker.const_set("Rack", cls)
+      cls
     end
   end
 end
