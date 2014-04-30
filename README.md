@@ -46,7 +46,8 @@ and it fails if your code changes the api!
       - The property '#/user/last_sign_in_at' of type String did not match the following type:
         null in schema file:///.../lurker/api/v1/users-POST.json.yml#
 
-Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/) (or see [demo][demo_app])
+Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/)
+(or see [demo][demo_app2] for example)
 
 Now, you can test your API on-line (for real)
 
@@ -75,7 +76,7 @@ Now, you can test your API on-line (for real)
     # e.g. config/environtents/staging.rb
     config.middleware.use Lurker::Sandbox
 
-E.g. demo application runs with it: when creating, updating repos or users
+E.g. demo application on Heroku runs with it: when creating, updating repos or users
 ids getting increased, but if you look into GET #index,
 new items are NOT showing up. **This is NOT a bug!** - sequences in postgres
 are increasing notwithstanding ROLLBACK is called. As such:
@@ -88,7 +89,7 @@ are increasing notwithstanding ROLLBACK is called. As such:
 
 You can clone the repo & run `rake build_example_docs`.
 It will generate testing rails application under `tmp/lurker_app`.
-Currently it is deployed [here][demo_app].
+Currently it is deployed [here][demo_app] within sandbox mode and [here][demo_app2].
 
 
 ## Contributions
@@ -151,8 +152,9 @@ Also thanks to [React.js][reactjs] for two-way binding.
 [partial_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/partials
 [partial_example_demo]: http://lurker-app.herokuapp.com/lurker/api/v1/users/__user_id/repos-POST.html
 [evil_martians]: http://evilmartians.com/
-[demo_app]: http://lurker-app.herokuapp.com/lurker/
-[demo_live]: http://lurker-app.herokuapp.com/lurker/api/v1/users-POST.html
+[demo_app]: http://lurker-app.herokuapp.com
+[demo_app2]: http://lurker.razum2um.me
+[demo_live]: http://lurker.razum2um.me/lurker/api/v1/users-POST.html
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
