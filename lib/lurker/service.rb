@@ -21,7 +21,7 @@ class Lurker::Service
         'name'        => name,
         'basePath'    => '',
         'description' => '',
-        'domains'     => {'/' => 'This host'}
+        'domains'     => {}
       })
     end
   end
