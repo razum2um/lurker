@@ -11,14 +11,14 @@ class Lurker::Service
   end
 
   def initialize(service_dir, service_name = nil)
-    @name = service_name
     @opened_endpoints = []
     @service_dir = File.expand_path(service_dir)
+    @service_filename = service_name
     @schema = if persisted? && (schema = YAML.load_file(service_path)).is_a?(Hash)
       Lurker::Schema.new(schema)
     else
       Lurker::Schema.new({
-        'name'        => name,
+        'name'        => service_filename,
         'basePath'    => '',
         'description' => '',
         'domains'     => {}
@@ -31,7 +31,11 @@ class Lurker::Service
   end
 
   def service_path
-    @service_path ||= "#{service_dir}/#{name}#{SUFFIX}"
+    @service_path ||= "#{service_dir}/#{service_filename}#{SUFFIX}"
+  end
+
+  def service_filename
+    @service_filename ||= Pathname.new(Dir["#{service_dir}/*#{SUFFIX}"].first.to_s).basename.to_s.gsub(SUFFIX, '').presence || 'application'
   end
 
   def persist!
@@ -90,9 +94,7 @@ class Lurker::Service
   end
 
   def name
-    @name ||= (@schema.try(:[], 'name') ||
-               Pathname.new(Dir["#{service_dir}/*#{SUFFIX}"].first.to_s).basename.to_s.gsub(SUFFIX, '').presence ||
-               'application')
+    schema['name']
   end
 
   def base_path
