@@ -17,7 +17,7 @@ module Lurker
     def initialize(json_schema_hash, extensions={})
       @hash = json_schema_hash
       @extensions = if extensions.blank? && @hash.has_key?(KEY)
-        @hash.delete(KEY)
+        @hash.delete(KEY) || {}
       else
         extensions
       end
