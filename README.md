@@ -132,8 +132,9 @@ This gem is quite opinionated and relies on rails & rspec - if you're
 interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
 This gem is heavily inspirated by them. Thanks, @square & @fredwu
 
-Also thanks to [React.js][reactjs] for two-way binding.
+Also thanks to [Andrey Deryabin][aderyabin] for advice and [React.js][reactjs] for two-way binding.
 
+[aderyabin]: https://twitter.com/aderyabin
 [waffle]: https://waffle.io/razum2um/lurker
 [gh_api]: https://developer.github.com/v3/meta/
 [rspec]: https://github.com/rspec/rspec-rails
