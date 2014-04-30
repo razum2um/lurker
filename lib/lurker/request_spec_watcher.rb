@@ -23,7 +23,7 @@ module Lurker
           end
 
           controller_name = @__example.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
-          @__query_params.merge! Rack::Utils.parse_query URI.parse(@__action).query
+          @__query_params.merge! ::Rack::Utils.parse_query URI.parse(@__action).query
 
           send("#{verb}_without_lurker", @__action, @__request_params, @__env)
 
