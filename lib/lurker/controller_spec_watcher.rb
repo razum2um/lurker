@@ -9,7 +9,9 @@ module Lurker
     included do
       # _describe = self # RSpec::ExampleGroups::... # class
       actions = [:get, :post, :put, :delete]
-      actions << :patch if respond_to? :patch
+      if defined?(ActionDispatch::Request::HTTP_METHODS) && ActionDispatch::Request::HTTP_METHODS.include?('PATCH')
+        actions << :patch
+      end
       actions.each do |verb|
         send(:define_method, "#{verb}_with_lurker") do |*params|
           @__action, @__request_params = params

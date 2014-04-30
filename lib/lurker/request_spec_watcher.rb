@@ -9,7 +9,10 @@ module Lurker
     included do
       # _describe = self # RSpec::ExampleGroups::... # class
       actions = [:get, :post, :put, :delete]
-      actions << :patch if respond_to? :patch
+      if defined?(ActionDispatch::Request::HTTP_METHODS) && ActionDispatch::Request::HTTP_METHODS.include?('PATCH')
+        actions << :patch
+      end
+
       actions.each do |verb|
         send(:define_method, "#{verb}_with_lurker") do |*params|
           @__action, @__request_params, @__env = params
@@ -18,11 +21,14 @@ module Lurker
           @__query_params ||= {}
           @__env ||= {}
 
-          unless @__example.metadata.described_class.is_a?(Class)
-            raise 'cannot determine request url: provide proper described class like: "describe MyController do"'
+          if @__action.is_a?(Symbol)
+            unless @__example.metadata.described_class.is_a?(Class)
+              raise 'cannot determine request url: provide proper described class like: "describe MyController do"'
+            end
+            controller_name = @__example.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
+            @__action = URI.parse(url_for({ controller: controller_name, action: @__action }.merge(@__request_params))).path
           end
 
-          controller_name = @__example.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
           @__query_params.merge! ::Rack::Utils.parse_query URI.parse(@__action).query
 
           send("#{verb}_without_lurker", @__action, @__request_params, @__env)
