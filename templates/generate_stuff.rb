@@ -9,6 +9,8 @@ generate 'model User name:string --no-timestamps --no-test-framework'
 generate 'model Repo user:references name:string --no-timestamps --no-test-framework'
 
 route <<-ROUTE
+  mount Lurker::Server.to_rack, at: '/lurker', as: :lurker
+
   namespace :api do
     namespace :v1 do
       resources :users do
