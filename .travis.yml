@@ -4,9 +4,6 @@ gemfile:
   - gemfiles/Gemfile40.ci
   - gemfiles/Gemfile41.ci
 install: bundle install -j4 --path vendor/bundle
-cache:
-  directories:
-    - vendor/bundle
 rvm:
   - 1.9.3
   - 2.0.0
