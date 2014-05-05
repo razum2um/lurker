@@ -1,4 +1,6 @@
 # gsub_file 'config/database.yml', /database: lurker_app.*/, 'database: lurker_app'
+comment_lines 'config/database.yml', /username|password/
+
 create_link "bin/lurker", "#{File.expand_path '../../bin/lurker', __FILE__}"
 
 remove_file 'spec/spec_helper.rb'
@@ -226,9 +228,9 @@ file 'lib/tasks/db.rake', force: true do
     namespace :db do
       desc 'fills in data'
       task :import => :environment do
-        User.find_or_create_by!(name: "razum2um").repos.find_or_create_by!(name: "lurker")
-        User.find_or_create_by!(name: "razum2um").repos.find_or_create_by!(name: "resque-kalashnikov")
-        User.find_or_create_by!(name: "razum2um").repos.find_or_create_by!(name: "mutli_schema")
+        User.where(name: "razum2um").first_or_create.repos.where(name: "lurker").first_or_create
+        User.where(name: "razum2um").first_or_create.repos.where(name: "resque-kalashnikov").first_or_create
+        User.where(name: "razum2um").first_or_create.repos.where(name: "mutli_schema").first_or_create
       end
     end
   CODE
