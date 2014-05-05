@@ -112,6 +112,7 @@ namespace :generate do
   desc "generate a bunch of stuff with generators"
   task :stuff do
     if ENV['BUNDLE_GEMFILE'].to_s.match(/Gemfile32\.ci$/)
+      in_lurker_app "bundle install"
       %w[rake rspec-core spring].each do |gem|
         in_lurker_app "bundle binstubs #{gem}"
       end
