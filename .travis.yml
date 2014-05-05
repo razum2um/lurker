@@ -1,5 +1,5 @@
 language: ruby
-gemfiles:
+gemfile:
   - gemfiles/Gemfile32.ci
   - gemfiles/Gemfile40.ci
   - gemfiles/Gemfile41.ci
