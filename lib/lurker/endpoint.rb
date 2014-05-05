@@ -95,7 +95,7 @@ class Lurker::Endpoint
   end
 
   def url_params
-    (schema.extensions['path_params'] || {}).except('action', 'controller')
+    (schema.extensions['path_params'] || {}).reject { |k, _| ['action', 'controller'].include? k }
   end
 
   def query_params

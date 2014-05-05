@@ -79,7 +79,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     return if endpoint.request_parameters.empty?
     Lurker::JsonPresenter.new(
       example_from_schema(endpoint.request_parameters, endpoint.schema)
-        .except(*endpoint.url_params.keys)
+        .reject { |k,_| endpoint.url_params.keys.include? k }
     )
   end
 

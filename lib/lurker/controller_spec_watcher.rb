@@ -19,7 +19,7 @@ module Lurker
 
           send("#{verb}_without_lurker", @__action, @__request_params)
 
-          @__query_params = Hash[@__request_params.except(*path_params.keys).map do |k,v|
+          @__query_params = Hash[@__request_params.reject { |k,_| path_params.keys.include? k } .map do |k,v|
             [k.to_s, v.to_s]
           end]
           endpoint_path = explicit_path(@__example)
