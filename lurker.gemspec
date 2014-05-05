@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("cucumber", "~> 1.3")
   spec.add_development_dependency("aruba", "~> 0.5")
   spec.add_development_dependency("capybara", "~> 2.2")
+  spec.add_development_dependency("nokogiri", "~> 1.5.11")
   spec.add_development_dependency("poltergeist", "~> 1.5")
   spec.add_development_dependency("database_cleaner", "~> 1.2")
 
