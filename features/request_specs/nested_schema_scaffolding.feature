@@ -43,14 +43,14 @@ Feature: nested schema scaffolding
           description: ''
           type: integer
           example: 1
-        user_id:
-          description: ''
-          type: integer
-          example: 1
         name:
           description: ''
           type: string
           example: lurker
+        user_id:
+          description: ''
+          type: integer
+          example: 1
       required: []
     extensions:
       method: GET

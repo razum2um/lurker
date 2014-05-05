@@ -29,18 +29,30 @@ inject_into_class 'app/models/user.rb', 'User' do
     has_many :repos
     validates :name, presence: true
 
-    # we need EXACT order for json generation
-    def as_json(*)
-      attributes
+    # we need EXACT order for json generation, rails32 does it sorted
+    # see: https://github.com/rails/rails/pull/5678/files
+    def as_json(options={})
+      if options[:only]
+        options[:only].sort!
+      else
+        options[:only] = attributes.keys.sort
+      end
+      super(options)
     end
   CODE
 end
 
 inject_into_class 'app/models/repo.rb', 'Repo' do
   <<-CODE
-    # we need EXACT order for json generation: :id, :user_id, :name
-    def as_json(*)
-      attributes
+    # we need EXACT order for json generation, rails32 does it sorted
+    # see: https://github.com/rails/rails/pull/5678/files
+    def as_json(options={})
+      if options[:only]
+        options[:only].sort!
+      else
+        options[:only] = attributes.keys.sort
+      end
+      super(options)
     end
   CODE
 end
@@ -258,12 +270,8 @@ file 'lib/tasks/db.rake', force: true do
   CODE
 end
 
-run 'bin/rake db:drop'
-run 'bin/rake db:create'
-run 'bin/rake db:migrate'
+run 'bin/rake db:setup'
 run 'bin/rake db:import'
 
-run 'RAILS_ENV=test bin/rake db:drop'
-run 'RAILS_ENV=test bin/rake db:create'
-run 'RAILS_ENV=test bin/rake db:migrate'
+run 'RAILS_ENV=test bin/rake db:setup'
 
