@@ -28,6 +28,20 @@ inject_into_class 'app/models/user.rb', 'User' do
   <<-CODE
     has_many :repos
     validates :name, presence: true
+
+    # we need EXACT order for json generation
+    def as_json(*)
+      attributes
+    end
+  CODE
+end
+
+inject_into_class 'app/models/repo.rb', 'Repo' do
+  <<-CODE
+    # we need EXACT order for json generation: :id, :user_id, :name
+    def as_json(*)
+      attributes
+    end
   CODE
 end
 
