@@ -42,6 +42,14 @@ file 'app/controllers/application_controller.rb', 'ApplicationController', force
       def set_format
         request.format = :json
       end
+
+      def scoped(klass)
+        if klass.respond_to?(:scoped) # Rails3
+          klass.scoped
+        else
+          klass.all
+        end
+      end
     end
   CODE
 end
@@ -50,7 +58,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
   <<-CODE
     class Api::V1::UsersController < ApplicationController
       def index
-        @users = User.all
+        @users = scoped(User)
         if (limit = params[:limit]).to_s.match(/\\d+/)
           @users = @users.limit(limit.to_i)
         end
