@@ -91,7 +91,7 @@ namespace :clobber do
   desc "clobber the generated app"
   task :app do
     FileUtils.mkdir_p EXAMPLE_PATH
-    in_lurker_app "bin/spring stop" if File.exist?("#{EXAMPLE_PATH}/bin/spring")
+    in_lurker_app "bin/spring stop" rescue nil
     Dir.chdir EXAMPLE_PATH do
       Dir.glob("*", File::FNM_DOTMATCH).each do |fname|
         next if fname == '.' || fname == '..' || fname == '.git'
