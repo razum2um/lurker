@@ -17,7 +17,24 @@ production:
   CODE
 end
 
-create_link "bin/lurker", "#{File.expand_path '../../bin/lurker', __FILE__}"
+copy_file "#{File.expand_path '../../bin/lurker', __FILE__}", "bin/lurker"
+inject_into_file "bin/lurker", before: /require .lurker./ do
+  <<-CODE
+    if (simplecov_root = ENV['SIMPLECOV_ROOT']) && (simplecov_cmdname = ENV['SIMPLECOV_CMDNAME'])
+      require 'simplecov'
+      SimpleCov.start
+      SimpleCov.root simplecov_root
+      SimpleCov.command_name "\#{simplecov_cmdname}-binstub"
+      SimpleCov.start do
+        filters.clear # This will remove the :root_filter that comes via simplecov's defaults
+        add_filter do |src|
+          !(src.filename =~ /^\#{SimpleCov.root}\\/lib\\/lurker/)
+        end
+      end
+    end
+  CODE
+end
+chmod "bin/lurker", 0755
 
 remove_file 'spec/spec_helper.rb'
 remove_file 'app/models/user.rb'

@@ -1,6 +1,9 @@
 require 'simplecov'
 SimpleCov.start do
-  add_filter 'lurker_app'
+  filters.clear # This will remove the :root_filter that comes via simplecov's defaults
+  add_filter do |src|
+    !(src.filename =~ /^#{SimpleCov.root}\/lib\/lurker/)
+  end
 end
 
 require 'fileutils'
