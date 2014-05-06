@@ -20,10 +20,6 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     render('show')
   end
 
-  def to_markdown
-    render_erb('endpoint.md.erb')
-  end
-
   def relative_path(extension = ".html")
     '%s%s-%s%s' % [ options[:prefix], endpoint.path, endpoint.verb, extension ]
   end

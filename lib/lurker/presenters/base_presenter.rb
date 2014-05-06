@@ -1,12 +1,7 @@
 require 'erb'
-require 'kramdown'
 require 'json'
 require 'forwardable'
 
-# BasePresenters assist in generating Html for lurker classes.
-# BasePresenters is an abstract class with a lot of helper methods
-# for URLs and common text styling tasks (like #render_markdown
-# and #render_json)
 class Lurker::BasePresenter
 
   attr_reader :options
@@ -19,14 +14,6 @@ class Lurker::BasePresenter
     template_path = path_for_template(erb_name)
     template = ERB.new(File.read(template_path), nil, '-')
     template.result(binding)
-  end
-
-  def render_markdown(markdown_str)
-    if markdown_str
-      Kramdown::Document.new(markdown_str, :entity_output => :numeric).to_html
-    else
-      nil
-    end
   end
 
   def get_binding

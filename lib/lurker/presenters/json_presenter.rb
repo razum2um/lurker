@@ -19,13 +19,4 @@ class Lurker::JsonPresenter
       '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
     end
   end
-
-  def to_markdown
-    if json.kind_of?(Hash) ||
-       json.kind_of?(Array)
-      JSON.pretty_generate(json)
-    else
-      json
-    end
-  end
 end

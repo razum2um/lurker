@@ -34,7 +34,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     html << '<span class="deprecated">Deprecated</span>' if deprecated?
 
     html << '<div class="schema">'
-    html << render_markdown(@schema["description"])
+    html << @schema["description"]
 
     html << '<ul>'
     begin
@@ -57,38 +57,6 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     html << '</div>'
 
     html.string
-  end
-
-  def to_markdown(prefix = "")
-    md = StringIO.new
-    md << 'Deprecated' if deprecated?
-    md << "\n#{@schema["description"]}"
-    md << "\n#{prefix}* __Required__: #{required?}" if nested?
-    md << "\n#{prefix}* __Type__: #{type}" if type
-    md << "\n#{prefix}* __Format__: #{format}" if format
-    md << "\n#{prefix}* __Example__: <tt>#{example.to_markdown}</tt>" if example
-    md << "\n#{@schema['enum']}"
-    (@schema.keys - Lurker::SchemaPresenter::FORMATTED_KEYS).each do |key|
-      md << "\n#{prefix}* %{key} %{@schema[key]}"
-    end
-    if items = @schema["items"]
-      md << "\n#{prefix}* Items"
-      if items.kind_of? Array
-        item.compact.each do |item|
-          md << Lurker::SchemaPresenter.new(item, options.merge(:nested => true)).to_markdown(prefix + "\t")
-        end
-      else
-        md << Lurker::SchemaPresenter.new(@schema["items"], options.merge(:nested => true)).to_markdown(prefix + "\t")
-      end
-    end
-    if properties = @schema["properties"]
-      properties.each do |key, property|
-        next if property.nil?
-        md << "\n#{prefix}* __#{key}__:"
-        md << Lurker::SchemaPresenter.new(property, options.merge(:nested => true)).to_markdown(prefix + "\t")
-      end
-    end
-    md.string
   end
 
   def type

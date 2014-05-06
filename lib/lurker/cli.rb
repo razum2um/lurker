@@ -23,13 +23,13 @@ module Lurker
       File.expand_path("../templates/public", __FILE__)
     end
 
-    desc "convert [LURKER_PATH]", "Convert lurker to HTML or Markdowns"
+    desc "convert [LURKER_PATH]", "Convert lurker to HTML"
     method_option :rails, :type => :boolean, :desc => "Includes Rails environment"
     method_option :exclude, :aliases => "-e", :desc => "Select endpoints by given regexp, if NOT matching prefix"
     method_option :select, :aliases => "-s", :desc => "Select endpoints by given regexp, matching prefix"
     method_option :output, :aliases => "-o", :desc => "Output path"
     method_option :url_base_path, :aliases => "-u", :desc => "URL base path"
-    method_option :format, :aliases => "-f", :desc => "Format in html or markdown, defaults to html", :default => "html"
+    method_option :format, :aliases => "-f", :desc => "Format in html or pdf, defaults to html", :default => "html"
     method_option :templates, :aliases => "-t", :desc => "Template overrides path"
     method_option :content, :aliases => "-c", :desc => "Content to be rendered into html-docs main page"
     def convert(lurker_path=Lurker::DEFAULT_SERVICE_PATH)
@@ -48,14 +48,18 @@ module Lurker
         require "#{Dir.pwd}/config/environment"
       end
 
-      if options[:format] == 'markdown'
-        convert_to_markdown
+      if options[:format] == 'pdf'
+        convert_to_pdf
       else
         convert_to_html
       end
     end
 
     no_tasks do
+      def convert_to_pdf
+        # TODO
+      end
+
       def convert_to_html
         in_root do
           # js, css, fonts

@@ -18,10 +18,6 @@ class Lurker::ResponseCodePresenter < Lurker::BasePresenter
     EOS
   end
 
-  def to_markdown
-    "__#{status}__: #{description_raw}"
-  end
-
   def successful?
     response_code["successful"]
   end
@@ -31,11 +27,6 @@ class Lurker::ResponseCodePresenter < Lurker::BasePresenter
   end
 
   def description
-    render_markdown(description_raw)
-  end
-
-  def description_raw
     response_code["description"]
   end
-
 end

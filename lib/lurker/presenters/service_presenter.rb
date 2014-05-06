@@ -3,7 +3,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   attr_reader :service
 
   extend Forwardable
-  def_delegators :service, :name, :service_dir
+  def_delegators :service, :description, :discussion, :name, :service_dir
 
 
   def initialize(service, options = {}, &block)
@@ -16,10 +16,6 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   def to_html(&block)
     @service_presenter = self
     render('index')
-  end
-
-  def to_markdown
-    render_erb('service.md.erb')
   end
 
   def title
@@ -92,13 +88,4 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
       hash
     end
   end
-
-  def description(options = {:render => true})
-    options[:render] ? render_markdown(service.description) : service.description
-  end
-
-  def discussion(options = {:render => true})
-    options[:render] ? render_markdown(service.discussion) : service.discussion
-  end
-
 end
