@@ -104,7 +104,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
         if @user.save
           render json: @user
         else
-          render json: { errors: @user.errors }
+          render json: { errors: @user.errors }, status: :bad_request
         end
       end
 
@@ -112,7 +112,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
         if user.update_attributes(user_params)
           render json: user
         else
-          render json: { errors: user.errors }
+          render json: { errors: user.errors }, status: :bad_request
         end
       end
 
@@ -160,7 +160,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
         if @repo.save
           render json: @repo.to_json(include: 'user', except: 'user_id')
         else
-          render json: { errors: @repo.errors }, status: 401
+          render json: { errors: @repo.errors }, status: :bad_request
         end
       end
 
@@ -173,7 +173,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
         if @repo.update_attributes(repo_params)
           render json: @repo
         else
-          render json: { errors: @repo.errors }
+          render json: { errors: @repo.errors }, status: :bad_request
         end
       end
 
