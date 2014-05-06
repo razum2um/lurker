@@ -8,11 +8,7 @@ module Lurker
 
     included do
       # _describe = self # RSpec::ExampleGroups::... # class
-      actions = [:get, :post, :put, :delete]
-      if ActionDispatch::Integration::Runner.instance_methods.include? :patch
-        actions << :patch
-      end
-
+      actions = [:get, :post, :put, :delete, :patch]
       actions.each do |verb|
         send(:define_method, "#{verb}_with_lurker") do |*params|
           @__action, @__request_params, @__env = params
@@ -58,7 +54,16 @@ module Lurker
           verify(verb, endpoint_path)
         end
 
-        send :alias_method_chain, verb, :lurker
+        begin
+          send :alias_method_chain, verb, :lurker
+        rescue NameError
+          if verb == :patch
+            alias_method :patch_without_lurker, :put_without_lurker
+            alias_method :patch, :patch_with_lurker
+          else
+            raise
+          end
+        end
       end
 
       around do |example|

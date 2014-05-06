@@ -10,12 +10,15 @@ Feature: test endpoint
   but specs are NOT passing because of nonsufficient `role` attribute
 
   Background:
-    Given a file named "lurker/api/v1/users/__id-PUT.json.yml" with:
+    Given a file named "lurker/api/v1/users/__id-PATCH.json.yml" with:
       """yml
       ---
       prefix: ''
       description: ''
       responseCodes:
+      - status: 400
+        successful: true
+        description: ''
       - status: 200
         successful: true
         description: ''
@@ -48,7 +51,7 @@ Feature: test endpoint
         required: []
       extensions:
         path_info: "/api/v1/users/1"
-        method: PUT
+        method: PATCH
         suffix: ''
         path_params:
           action: update
@@ -69,7 +72,7 @@ Feature: test endpoint
         end
 
         it "updates a user" do
-          put :update, id: user.id, user: { name: 'Bob' }
+          patch :update, id: user.id, user: { name: 'Bob' }
           expect(response).to be_success
         end
       end
@@ -91,8 +94,8 @@ Feature: test endpoint
         end
 
         it "updates a user" do
-          put :update, id: user.id, user: { name: 1 }
-          expect(response).to be_success
+          patch :update, id: user.id, user: { name: 1 }
+          expect(response).not_to be_success
         end
       end
       """
@@ -120,8 +123,8 @@ Feature: test endpoint
         end
 
         it "updates a user" do
-          put :update, id: user.id, user: { name: '' }
-          expect(response).to be_success
+          patch :update, id: user.id, user: { name: '' }
+          expect(response).not_to be_success
         end
       end
       """
