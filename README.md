@@ -1,6 +1,7 @@
 # Lurker
 
-The new de-facto for API testing your Rails application (Rails 3 & 4 both compatible)
+The new de-facto for API testing your Rails application.
+Works on Rails 3.2, 4.0, 4.1 & Ruby 1.9.3, 2.0.0, 2.1.1.
 
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
