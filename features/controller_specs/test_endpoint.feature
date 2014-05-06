@@ -10,7 +10,7 @@ Feature: test endpoint
   but specs are NOT passing because of nonsufficient `role` attribute
 
   Background:
-    Given a file named "lurker/api/v1/users-POST.json.yml" with:
+    Given a file named "lurker/api/v1/users/__id-PUT.json.yml" with:
       """yml
       ---
       prefix: ''
@@ -21,6 +21,10 @@ Feature: test endpoint
         description: ''
       requestParameters:
         properties:
+          id:
+            description: ''
+            type: integer
+            example: 1
           user:
             description: ''
             type: object
@@ -43,14 +47,16 @@ Feature: test endpoint
             example: Bob
         required: []
       extensions:
-        action: create
-        controller: api/v1/users
-        path_info: "/api/v1/users"
-        method: POST
+        path_info: "/api/v1/users/1"
+        method: PUT
         suffix: ''
+        path_params:
+          action: update
+          controller: api/v1/users
+          id: 1
       """
 
-  Scenario: json schema tests request and response using "users/create"
+  Scenario: json schema tests request and response using "users/update"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"
@@ -58,8 +64,12 @@ Feature: test endpoint
       describe Api::V1::UsersController, :lurker do
         render_views
 
-        it "creates a new users" do
-          post :create, user: { name: 'Bob' }
+        let(:user) do
+          User.where(name: 'razum2um').first_or_create!
+        end
+
+        it "updates a user" do
+          put :update, id: user.id, user: { name: 'Bob' }
           expect(response).to be_success
         end
       end
@@ -68,7 +78,7 @@ Feature: test endpoint
   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
   Then the example should pass
 
-  Scenario: json schema tests request parameters and tell what fails using "users/create"
+  Scenario: json schema tests request parameters and tell what fails using "users/update"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"
@@ -76,9 +86,13 @@ Feature: test endpoint
       describe Api::V1::UsersController, :lurker do
         render_views
 
-        it "creates a new users" do
-          post :create, user: { name: 1 }
-          expect(response).not_to be_success
+        let(:user) do
+          User.where(name: 'razum2um').first_or_create!
+        end
+
+        it "updates a user" do
+          put :update, id: user.id, user: { name: 1 }
+          expect(response).to be_success
         end
       end
       """
@@ -93,7 +107,7 @@ Feature: test endpoint
     1 example, 1 failure
     """
 
-  Scenario: json schema tests response parameters and tell what fails using "users/create"
+  Scenario: json schema tests response parameters and tell what fails using "users/update"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
       require "spec_helper"
@@ -101,8 +115,12 @@ Feature: test endpoint
       describe Api::V1::UsersController, :lurker do
         render_views
 
-        it "creates a new users" do
-          post :create, user: { name: '' }
+        let(:user) do
+          User.where(name: 'razum2um').first_or_create!
+        end
+
+        it "updates a user" do
+          put :update, id: user.id, user: { name: '' }
           expect(response).to be_success
         end
       end
