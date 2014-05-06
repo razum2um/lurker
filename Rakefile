@@ -126,6 +126,8 @@ namespace :generate do
       in_lurker_app 'bin/rake db:setup'
       in_lurker_app 'bin/rake db:import'
       in_lurker_app 'RAILS_ENV=test bin/rake db:setup'
+      # keep sql up-to-date
+      in_lurker_app "pg_dump -c -O -x -s lurker_app_test > ../../templates/schema.sql"
     end
   end
 end
