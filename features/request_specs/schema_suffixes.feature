@@ -13,7 +13,7 @@ Feature: schema suffixes
     Given a file named "lurker/api/v1/users/__user_id/repos/__id-PATCH.json.yml" with:
       """yml
       ---
-      prefix: 'repo management'
+      prefix: 'repos management'
       description: 'repo updating'
       responseCodes:
       - status: 200
@@ -94,7 +94,7 @@ Feature: schema suffixes
     Given a file named "lurker/api/v1/users/__user_id/repos/__id-failed-PATCH.json.yml" with:
       """yml
       ---
-      prefix: 'repo management'
+      prefix: 'repos management'
       description: 'failed repo updating'
       responseCodes:
       - status: 400
