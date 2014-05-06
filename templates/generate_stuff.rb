@@ -107,7 +107,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
       end
 
       def update
-        if user.update(user_params)
+        if user.update_attributes(user_params)
           render json: user
         else
           render json: { errors: user.errors }
@@ -168,7 +168,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
 
       def update
         @repo = repo
-        if @repo.update(repo_params)
+        if @repo.update_attributes(repo_params)
           render json: @repo
         else
           render json: { errors: @repo.errors }
