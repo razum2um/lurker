@@ -42,6 +42,7 @@ Before do
 end
 
 After do |scenario|
+  ActiveRecord::Base.connection.reconnect!
   DatabaseCleaner.clean
 end
 
