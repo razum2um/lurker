@@ -1,7 +1,6 @@
 require 'thor'
 require 'digest/sha1'
 require 'lurker/service'
-require 'lurker/meta_service'
 
 module Lurker
   # A Thor::Error to be thrown when an lurker directory is not found
@@ -71,12 +70,10 @@ module Lurker
               FileUtils.cp_r fname, destination.to_s
             end
           end
-
-          create_file("index.html", meta_presenter.to_html) if has_meta_service?
         end
 
         service_presenters.each do |service_presenter|
-          inside_service_presenter(service_presenter) do
+          in_root do
             create_file("index.html", service_presenter.to_html, force: true)
 
             service_presenter.endpoints.each do |endpoint_prefix_group|
@@ -85,32 +82,6 @@ module Lurker
               end
             end
           end
-        end
-      end
-
-      def convert_to_markdown
-        in_root do
-          create_file("index.md", meta_presenter.to_markdown) if has_meta_service?
-        end
-
-        service_presenters.each do |service_presenter|
-          inside_service_presenter(service_presenter) do
-            create_file("index.md", service_presenter.to_markdown)
-
-            service_presenter.endpoints.each do |endpoint_prefix_group|
-              endpoint_prefix_group.each do |endpoint|
-                create_file(endpoint.url('.md'), endpoint.to_markdown)
-              end
-            end
-          end
-        end
-      end
-
-      def inside_service_presenter(service, &block)
-        if has_meta_service?
-          inside(service.slug_name, {:verbose => true}, &block)
-        else
-          in_root(&block)
         end
       end
 
@@ -138,10 +109,6 @@ module Lurker
 
       def has_valid_destination?
         !destination.exist? || destination.directory?
-      end
-
-      def has_meta_service?
-        !meta_service.empty?
       end
 
       def service_presenters
@@ -194,23 +161,7 @@ module Lurker
     end
 
     def services
-      @services ||=
-        if has_meta_service?
-          meta_service.services
-        else
-          [Lurker::Service.new(origin_path)]
-        end
-    end
-
-    def meta_presenter
-      @meta_presenter ||= Lurker::MetaServicePresenter.new(
-        meta_service,
-        html_options
-      )
-    end
-
-    def meta_service
-      @meta_service ||= Lurker::MetaService.new(origin_path)
+      @services ||= [Lurker::Service.new(origin_path)]
     end
 
     def origin

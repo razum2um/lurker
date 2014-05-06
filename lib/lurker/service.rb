@@ -3,7 +3,7 @@ require 'yaml'
 # Services represent a group of Lurker API endpoints in a directory
 class Lurker::Service
   attr_reader :service_dir, :schema
-  attr_accessor :meta_service, :opened_endpoints
+  attr_accessor :opened_endpoints
   SUFFIX = '.service.yml'
 
   def self.default_service

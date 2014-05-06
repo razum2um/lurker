@@ -3,7 +3,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   attr_reader :service
 
   extend Forwardable
-  def_delegators :service, :name, :service_dir, :meta_service
+  def_delegators :service, :name, :service_dir
 
 
   def initialize(service, options = {}, &block)
@@ -37,7 +37,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def name_as_link(options = {})
-    path = service.meta_service ? index_path(slug_name) : index_path
+    path = index_path
     '<a href="%s">%s %s</a>' % [ path, options[:prefix], service.name ]
   end
 
@@ -99,15 +99,6 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
 
   def discussion(options = {:render => true})
     options[:render] ? render_markdown(service.discussion) : service.discussion
-  end
-
-  def relative_meta_service_path(file_name = nil)
-    service_path = service_dir.gsub(meta_service.meta_service_dir, "")
-    service_path = service_path.count("/").times.map { "../" }.join
-    if file_name
-      service_path = File.join(service_path, file_name)
-    end
-    service_path
   end
 
 end
