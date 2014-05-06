@@ -18,7 +18,7 @@ production:
 end
 
 copy_file "#{File.expand_path '../../bin/lurker', __FILE__}", "bin/lurker"
-inject_into_file "bin/lurker", before: /require .lurker./ do
+inject_into_file "bin/lurker", before: /require .lurker.$/ do
   <<-CODE
     if (simplecov_root = ENV['SIMPLECOV_ROOT']) && (simplecov_cmdname = ENV['SIMPLECOV_CMDNAME'])
       require 'simplecov'
