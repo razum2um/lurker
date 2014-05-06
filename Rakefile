@@ -118,6 +118,15 @@ namespace :generate do
       end
     end
     in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
+
+    if ENV['TRAVIS']
+      in_lurker_app 'createdb lurker_app_test'
+      in_lurker_app 'cat ../../templates/schema.sql | psql lurker_app_test'
+    else
+      in_lurker_app 'bin/rake db:setup'
+      in_lurker_app 'bin/rake db:import'
+      in_lurker_app 'RAILS_ENV=test bin/rake db:setup'
+    end
   end
 end
 
