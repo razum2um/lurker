@@ -186,7 +186,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
       private
 
       def repo
-        @repo ||= (user.repos.find_by_name(params[:user_id]) || user.repos.find(params[:user_id]))
+        @repo ||= (user.repos.find_by_name(params[:id]) || user.repos.find(params[:id]))
       end
 
       def user
