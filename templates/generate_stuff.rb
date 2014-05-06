@@ -163,11 +163,11 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
       end
 
       def show
-        render json: Repo.find(params[:id])
+        render json: repo
       end
 
       def update
-        @repo = user.repos.find(params[:id])
+        @repo = repo
         if @repo.update(repo_params)
           render json: @repo
         else
@@ -182,6 +182,10 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
       end
 
       private
+
+      def repo
+        @repo ||= (user.repos.find_by_name(params[:user_id]) || user.repos.find(params[:user_id]))
+      end
 
       def user
         @user ||= (User.find_by_name(params[:user_id]) || User.find(params[:user_id]))
