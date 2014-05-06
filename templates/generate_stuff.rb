@@ -290,8 +290,10 @@ file 'db/schema.rb', force: true do
   CODE
 end
 
-run 'bin/rake db:setup'
-run 'bin/rake db:import'
+unless ENV['TRAVIS']
+  run 'bin/rake db:setup'
+  run 'bin/rake db:import'
+end
 
 run 'RAILS_ENV=test bin/rake db:setup'
 
