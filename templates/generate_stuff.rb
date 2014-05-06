@@ -25,38 +25,41 @@ ROUTE
 generate 'model User name:string --no-timestamps --no-test-framework --no-migration'
 generate 'model Repo user:references name:string --no-timestamps --no-test-framework --no-migration'
 
+file 'config/initializers/serializer.rb', force: true do
+  <<-CODE
+    module ExactOrderAsJson
+      # we need EXACT order for json attributes generation (e.g. rails32 sorts it)
+      # see: https://github.com/rails/rails/pull/5678/files
+      #
+      # options[:only] gets ordered like `attributes.keys` (via &=)
+      # attributes order is also inconsistent, so use options[:methods]
+      def as_json(options={})
+        methods = options[:methods] || []
+        if options[:only]
+          options[:methods] = Array.wrap(options[:only]).sort + methods
+        else
+          options[:methods] = attributes.keys.sort + methods
+        end
+        options[:only] = []
+
+        super(options)
+      end
+    end
+  CODE
+end
+
 inject_into_class 'app/models/user.rb', 'User' do
   <<-CODE
+    include ExactOrderAsJson
     has_many :repos
     validates :name, presence: true
-
-    # we need EXACT order for json generation, rails32 does it sorted
-    # see: https://github.com/rails/rails/pull/5678/files
-    def as_json(options={})
-      if options[:only]
-        options[:only].sort!
-      else
-        options[:only] = attributes.keys.sort
-      end
-      super(options)
-    end
   CODE
 end
 
 inject_into_class 'app/models/repo.rb', 'Repo' do
   <<-CODE
+    include ExactOrderAsJson
     validates :name, presence: true
-
-    # we need EXACT order for json generation, rails32 does it sorted
-    # see: https://github.com/rails/rails/pull/5678/files
-    def as_json(options={})
-      if options[:only]
-        options[:only].sort!
-      else
-        options[:only] = attributes.keys.sort
-      end
-      super(options)
-    end
   CODE
 end
 
