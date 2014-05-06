@@ -295,5 +295,5 @@ unless ENV['TRAVIS']
   run 'bin/rake db:import'
 end
 
-run 'RAILS_ENV=test bin/rake db:setup'
+run 'RAILS_ENV=test bundle exec rake db:setup'
 
