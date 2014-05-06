@@ -64,7 +64,7 @@ Feature: schema suffixes
           user_id: razum2um
           id: lurker
       """
-    And a file named "spec/request/updating_repos_spec.rb" with:
+    And a file named "spec/requests/updating_repos_spec.rb" with:
       """ruby
       require "spec_helper"
 
@@ -87,7 +87,7 @@ Feature: schema suffixes
       end
       """
 
-  When I run `bin/rspec spec/request/updating_repos_spec.rb`
+  When I run `bin/rspec spec/requests/updating_repos_spec.rb`
   Then the example should pass
 
   Scenario: json schema tests request parameters and tell what fails using "users/update"
@@ -145,7 +145,7 @@ Feature: schema suffixes
           user_id: razum2um
           id: lurker
       """
-    And a file named "spec/request/failed_updating_repos_spec.rb" with:
+    And a file named "spec/requests/failed_updating_repos_spec.rb" with:
       """ruby
       require "spec_helper"
 
@@ -168,6 +168,6 @@ Feature: schema suffixes
       end
       """
 
-  When I run `bin/rspec spec/request/failed_updating_repos_spec.rb`
+  When I run `bin/rspec spec/requests/failed_updating_repos_spec.rb`
   Then the example should pass
 
