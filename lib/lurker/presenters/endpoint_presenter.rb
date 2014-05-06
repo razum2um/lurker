@@ -110,7 +110,12 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
 
   # for live form WITH :placeholders
   def named_path
-    base_path.sub(/\/?$/, '/') + endpoint.path.gsub(/__/, ':')
+    return @named_path if @named_path
+    @named_path = base_path.sub(/\/?$/, '/') + endpoint.path.gsub(/__/, ':')
+    if (suffix = endpoint.schema.extensions.try(:[], 'suffix')).present?
+      @named_path = @named_path.gsub(/-#{suffix}/, '')
+    end
+    @named_path
   end
 
   def verb
