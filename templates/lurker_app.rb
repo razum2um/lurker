@@ -1,8 +1,3 @@
-file '.bundle/config', <<-CODE
----
-BUNDLE_PATH: #{File.expand_path '../../vendor/bundle', __FILE__}
-CODE
-
 gem 'rspec-rails'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
