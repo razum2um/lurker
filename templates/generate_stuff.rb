@@ -48,6 +48,8 @@ file 'config/initializers/serializer.rb', force: true do
   CODE
 end
 
+copy_file "#{File.expand_path '../../templates/rails32_http_patch_support.rb', __FILE__}", "config/initializers/rails32_http_patch_support.rb"
+
 inject_into_class 'app/models/user.rb', 'User' do
   <<-CODE
     include ExactOrderAsJson
