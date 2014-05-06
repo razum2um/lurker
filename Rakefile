@@ -119,16 +119,11 @@ namespace :generate do
     end
     in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
 
-    if ENV['TRAVIS']
-      in_lurker_app 'createdb lurker_app_test'
-      in_lurker_app "cat #{File.expand_path '../templates/schema.sql', __FILE__} | psql lurker_app_test"
-    else
+    unless ENV['TRAVIS']
       in_lurker_app 'bin/rake db:setup'
       in_lurker_app 'bin/rake db:import'
-      in_lurker_app 'bin/rake RAILS_ENV=test db:setup'
-      # keep sql up-to-date
-      in_lurker_app "pg_dump -c -O -x -s lurker_app_test > ../../templates/schema.sql"
     end
+    in_lurker_app 'bin/rake RAILS_ENV=test db:setup'
   end
 end
 
