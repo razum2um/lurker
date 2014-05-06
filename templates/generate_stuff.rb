@@ -1,5 +1,21 @@
 # gsub_file 'config/database.yml', /database: lurker_app.*/, 'database: lurker_app'
-comment_lines 'config/database.yml', /username|password/
+# comment_lines 'config/database.yml', /username|password/
+file 'config/database.yml', force: true do
+  <<-CODE
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  database: lurker_app
+  pool: 5
+test:
+  <<: *default
+  database: lurker_app_test
+development:
+  <<: *default
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+  CODE
+end
 
 create_link "bin/lurker", "#{File.expand_path '../../bin/lurker', __FILE__}"
 
