@@ -220,7 +220,7 @@ namespace :razum2um do
   end
 end
 
-task :default => [:spec, :regenerate, :cucumber, 'coveralls:push']
+task :default => [:spec, :regenerate, :cucumber, 'coveralls:fix_push']
 
 desc 'commits lurker app'
 task :predeploy do
@@ -253,6 +253,18 @@ task :publish do
     system "gem build lurker.gemspec --sign"
     system "git push --tags"
     system "gem push lurker-#{version}.gem"
+  end
+end
+
+namespace :coveralls do
+  desc 'Push latest coverage results to Coveralls.io'
+  task :fix_push do
+    # simulate Coveralls.push!
+    require 'coveralls'
+    require 'simplecov'
+    result = ::SimpleCov::ResultMerger.merged_result
+    result.command_name = result.command_name[0..254] # FIX
+    Coveralls::SimpleCov::Formatter.new.format result
   end
 end
 
