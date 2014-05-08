@@ -220,7 +220,7 @@ namespace :razum2um do
   end
 end
 
-task :default => [:spec, :regenerate, :cucumber, 'coveralls:fix_push']
+task :default => ["clobber:coverage", :spec, :regenerate, :cucumber, 'coveralls:fix_push']
 
 desc 'commits lurker app'
 task :predeploy do
