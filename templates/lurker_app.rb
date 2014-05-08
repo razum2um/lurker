@@ -5,19 +5,13 @@ gem 'simplecov', '~> 0.7.1', require: false
 gem 'pry-debugger', require: false
 gem 'pry-stack_explorer', require: false
 gem 'unicorn', group: :production
+gem 'therubyracer', group: :production
 
 append_to_file 'Gemfile' do
   <<-CODE
 
     # new line above is important
-    lurker_file = File.expand_path('../../../lib/lurker.rb', __FILE__)
-    if File.exists?(lurker_file)
-      # run within specs
-      gem 'lurker', '~> 0', path: "#{File.expand_path('../../../lurker', __FILE__)}"
-    else
-      # run at heroku
-      gem 'lurker', github: 'razum2um/lurker', branch: 'master'
-    end
+    gem 'lurker', github: 'razum2um/lurker', branch: 'master'
   CODE
 end
 
