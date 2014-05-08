@@ -15,6 +15,9 @@
   vertical-align: top;
   white-space:pre;
 }
+.bs-docs-sidebar .nav > li.opened > ul {
+  display: block;
+}
 .bs-docs-sidebar .nav > li:hover > ul {
   display: block;
 }
