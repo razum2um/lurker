@@ -24,6 +24,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency("thor", "~> 0.19")
   spec.add_dependency("diffy", "~> 3.0")
   spec.add_dependency("sinatra", "~> 1.4")
+  spec.add_dependency("execjs", "~> 2.0")
+  # spec.add_dependency("coderay", "~> 1.0")
 
   # testing
   spec.add_development_dependency("psych", "~> 2.0")

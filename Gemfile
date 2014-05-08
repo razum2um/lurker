@@ -14,6 +14,7 @@ group :development do
 
   # deploy site
   gem 'highline'
+  gem 'coderay', path: '../coderay'
 
   # build template static
   # run `rake assets:precompile`

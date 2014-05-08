@@ -85,23 +85,26 @@
         hostOptions.push(<option value={hostUrl}>{name}</option>);
       };
       return (
-        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
+        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal bs-example hidden-print" method="<%= @endpoint_presenter.form_verb %>">
           <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
-          <li className="list-group-item">
-            <label forHtml="hostname">Host</label>
-            <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
-              {hostOptions}
-            </select>
-          </li>
+          <div className="form-group">
+            <label className="control-label col-sm-1"forHtml="hostname">Lurk!</label>
+            <div className="col-sm-11">
+              <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
+                {hostOptions}
+              </select>
+            </div>
+          </div>
 
-          <li id="curl" className="list-group-item">
-            <p>cURL</p>
-            <pre>{this.state.curl}</pre>
-          </li>
+          <div id="curl" className="form-group">
+            <p className="control-label col-sm-1">cURL</p>
+            <div className="col-sm-11">
+              <pre>{this.state.curl}</pre>
+            </div>
+          </div>
 
           <% if @url_params.present? %>
-            <li className="list-group-item" id="url-payload">
-              <p>URL Params</p>
+            <div className="bs-example url-params" id="url-payload">
               <fieldset ref="url-params">
                 <% @url_params.each_with_index do |(label, value), i| %>
                   <div className="form-group">
@@ -112,21 +115,22 @@
                   </div>
                 <% end %>
               </fieldset>
-            </li>
+            </div>
           <% end %>
 
           <% if @post_params.present? %>
-            <li className="list-group-item" id="post-payload">
-              <p>Payload</p>
+            <div className="bs-example post-params" id="post-payload">
               <fieldset ref="post-params">
                 <%= Lurker::FormBuilder.new(@post_params).html.html_safe %>
               </fieldset>
-            </li>
+            </div>
           <% end %>
 
-          <li className="list-group-item form-actions">
-            <input id="submit-api" type="submit" className="btn btn-primary pull-right"></input>
-          </li>
+          <div className="form-group row">
+            <div className="col-sm-offset-3 col-sm-9">
+              <input id="submit-api" type="submit" className="btn btn-primary pull-right"></input>
+            </div>
+          </div>
         </form>
       );
     }

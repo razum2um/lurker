@@ -1,4 +1,6 @@
 require 'thor'
+require 'execjs'
+# require 'coderay'
 require 'digest/sha1'
 require 'lurker/service'
 

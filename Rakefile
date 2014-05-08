@@ -105,7 +105,7 @@ namespace :generate do
   desc "generate a fresh app with rspec installed"
   task :app do |t|
     if needs_generation?
-      sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-sprockets --skip-git --skip-test-unit --skip-keeps --quiet"
+      sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --quiet"
     end
   end
 

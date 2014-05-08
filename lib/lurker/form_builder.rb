@@ -44,13 +44,14 @@ module Lurker
         :partial => 'param_form_element',
         :locals  => {
           :label      => "#{print_labels(parent_labels)}#{label}",
-          :label_text => label,
+          :label_text => "#{print_labels(parent_labels)}#{label}",
           :value      => value
         }
       )
     end
 
     def add_legend_to_buffer(parent_labels, label)
+      return
       @_buffer += render(
         :partial => 'param_form_legend',
         :locals  => { :label => print_labels(parent_labels.clone << label) }

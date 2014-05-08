@@ -1,25 +1,8 @@
 /*
  *= require bootstrap
- *= require font-awesome/css/font-awesome
- *= require sb-admin
+ *= require docs
  *
- *= require prettify
- *= require prettify-desert
- *= require_self
+ *= require github
+ *=  require_self
  */
-#show-api-response-div table td {
-  vertical-align: top;
-  white-space:pre;
-}
-.nav > li > a.hovered {
-  text-decoration: none;
-  background-color: #eee;
-}
-.navbar-right {
-  padding: 8px;
-}
-.panel .list-group .list-group-item {
-  border-width: 0;
-  padding: 0;
-  margin-bottom: 10px;
-}
+

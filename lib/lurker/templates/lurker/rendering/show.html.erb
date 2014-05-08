@@ -1,42 +1,27 @@
-<div class="row">
-  <div class="col-md-12">
     <h1 class="page-header"><%= @endpoint_presenter.description %></h1>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-8">
     <pre><%= @endpoint_presenter.verb %> <%= @endpoint_presenter.named_path %></pre>
 
-    <div id="show-api-response-div" class="panel panel-default" style="display: none;">
-      <div class="panel-heading">
-          <p class="lead">Live Response</p>
-          <table class="small" ref="response-info">
-            <tr class="status">
-              <td class="name">Status:</td>
-              <td class="value"></td>
-            </tr>
-            <tr class="time">
-              <td class="name">Time:</td>
-              <td class="value"></td>
-            </tr>
-            <tr class="headers">
-              <td class="name">Headers:</td>
-              <td class="value"></td>
-            </tr>
-          </table>
-      </div>
-      <div class="panel-body">
-        <pre class="prettyprint nowrap" ref="response-json" style="display: none;"></pre>
-        <pre class="prettyprint" ref="response-raw" style="display: none;"></pre>
-      </div>
-    </div> <!-- ./#show-api-response-div -->
+    <%= render 'submit_form' %>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">Response</div>
-      <div class="panel-body">
-        <%= raw @endpoint_presenter.example_response.to_html %>
-      </div>
-    </div>
+    <div id="show-api-response-div" class="highlight">
+      <table class="small" ref="response-info" style="display: none;">
+        <tr class="status">
+          <td class="name">Status:</td>
+          <td class="value"></td>
+        </tr>
+        <tr class="time">
+          <td class="name">Time:</td>
+          <td class="value"></td>
+        </tr>
+        <tr class="headers">
+          <td class="name">Headers:</td>
+          <td class="value"></td>
+        </tr>
+      </table>
+      <pre><code class="prettyprint nowrap" ref="response-json" style="display: none;"></code></pre>
+      <pre><code class="prettyprint" ref="response-raw" style="display: none;"></code></pre>
+      <pre><code id="response" ref="response-example" class="hljs"><%= @endpoint_presenter.example_response.html_safe %></code></pre>
+    </div> <!-- ./#show-api-response-div -->
 
     <div class="panel panel-default">
       <div class="panel-heading">Request Schema</div>
@@ -51,13 +36,3 @@
         <%= raw @endpoint_presenter.response_parameters.to_html %>
       </div>
     </div>
-  </div> <!-- ./col-md-8 -->
-  <div id="show-api-div" class="col-md-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">Lurk!</div>
-      <ul class="panel-body list-group">
-        <%= render 'submit_form' %>
-      </ul>
-    </div> <!-- ./panel-default -->
-  </div> <!-- ./col-md-4 -->
-</div>

@@ -81,7 +81,9 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
 
   def example_response
     return if endpoint.response_parameters.empty?
-    Lurker::JsonPresenter.new(example_from_schema(endpoint.response_parameters, endpoint.schema))
+    response = example_from_schema(endpoint.response_parameters, endpoint.schema)
+    #::CodeRay.scan(response.to_json, :jjson).html(wrap: nil, css: :class)
+    response.to_json
   end
 
   def deprecated?
