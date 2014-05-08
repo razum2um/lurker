@@ -69,7 +69,7 @@ end
 
 # testing
 
-ENV['COVERALLS_NOISY'] = 1
+ENV['COVERALLS_NOISY'] = '1'
 Coveralls::RakeTask.new
 
 RSpec::Core::RakeTask.new(:spec) do |t|
