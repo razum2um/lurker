@@ -7430,7 +7430,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .bs-docs-sidebar .nav > li:hover > ul {
   display: block;
 }
-#submit-form.bs-example:after {
+.form-horizontal.bs-example:after {
   content: 'Live';
 }
 .url-params.bs-example:after {
@@ -7438,4 +7438,8 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 }
 .post-params.bs-example:after {
   content: 'Payload';
+}
+/* pdf */
+pre {
+  page-break-inside: avoid;
 }

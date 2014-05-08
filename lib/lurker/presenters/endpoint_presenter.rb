@@ -12,12 +12,12 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     @service_presenter = Lurker::ServicePresenter.new(endpoint.service)
   end
 
-  def to_html
+  def to_html(options={})
     @service_presenter = service_presenter
     @endpoint_presenter = self
     @url_params = endpoint.url_params
     @post_params = example_request.json
-    render('show')
+    render('show', options)
   end
 
   def relative_path(extension = ".html")

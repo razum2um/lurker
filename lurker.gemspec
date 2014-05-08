@@ -25,6 +25,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency("diffy", "~> 3.0")
   spec.add_dependency("sinatra", "~> 1.4")
   spec.add_dependency("execjs", "~> 2.0")
+  spec.add_dependency("pdfkit", "~> 0.6")
+  spec.add_dependency("wkhtmltopdf-binary", "~> 0.9")
   # spec.add_dependency("coderay", "~> 1.0")
 
   # testing

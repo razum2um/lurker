@@ -1,5 +1,6 @@
 require 'thor'
 require 'execjs'
+require 'pdfkit'
 # require 'coderay'
 require 'digest/sha1'
 require 'lurker/service'
@@ -59,27 +60,41 @@ module Lurker
 
     no_tasks do
       def convert_to_pdf
-        # TODO
+        css = File.expand_path('application.css', self.class.precompiled_static_root)
+        in_root do
+          service_presenters.each do |service_presenter|
+            html = "<html><body>"
+            service_presenter.endpoints.each do |endpoint_prefix_group|
+              endpoint_prefix_group.each do |endpoint_presenter|
+                html << endpoint_presenter.to_html(layout: false)
+              end
+            end
+            html << "</body></html>"
+            kit = PDFKit.new(html, :page_size => 'Letter')
+            kit.stylesheets << css
+            create_file("#{service_presenter.name}.pdf", kit.to_pdf, force: true)
+          end
+        end
       end
 
       def convert_to_html
         in_root do
           # js, css, fonts
+          static = []
           Dir["#{self.class.precompiled_static_root}/*"].each do |fname|
             if match = fname.match(/application\.(js|css)$/)
               sha1 = Digest::SHA1.hexdigest(open(fname).read)
               html_options.merge! match[1] => sha1
-              to = destination.join("application-#{sha1}.#{match[1]}").to_s
+              static << (new_name = "application-#{sha1}.#{match[1]}")
+              to = destination.join(new_name).to_s
               FileUtils.cp_r fname, to
               spawn "cat #{to} | gzip -9 > #{to}.gz"
             else
               FileUtils.cp_r fname, destination.to_s
             end
           end
-        end
 
-        service_presenters.each do |service_presenter|
-          in_root do
+          service_presenters.each do |service_presenter|
             create_file("index.html", service_presenter.to_html, force: true)
 
             service_presenter.endpoints.each do |endpoint_prefix_group|
@@ -87,6 +102,17 @@ module Lurker
                 create_file(endpoint_presenter.relative_path, endpoint_presenter.to_html, force: true)
               end
             end
+          end
+
+          # cleanup
+          Dir.glob("*.js").each do |fname|
+            FileUtils.rm fname unless static.include? fname
+          end
+          Dir.glob("*.css").each do |fname|
+            FileUtils.rm fname unless static.include? fname
+          end
+          Dir.glob("*.gz").each do |fname|
+            FileUtils.rm fname unless static.include? fname.sub(/\.gz/, '')
           end
         end
       end

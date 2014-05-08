@@ -13,7 +13,6 @@ append_to_file 'Gemfile' do
     lurker_file = File.expand_path('../../../lib/lurker.rb', __FILE__)
     if File.exists?(lurker_file)
       # run within specs
-      puts "\#{lurker_file} is used for specs!"
       gem 'lurker', '~> 0', path: "#{File.expand_path('../../../lurker', __FILE__)}"
     else
       # run at heroku
