@@ -1,9 +1,9 @@
 <% @service_presenter.endpoints_by_prefix.each do |prefix, endpoints| %>
-  <li class="endpoint-group">
-      <a href="#"><%= prefix %><span class="fa arrow"></span></a>
-      <ul class="nav nav-second-level">
+  <li class="endpoint-group <%= endpoints.map(&:url).include?(@endpoint_presenter.try(:url)) and 'active' %>">
+      <a href="#"><%= prefix %></a>
+      <ul class="nav">
           <% endpoints.each do |endpoint| %>
-            <li>
+            <li class="<%= endpoint.url == @endpoint_presenter.try(:url) and 'active' %>">
                 <a href="<%= endpoint.url %>">
                   <span class="btn btn-<%= endpoint.verb_colorname %> btn-xs"><%= endpoint.verb %>&nbsp;<%= endpoint.named_path %></span>
                   <br>

@@ -15,4 +15,15 @@
   vertical-align: top;
   white-space:pre;
 }
-
+.bs-docs-sidebar .nav > li:hover > ul {
+  display: block;
+}
+#submit-form.bs-example:after {
+  content: 'Live';
+}
+.url-params.bs-example:after {
+  content: 'Url Params';
+}
+.post-params.bs-example:after {
+  content: 'Payload';
+}

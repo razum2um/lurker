@@ -16,6 +16,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
   )
 
   def initialize(schema, options)
+    options[:nested] ||= 0
     super(options)
     @schema = schema
   end
@@ -25,7 +26,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
   end
 
   def nested?
-    options[:nested]
+    options[:nested] > 0
   end
 
   def to_html
@@ -115,7 +116,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     html = ""
     html << '<li>Items'
 
-    sub_options = options.merge(:nested => true)
+    sub_options = options.merge(:nested => options[:nested] + 1)
 
     if items.kind_of? Array
       item.compact.each do |item|
@@ -152,7 +153,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
         '<tt>%s</tt>' % key,
         schema_slug(key, property)
       )
-      html << self.class.new(property, options.merge(:nested => true)).to_html
+      html << self.class.new(property, options.merge(:nested => options[:nested] + 1)).to_html
       html << '</li>'
     end
 
@@ -160,6 +161,6 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
   end
 
   def schema_slug(key, property)
-    "#{key}-#{property.hash}"
+    "#{key}-#{options[:nested]}-#{property.hash}"
   end
 end

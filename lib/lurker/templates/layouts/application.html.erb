@@ -36,11 +36,15 @@
     <div class="container bs-docs-container">
       <div class="row">
         <div class="col-md-9" role="main">
-          <%= yield %>
+          <div class="bs-docs-section">
+            <%= yield %>
+          </div>
         </div>
         <div class="col-md-3">
           <div class="bs-docs-sidebar hidden-print" role="complementary">
-            <%= render 'layouts/sidemenu' %>
+            <ul class="nav bs-docs-sidenav">
+              <%= render 'layouts/sidemenu' %>
+            </ul>
           </div>
         </div>
       </div>
