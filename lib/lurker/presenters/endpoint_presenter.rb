@@ -80,10 +80,20 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def example_response
+    return @example_response if @example_response
     return if endpoint.response_parameters.empty?
     response = example_from_schema(endpoint.response_parameters, endpoint.schema)
-    #::CodeRay.scan(response.to_json, :jjson).html(wrap: nil, css: :class)
-    response.to_json
+    @example_response = response.to_json
+    if defined? ExecJS
+      jsfile = File.expand_path('javascripts/highlight.pack.js', Lurker::Cli.source_root)
+      source = open(jsfile).read
+      context = ExecJS.compile(source)
+      @example_response = context.exec("return hljs.highlightAuto(JSON.stringify(#{@example_response}, null, 2)).value")
+    elsif defined? CodeRay
+      @example_response = ::CodeRay.scan(@example_response, :json).html(wrap: nil, css: :class)
+      #::CodeRay.scan(response.to_json, :jjson).html(wrap: nil, css: :class)
+    end
+    @example_response
   end
 
   def deprecated?

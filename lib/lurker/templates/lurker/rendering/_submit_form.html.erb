@@ -85,7 +85,7 @@
         hostOptions.push(<option value={hostUrl}>{name}</option>);
       };
       return (
-        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal bs-example hidden-print" method="<%= @endpoint_presenter.form_verb %>">
+        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
           <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
           <div className="form-group">
             <label className="control-label col-sm-1"forHtml="hostname">Lurk!</label>
@@ -141,4 +141,4 @@
   window.submitForm = submitForm;
   React.renderComponent(submitForm, document.getElementById('submit-form'));
 </script>
-<div id='submit-form'></div>
+<div id="submit-form" class="bs-example hidden-print"></div>

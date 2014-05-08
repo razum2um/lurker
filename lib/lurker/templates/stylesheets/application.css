@@ -3,6 +3,16 @@
  *= require docs
  *
  *= require github
- *=  require_self
+ *= require_self
  */
+#show-api-response-div table th, #show-api-response-div table td {
+  border: none;
+}
+#show-api-response-div table th {
+  width: 80px;
+}
+#show-api-response-div table .value {
+  vertical-align: top;
+  white-space:pre;
+}
 

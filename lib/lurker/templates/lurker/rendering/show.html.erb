@@ -4,23 +4,25 @@
     <%= render 'submit_form' %>
 
     <div id="show-api-response-div" class="highlight">
-      <table class="small" ref="response-info" style="display: none;">
+      <table class="small table table-condensed" ref="response-info" style="display: none;">
         <tr class="status">
-          <td class="name">Status:</td>
+          <th class="name">Status:</th>
           <td class="value"></td>
         </tr>
         <tr class="time">
-          <td class="name">Time:</td>
+          <th class="name">Time:</th>
           <td class="value"></td>
         </tr>
         <tr class="headers">
-          <td class="name">Headers:</td>
-          <td class="value"></td>
+          <th class="name">Headers:</th>
+          <td>
+            <a href="javascript:void(0)" data-toggle="collapse" data-target="#headers">Toggle</a>
+            <div id="headers" class="collapse value"></div>
+          </td>
         </tr>
       </table>
-      <pre><code class="prettyprint nowrap" ref="response-json" style="display: none;"></code></pre>
-      <pre><code class="prettyprint" ref="response-raw" style="display: none;"></code></pre>
       <pre><code id="response" ref="response-example" class="hljs"><%= @endpoint_presenter.example_response.html_safe %></code></pre>
+      <pre><code ref="response-raw" style="display: none;"></code></pre>
     </div> <!-- ./#show-api-response-div -->
 
     <div class="panel panel-default">
