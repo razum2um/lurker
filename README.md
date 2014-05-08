@@ -152,19 +152,21 @@ Also thanks to
 [rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
 [json_schema]: http://json-schema.org/
 [json_schema_example]: http://json-schema.org/example2.html
-[failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/test-endpoint
-[controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/schema-scaffolding
-[nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-specs/nested-schema-scaffolding
-[request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-scaffolding
-[html_generation_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/html-generation
-[partial_example]: https://www.relishapp.com/razum2um/lurker/docs/docs-generation/partials
-[partial_example_demo]: http://lurker-app.herokuapp.com/lurker/api/v1/users/__user_id/repos-POST.html
 [evil_martians]: http://evilmartians.com/
+
+[failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/test-endpoint
+[controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding
+[nested_controller_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-nested-schema-scaffolding
+[request_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/request-schema-scaffolding
+[html_generation_example]: https://www.relishapp.com/razum2um/lurker/docs/html-generation
+[partial_example]: https://www.relishapp.com/razum2um/lurker/docs/partials
+[suffixes_example]: https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes
+
 [demo_app]: http://lurker-app.herokuapp.com
 [demo_app2]: http://lurker.razum2um.me
 [demo_live]: http://lurker.razum2um.me/lurker/api/v1/users-POST.html
 [pdf_example]: http://lurker.razum2um.me/lurker/LurkerApp.pdf
-[suffixes_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-suffixes
+[partial_example_demo]: http://lurker-app.herokuapp.com/lurker/api/v1/users/__user_id/repos-POST.html
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker

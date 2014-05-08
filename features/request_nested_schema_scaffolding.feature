@@ -1,4 +1,4 @@
-Feature: nested schema scaffolding
+Feature: request nested schema scaffolding
 
   If your API endpoint has some dynamic segment - Lurker can handle it as well!
 

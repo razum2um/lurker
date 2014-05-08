@@ -1,4 +1,8 @@
-Feature: schema scaffolding
+Feature: request schema scaffolding
+
+  When you're testing your api with request specs
+  you can add `:lurker` metadata
+  to get a json schema for your api-documented endpoint
 
   Scenario: scaffold a json schema for a "users/index" in request spec
     Given a file named "spec/requests/users_spec.rb" with:

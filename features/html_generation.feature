@@ -1,6 +1,8 @@
 Feature: html generation
 
-  When testing your api ensure that CSRF protection is handled properly
+  Lurker generates pretty info pages based on schema information
+  and form which allow you to test live api.
+  When testing your api ensure that CSRF protection is handled properlya
   with `protect_from_forgery :null_session`
 
   @javascript
