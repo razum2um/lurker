@@ -61,7 +61,7 @@ Now, you can test your API on-line (for real)
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
 - [JSON-Schema partials][partial_example], also in YAML format ([demo][partial_example_demo])
 - [Generation PDF documentation][pdf_example]
-- Multiple docs for many test cases
+- [Multiple docs for many usecases][suffixes_example] (e.g `:lurker => '...'`)
 - ERB support inside `.json.yml.erb`
 - HTTP-Auth authorization for your online docs
 - Separate API-services generated within one test suite
@@ -159,6 +159,7 @@ Also thanks to [Andrey Deryabin][aderyabin] for advice and [React.js][reactjs] f
 [demo_app2]: http://lurker.razum2um.me
 [demo_live]: http://lurker.razum2um.me/lurker/api/v1/users-POST.html
 [pdf_example]: http://lurker.razum2um.me/lurker/LurkerApp.pdf
+[suffixes_example]: https://www.relishapp.com/razum2um/lurker/docs/request-specs/schema-suffixes
 
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
