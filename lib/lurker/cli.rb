@@ -184,7 +184,12 @@ module Lurker
     private
 
     def gem_info
-      spec = lurker_gem
+      spec = if Bundler.respond_to? :locked_gems
+        Bundler.locked_gems.specs.select { |s| s.name == 'lurker' } .first # 1.6
+      else
+        Bundler.definition.sources.detect { |s| s.specs.map(&:name).include?('lurker') } # 1.3
+      end
+
       if spec.source.respond_to? :revision, true # bundler 1.3 private
         "#{spec.name} (#{spec.source.send(:revision)})"
       else
@@ -193,14 +198,6 @@ module Lurker
     rescue => e
       puts e
       "lurker (unknown)"
-    end
-
-    def lurker_gem
-      if Bundler.respond_to? :locked_gems
-        Bundler.locked_gems.specs.select { |s| s.name == 'lurker' } .first # 1.6
-      else
-        Bundler.definition.sources.detect { |s| s.specs.map(&:name).include?('lurker') } # 1.3
-      end
     end
 
     def get_content(content_fname)
