@@ -59,6 +59,9 @@ namespace :assets do
       end
     end
 
+    sprockets.js_compressor  = :uglify
+    sprockets.css_compressor  = :scss
+
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)
       realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css)$/ } + [$~.to_s]).join(".")
