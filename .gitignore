@@ -20,3 +20,4 @@ features/support/selenuim.rb
 Gemfile.local.lock
 _site
 gemfiles/*lock
+gh-pages
