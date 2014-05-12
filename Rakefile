@@ -272,7 +272,7 @@ desc 'deploys everything'
 task :deploy => ["razum2um:deploy", "heroku:deploy"]
 
 desc 'pushes everything'
-task :push => ["razum2um:push", "heroku:push"]
+task :push => ["razum2um:push", "heroku:push", "github:push"]
 
 desc 'releases gem & updates docs'
 task :publish do
