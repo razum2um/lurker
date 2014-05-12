@@ -38,6 +38,7 @@ inject_into_file "bin/lurker", before: /require .lurker.$/ do
 end
 chmod "bin/lurker", 0755
 
+# not to disturb generators
 remove_file 'spec/spec_helper.rb'
 remove_file 'app/models/user.rb'
 
@@ -103,8 +104,14 @@ file 'app/controllers/application_controller.rb', 'ApplicationController', force
     class ApplicationController < ActionController::Base
       protect_from_forgery with: :null_session
       before_filter :set_format
+      after_filter :set_access_control_headers
 
       private
+
+      def set_access_control_headers
+        headers['Access-Control-Allow-Origin'] = 'http://localhost:3000, http://lurker.razum2um.me, http://lurker-app.herokuapp.com, http://razum2um.github.io'
+        headers['Access-Control-Request-Method'] = '*'
+      end
 
       def set_format
         request.format = :json
@@ -250,10 +257,6 @@ inject_into_class 'config/application.rb', 'Application' do
     if ENV['DATABASE_URL'].present? # heroku
       config.middleware.use Lurker::Sandbox
     end
-    config.action_dispatch.default_headers = {
-      'Access-Control-Allow-Origin' => '*',
-      'Access-Control-Request-Method' => 'GET, PUT, POST, DELETE, OPTIONS'
-    }
   CODE
 end
 
