@@ -176,23 +176,31 @@ module Lurker
           :html_directory => destination_root,
           :content => self.content,
           :footer => (`git rev-parse --short HEAD`.to_s.strip rescue ""),
-          :lurker => gem_info(lurker_gem)
+          :lurker => gem_info
         }
       end
     end
 
     private
 
-    def gem_info(spec)
-      if spec.source.respond_to? :revision
-        "#{spec.name} (#{spec.source.revision})"
+    def gem_info
+      spec = lurker_gem
+      if spec.source.respond_to? :revision, true # bundler 1.3 private
+        "#{spec.name} (#{spec.source.send(:revision)})"
       else
         spec.to_s
       end
+    rescue => e
+      puts e
+      "lurker (unknown)"
     end
 
     def lurker_gem
-      Bundler.locked_gems.specs.select { |s| s.name == 'lurker' } .first
+      if Bundler.respond_to? :locked_gems
+        Bundler.locked_gems.specs.select { |s| s.name == 'lurker' } .first # 1.6
+      else
+        Bundler.definition.sources.detect { |s| s.specs.map(&:name).include?('lurker') } # 1.3
+      end
     end
 
     def get_content(content_fname)
