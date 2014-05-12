@@ -174,8 +174,8 @@ task :features => [:regenerate, :cucumber]
 
 desc 'convert docs for example app, prepages gh-pages'
 task :build_example_docs => :features do
-  if File.exists? '../README.md'
-    in_lurker_app "bin/lurker convert -c #{File.expand_path('../README.md', __FILE__)}"
+  if File.exists?(readme = File.expand_path('../README.md', __FILE__))
+    in_lurker_app "bin/lurker convert -c #{readme}"
   else
     in_lurker_app "bin/lurker convert"
   end
