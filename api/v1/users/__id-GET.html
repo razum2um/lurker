@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lurker | LurkerApp</title>
+    <link href="/lurker/application-3c66db86529152013dbba3fa933e14dd67ab791d.css" media="all" rel="stylesheet">
+    <style type="text/css">
+      @font-face {
+        font-family: 'FontAwesome';
+        src: url("/lurker/fonts/fontawesome-webfont.eot?v=4.0.3");
+        src: url("/lurker/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3") format("embedded-opentype"),
+             url("/lurker/fonts/fontawesome-webfont.woff?v=4.0.3") format("woff"),
+             url("/lurker/fonts/fontawesome-webfont.ttf?v=4.0.3") format("truetype"),
+             url("/lurker/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular") format("svg");
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+</head>
+
+<body>
+
+    <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/lurker">LurkerApp</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container bs-docs-container">
+      <div class="row">
+        <div class="col-md-9" role="main">
+          <div class="bs-docs-section">
+            <h1 id="endpoint" class="page-header">user</h1>
+<pre>GET /api/v1/users/:id</pre>
+
+<h3>Example</h3>
+<script type="text/jsx">
+  /** @jsx React.DOM */
+  var SubmitForm = React.createClass({
+    mixins: [ReactCatalyst.LinkedStateMixin],
+    runsOnLocalhost: function() {
+      return window.location.hostname == '127.0.0.1' || window.location.hostname == 'localhost'
+    },
+    getInitialState: function() {
+      var state = {};
+      var values = JSON.parse('[{"label":"id","value":"1"}]');
+      var template = '/api/v1/users/:id';
+      var method = 'GET';
+      var hosts = JSON.parse('{"[Sandbox] Heroku":"http://lurker-app.herokuapp.com","[Real] razum2um.me":"http://lurker.razum2um.me"}');
+      var host = 'http://lurker-app.herokuapp.com';
+
+      var i;
+      var includesLocalhost = false;
+      for (i in hosts) {
+        if (hosts[i] == '/') {
+          includesLocalhost = true;
+          if (this.runsOnLocalhost()) {
+            host = hosts[i] = window.location.origin;
+          }
+        } else {
+          hosts[i] = hosts[i].replace(/\$/, '');
+        }
+
+        if (window.location.origin == hosts[i]) {
+          host = hosts[i];
+        }
+      };
+
+      if (!includesLocalhost && this.runsOnLocalhost()) {
+        host = hosts['Local'] = window.location.origin;
+      }
+
+      state.host = host;
+      state.hosts = hosts;
+      state.method = method;
+      state.values = values;
+      state.template = template;
+      state.action = this.renderAction(host, template, values);
+      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('{}')));
+      return state;
+    },
+    getPayload: function() {
+      // FIXME
+      return jQuery('#post-payload input').serialize();
+    },
+    getHostname: function(host) {
+      return host;
+    },
+    renderAction: function(host, template, values) {
+      var action = template;
+      var i;
+      for (i in values) {
+        action = action.replace(new RegExp(':' + values[i].label), values[i].value);
+      }
+      return this.getHostname(host) + action;
+    },
+    renderCurl: function(method, host, template, values, payload) {
+      var url = '"' + this.renderAction(host, template, values) + '"';
+      if (payload.length > 0) {
+        url = '-d "' + (payload || this.getPayload()) + '" ' + url;
+      }
+      return 'curl -X ' + method + " " + url;
+    },
+    // see react-catalyst.js
+    afterSetPartialState: function() {
+      this.setState({
+        action: this.renderAction(this.state.host, this.state.template, this.state.values),
+        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#post-payload input').serialize())
+      });
+    },
+    handleSubmit: function() {
+      // FIXME
+      Lurker.onSubmit(jQuery('#payload'));
+      return false;
+    },
+    render: function() {
+      var hostOptions = [];
+      var name;
+      for (name in this.state.hosts) {
+        var hostUrl = this.state.hosts[name];
+        hostOptions.push(<option value={hostUrl}>{name}</option>);
+      };
+      return (
+        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="bs-example hidden-print form-horizontal" method="GET">
+          <input name="_method" value="GET" type="hidden" />
+          <div className="form-group">
+            <label className="control-label col-sm-1"forHtml="hostname">Lurk!</label>
+            <div className="col-sm-11">
+              <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
+                {hostOptions}
+              </select>
+            </div>
+          </div>
+
+          <div id="curl" className="form-group">
+            <p className="control-label col-sm-1">cURL</p>
+            <div className="col-sm-11">
+              <pre>{this.state.curl}</pre>
+            </div>
+          </div>
+
+            <div className="bs-example url-params" id="url-payload">
+              <fieldset ref="url-params">
+                  <div className="form-group">
+                    <label className="control-label col-sm-3" htmlFor="id">id</label>
+                    <div className="col-sm-9">
+                      <input type="text" valueLink={this.linkState('values.0.value')} className="form-control"></input>
+                    </div>
+                  </div>
+              </fieldset>
+            </div>
+
+
+          <div className="form-group row">
+            <div className="col-sm-offset-3 col-sm-9">
+              <input id="submit-api" type="submit" className="btn btn-primary pull-right"></input>
+            </div>
+          </div>
+        </form>
+      );
+    }
+  });
+
+  var submitForm = <SubmitForm template="/api/v1/users/:id" />;
+  // FIXME: see multidomain feature - cannot select node in phantomjs
+  window.submitForm = submitForm;
+  React.renderComponent(submitForm, document.getElementById('submit-form'));
+</script>
+<div id="submit-form"></div>
+
+
+<div id="show-api-response-div" class="highlight">
+  <table class="small table table-condensed" ref="response-info" style="display: none;">
+    <tr class="status">
+      <th class="name">Status:</th>
+      <td class="value"></td>
+    </tr>
+    <tr class="time">
+      <th class="name">Time:</th>
+      <td class="value"></td>
+    </tr>
+    <tr class="headers">
+      <th class="name">Headers:</th>
+      <td>
+        <a href="javascript:void(0)" data-toggle="collapse" data-target="#headers">Toggle</a>
+        <div id="headers" class="collapse value"></div>
+      </td>
+    </tr>
+  </table>
+  <pre><code id="response" ref="response-example" class="hljs">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"razum2um"</span>
+</span>}</code></pre>
+  <pre><code ref="response-raw" style="display: none;"></code></pre>
+</div> <!-- ./#show-api-response-div -->
+
+<h3>Request Schema</h3>
+<div class="schema"><ul><li>    <span id="id-0--1712530862402881945">
+      <a href="#id-0--1712530862402881945" class="anchor">
+        <tt>id</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li></ul></div>
+
+<h3>Response Schema</h3>
+<div class="schema"><ul><li>    <span id="id-0--1712530862402881945">
+      <a href="#id-0--1712530862402881945" class="anchor">
+        <tt>id</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-0-2484856858487967024">
+      <a href="#name-0-2484856858487967024" class="anchor">
+        <tt>name</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;razum2um&quot;</tt></li></ul></div></li></ul></div>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="bs-docs-sidebar hidden-print" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <li class="endpoint-group active">
+      <a href="#">users management</a>
+      <ul class="nav">
+            <li class="false">
+                <a href="/lurker/api/v1/users-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users</span>
+                  <br>
+                  <span>user listing</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v1/users-POST.html">
+                  <span class="btn btn-primary btn-xs">POST&nbsp;/api/v1/users</span>
+                  <br>
+                  <span>user creation</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v1/users/__id-DELETE.html">
+                  <span class="btn btn-danger btn-xs">DELETE&nbsp;/api/v1/users/:id</span>
+                  <br>
+                  <span>user deletion</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="/lurker/api/v1/users/__id-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:id</span>
+                  <br>
+                  <span>user</span>
+                </a>
+            </li>
+      </ul>
+  </li>
+  <li class="endpoint-group false">
+      <a href="#">repos management</a>
+      <ul class="nav">
+            <li class="false">
+                <a href="/lurker/api/v1/users/__user_id/repos-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos</span>
+                  <br>
+                  <span>repo listing</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v1/users/__user_id/repos-POST.html">
+                  <span class="btn btn-primary btn-xs">POST&nbsp;/api/v1/users/:user_id/repos</span>
+                  <br>
+                  <span>repo creation</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>repo</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>repo updating</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-failed-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>failed repo updating</span>
+                </a>
+            </li>
+      </ul>
+  </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bs-docs-footer" role="contentinfo">
+      <div class="container">
+        <ul class="bs-docs-footer-links muted">
+          <li>·</li>
+            <li>lurker (056a61727b01c9287b404921eb6aa731ab0edc1b)</li>
+            <li>·</li>
+        </ul>
+      </div>
+    </footer>
+    <script src="/lurker/application-42d802c409eb26c65707a8787e5d0beafe4d25b9.js"></script>
+</body>
+</html>

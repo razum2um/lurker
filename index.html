@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lurker | LurkerApp</title>
+    <link href="/lurker/application-3c66db86529152013dbba3fa933e14dd67ab791d.css" media="all" rel="stylesheet">
+    <style type="text/css">
+      @font-face {
+        font-family: 'FontAwesome';
+        src: url("/lurker/fonts/fontawesome-webfont.eot?v=4.0.3");
+        src: url("/lurker/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3") format("embedded-opentype"),
+             url("/lurker/fonts/fontawesome-webfont.woff?v=4.0.3") format("woff"),
+             url("/lurker/fonts/fontawesome-webfont.ttf?v=4.0.3") format("truetype"),
+             url("/lurker/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular") format("svg");
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+</head>
+
+<body>
+
+    <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/lurker">LurkerApp</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container bs-docs-container">
+      <div class="row">
+        <div class="col-md-9" role="main">
+          <div class="bs-docs-section">
+            <div class="row">
+    <div class="col-lg-12">
+          <h1 id="lurker">Lurker</h1>
+
+<p>The new de-facto for API testing your Rails application.
+Works on Rails 3.2, 4.0, 4.1 &amp; Ruby 1.9.3, 2.0.0, 2.1.1.</p>
+
+<p><a href="https://rubygems.org/gems/lurker"><img src="https://badge.fury.io/rb/lurker.png" alt="Gem Version" /></a>
+<a href="https://travis-ci.org/razum2um/lurker"><img src="https://travis-ci.org/razum2um/lurker.png" alt="Build Status" /></a>
+<a href="https://gemnasium.com/razum2um/lurker"><img src="https://gemnasium.com/razum2um/lurker.png" alt="Dependency Status" /></a>
+<a href="http://githalytics.com/razum2um/lurker"><img src="https://cruel-carlota.pagodabox.com/87ced56265849ad6386c2ba0a78f8038" alt="githalytics.com alpha" title="githalytics.com" /></a></p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Add this line to your application’s Gemfile:</p>
+
+<pre><code>gem 'lurker'
+</code></pre>
+
+<h2 id="usage">Usage</h2>
+
+<p>Write your <a href="https://github.com/rspec/rspec-rails">RSpec</a> <a href="https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs">controller</a> or <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request</a> specs as usual,
+but add <code>:lurker</code> mark (like documented <a href="https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding">controller example</a> or <a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-scaffolding">request spec example</a>).</p>
+
+<pre><code>describe Api::V1::UsersController, :lurker do
+  ...
+</code></pre>
+
+<p>And run the specs. That’s all, easy!</p>
+
+<p>Please, commit your files under <code>Rails.root/lurker</code> directory.
+Feel free to edit them according to <a href="http://json-schema.org/">json-schema</a> standart.
+It can be very strict and flexible if you wish: see <a href="http://json-schema.org/example2.html">example</a>,
+but scaffolded schemas are pretty good by default.</p>
+
+<pre><code>A  lurker/ExampleApp.service.yml
+A  lurker/api/v1/users-GET.json.yml
+A  lurker/api/v1/users/__user_id/repos-GET.json.yml
+</code></pre>
+
+<h2 id="profit">Profit!</h2>
+
+<p>Now, every test run lurker will look into your requests and <a href="https://www.relishapp.com/razum2um/lurker/docs/test-endpoint">vaditate them</a>
+and it fails if your code changes the api!</p>
+
+<pre><code>Failure/Error: post :create [...]
+Lurker::ValidationError:
+  Request
+  - The property '#/' contains additional properties ["social_network"] outside of the schema
+    when none are allowed in schema file:///.../lurker/api/v1/users-POST.json.yml#
+  Response
+  - The property '#/user/last_sign_in_at' of type String did not match the following type:
+    null in schema file:///.../lurker/api/v1/users-POST.json.yml#
+</code></pre>
+
+<p>Let’s run your <code>rails s</code> and visit <a href="http://localhost:3000/lurker/">http://localhost:3000/lurker/</a>
+(or see <a href="http://lurker.razum2um.me">demo</a> for example)</p>
+
+<p>Now, you can test your API on-line (for real)</p>
+
+<h2 id="features">Features</h2>
+
+<ul>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding">Autoscaffolding for non-covered API endpoints</a></li>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/test-endpoint">Autotesting for covered endpoint once written</a> (both request &amp; response!)</li>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/html-generation">Pretty HTML documentation based on your schemas</a></li>
+  <li><a href="http://lurker.razum2um.me/lurker/api/v1/users-POST.html">Pretty submit form to test API endpoints (live) based on schemas</a> (enter a name &amp; press “Submit”)</li>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-nested-schema-scaffolding">Handling URLs with dynamic segments</a> (such as <code>api/v1/:user_id/repos</code>)</li>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/partials">JSON-Schema partials</a>, also in YAML format (<a href="http://lurker-app.herokuapp.com/lurker/api/v1/users/__user_id/repos-POST.html">demo</a>)</li>
+  <li><a href="http://lurker.razum2um.me/lurker/LurkerApp.pdf">Generation PDF documentation</a></li>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes">Multiple docs for many usecases</a> (e.g <code>:lurker =&gt; '...'</code>)</li>
+  <li>ERB support inside <code>.json.yml.erb</code></li>
+  <li>HTTP-Auth authorization for your online docs</li>
+  <li>Separate API-services generated within one test suite</li>
+  <li>Capistrano integration</li>
+  <li>JSON-Schema draft-v4 support</li>
+  <li>Static site deploy and milti-domain support</li>
+  <li>Builtin Rack middlware <code>Lurker::Server.to_rack</code> serves cached digested assets</li>
+</ul>
+
+<h2 id="token-authentication-with-sandbox">Token authentication with sandbox</h2>
+
+<p><code>Lurker::Sandbox</code> allows you to test services with token authentication:</p>
+
+<pre><code># make sure it's not production!
+# e.g. config/environtents/staging.rb
+config.middleware.use Lurker::Sandbox
+</code></pre>
+
+<p>E.g. demo application on Heroku runs with it: when creating, updating repos or users
+ids getting increased, but if you look into GET #index,
+new items are NOT showing up. <strong>This is NOT a bug!</strong> - sequences in postgres
+are increasing notwithstanding ROLLBACK is called. As such:</p>
+
+<ul>
+  <li>run all your specs with <strong>the same</strong> testing token</li>
+  <li>ensure the same token to be accepted on your demo application</li>
+  <li>insert <code>Lurker::Sandbox</code> and the recorded examples should be ok to submit again</li>
+</ul>
+
+<h2 id="demo-application">Demo application</h2>
+
+<p>You can clone the repo &amp; run <code>rake features</code>.
+It will generate testing rails application under <code>tmp/lurker_app</code>.
+Currently it is deployed <a href="http://lurker-app.herokuapp.com">here</a> within sandbox mode and <a href="http://lurker.razum2um.me">here</a>.</p>
+
+<h2 id="contributions">Contributions</h2>
+
+<p><a href="https://codeclimate.com/github/razum2um/lurker"><img src="https://codeclimate.com/github/razum2um/lurker.png" alt="Code Climate" /></a>
+<a href="https://coveralls.io/r/razum2um/lurker"><img src="https://coveralls.io/repos/razum2um/lurker/badge.png?branch=master" alt="Coverage Status" /></a>
+<a href="http://inch-pages.github.io/github/razum2um/lurker"><img src="http://inch-pages.github.io/github/razum2um/lurker.png" alt="Inline docs" /></a>
+<a href="https://waffle.io/razum2um/lurker"><img src="https://badge.waffle.io/razum2um/lurker.png?label=ready&amp;title=Ready&amp;_=1" alt="Stories in Ready" /></a></p>
+
+<p>I try to use <a href="https://waffle.io/razum2um/lurker">Waffle</a> to develop this gem, if you want to help:</p>
+
+<ul>
+  <li>look on “Ready” section</li>
+  <li>drag an issue to “In Progress” and assign to yourself</li>
+  <li>have fun!</li>
+</ul>
+
+<p><strong>NOTICE:</strong> to get new version of bundled <code>bootstrap</code> or update js/css,
+don’t touch files under <code>lib/lurker/templates/public</code> - they are autogenerated
+and copied to static generated site while <code>bin/lurker convert</code></p>
+
+<pre><code>rake assets:precompile # to build them
+</code></pre>
+
+<p>Don’t commit them to avoid conflicts.</p>
+
+<p><strong>NOTE:</strong> if you write features keep in mind to generate different files with aruba,
+because they are kept in <code>lurker_app</code> directory to be deployed as a demo. Please, write
+features in a way to generate <strong>new</strong> relevant <code>lurker/**/*.json.yml</code> files</p>
+
+<p>To run cucumber in a clean <code>lurker</code> &amp; <code>html</code> directories run:</p>
+
+<pre><code>CLEAN=1 cucumber features
+</code></pre>
+
+<p><strong>NOTE:</strong> template partial <code>submit_form.html.erb</code> and it’s partials is a big <code>jsx</code> script for <code>React</code>
+so there are <code>&lt;label htmlFor</code> instead of <code>&lt;label for&gt;</code> and <code>&lt;div className</code> instead of <code>&lt;div class</code></p>
+
+<h2 id="acknoledgements">Acknoledgements</h2>
+
+<p>Sponsored by <a href="http://evilmartians.com/">Evil Martians</a>, thanks!</p>
+
+<p>This gem is quite opinionated and relies on rails &amp; rspec - if you’re
+interested in anything else, please take a look at <a href="https://github.com/fredwu/api_taster">api_taster</a> or <a href="https://github.com/square/fdoc">fdoc</a>,
+This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
+
+<p>Also thanks to</p>
+
+<ul>
+  <li><a href="https://twitter.com/aderyabin">Andrey Deryabin</a> for advice</li>
+  <li><a href="http://facebook.github.io/react/">React.js</a> for two-way binding</li>
+  <li><a href="http://highlightjs.org/">highlight.js</a> for syntax highlighting</li>
+</ul>
+
+
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="bs-docs-sidebar hidden-print" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <li class="endpoint-group opened">
+      <a href="#">users management</a>
+      <ul class="nav">
+            <li class="opened">
+                <a href="/lurker/api/v1/users-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users</span>
+                  <br>
+                  <span>user listing</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users-POST.html">
+                  <span class="btn btn-primary btn-xs">POST&nbsp;/api/v1/users</span>
+                  <br>
+                  <span>user creation</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__id-DELETE.html">
+                  <span class="btn btn-danger btn-xs">DELETE&nbsp;/api/v1/users/:id</span>
+                  <br>
+                  <span>user deletion</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__id-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:id</span>
+                  <br>
+                  <span>user</span>
+                </a>
+            </li>
+      </ul>
+  </li>
+  <li class="endpoint-group opened">
+      <a href="#">repos management</a>
+      <ul class="nav">
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__user_id/repos-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos</span>
+                  <br>
+                  <span>repo listing</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__user_id/repos-POST.html">
+                  <span class="btn btn-primary btn-xs">POST&nbsp;/api/v1/users/:user_id/repos</span>
+                  <br>
+                  <span>repo creation</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-GET.html">
+                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>repo</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>repo updating</span>
+                </a>
+            </li>
+            <li class="opened">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-failed-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>failed repo updating</span>
+                </a>
+            </li>
+      </ul>
+  </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bs-docs-footer" role="contentinfo">
+      <div class="container">
+        <ul class="bs-docs-footer-links muted">
+          <li>·</li>
+            <li>lurker (056a61727b01c9287b404921eb6aa731ab0edc1b)</li>
+            <li>·</li>
+        </ul>
+      </div>
+    </footer>
+    <script src="/lurker/application-42d802c409eb26c65707a8787e5d0beafe4d25b9.js"></script>
+</body>
+</html>
