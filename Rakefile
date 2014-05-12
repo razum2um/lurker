@@ -95,7 +95,7 @@ namespace :clobber do
     in_lurker_app "bin/spring stop" rescue nil
     Dir.chdir EXAMPLE_PATH do
       Dir.glob("*", File::FNM_DOTMATCH).each do |fname|
-        next if fname == '.' || fname == '..' || fname == '.git'
+        next if fname == '.' || fname == '..' || fname == '.git' || fname == '.bundle'
         FileUtils.rm_rf fname
       end
     end

@@ -174,12 +174,26 @@ module Lurker
           :url_base_path => options[:url_base_path].presence || "/#{Lurker::DEFAULT_URL_BASE}",
           :template_directory => template_path,
           :html_directory => destination_root,
-          :content => self.content
+          :content => self.content,
+          :footer => (`git rev-parse --short HEAD`.to_s.strip rescue ""),
+          :lurker => gem_info(lurker_gem)
         }
       end
     end
 
     private
+
+    def gem_info(spec)
+      if spec.source.respond_to? :revision
+        "#{spec.name} (#{spec.source.revision})"
+      else
+        spec.to_s
+      end
+    end
+
+    def lurker_gem
+      Bundler.locked_gems.specs.select { |s| s.name == 'lurker' } .first
+    end
 
     def get_content(content_fname)
       return unless content_fname

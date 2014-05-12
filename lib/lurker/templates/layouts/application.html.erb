@@ -50,6 +50,21 @@
       </div>
     </div>
 
+    <footer class="bs-docs-footer" role="contentinfo">
+      <div class="container">
+        <ul class="bs-docs-footer-links muted">
+          <li>·</li>
+          <% if @service_presenter.options[:footer].present? %>
+            <li><%= @service_presenter.name %>&nbsp;<%= @service_presenter.options[:footer] %></li>
+            <li>·</li>
+          <% end %>
+          <% if @service_presenter.options[:lurker].present? %>
+            <li><%= @service_presenter.options[:lurker] %></li>
+            <li>·</li>
+          <% end %>
+        </ul>
+      </div>
+    </footer>
     <script src="<%= @service_presenter.html_directory %>/application-<%= @service_presenter.options['js'] %>.js"></script>
 </body>
 </html>
