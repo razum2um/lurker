@@ -30,6 +30,9 @@
 .post-params.bs-example:after {
   content: 'Payload';
 }
+.table-condensed td, .table-condensed th {
+  padding: 0;
+}
 /* pdf */
 pre {
   page-break-inside: avoid;
