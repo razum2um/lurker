@@ -104,14 +104,8 @@ file 'app/controllers/application_controller.rb', 'ApplicationController', force
     class ApplicationController < ActionController::Base
       protect_from_forgery with: :null_session
       before_filter :set_format
-      after_filter :set_access_control_headers
 
       private
-
-      def set_access_control_headers
-        headers['Access-Control-Allow-Origin'] = 'http://localhost:3000, http://lurker.razum2um.me, http://lurker-app.herokuapp.com, http://razum2um.github.io'
-        headers['Access-Control-Request-Method'] = '*'
-      end
 
       def set_format
         request.format = :json
@@ -256,6 +250,19 @@ inject_into_class 'config/application.rb', 'Application' do
   <<-CODE
     if ENV['DATABASE_URL'].present? # heroku
       config.middleware.use Lurker::Sandbox
+    end
+
+    config.middleware.insert 0, Rack::Cors do
+      allow do
+        origins 'localhost:3000', '127.0.0.1:3000', 'razum2um.github.io', 'lurker-app.herokuapp.com', 'lurker.razum2um.me'
+        resource '*',
+          :headers => :any,
+          :methods => :any,
+          :credentials => false,
+          :expose => %w[Etag Server X-Content-Type-Options X-Frame-Options X-Request-Id X-Runtime
+                        X-Xss-Protection Date Access-Control-Request-Method Access-Control-Allow-Origin
+                        Connection Content-Length].join(',')
+      end
     end
   CODE
 end
