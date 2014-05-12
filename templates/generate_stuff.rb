@@ -55,8 +55,16 @@ route <<-ROUTE
     end
   end
 
+  get '/robots.txt', to: proc { |env| [
+    200,
+    { "Content-Type" => 'text/plain' },
+    [ "User-agent: *\\nDisallow: /" ]
+  ]}
+
   root to: redirect('/lurker')
 ROUTE
+
+remove_file 'public/robots.txt'
 
 generate 'model User name:string --no-timestamps --no-test-framework --no-migration'
 generate 'model Repo user:references name:string --no-timestamps --no-test-framework --no-migration'
