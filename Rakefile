@@ -84,6 +84,7 @@ Cucumber::Rake::Task.new(:cucumber) do |t|
 end
 
 EXAMPLE_APP = 'tmp/lurker_app'
+GH_PAGES    = 'gh-pages'
 EXAMPLE_PATH = File.expand_path("../#{EXAMPLE_APP}", __FILE__)
 
 namespace :clobber do
@@ -139,6 +140,14 @@ def in_lurker_app(command)
   end
 end
 
+def in_gh_pages(command)
+  Dir.chdir(GH_PAGES) do
+    Bundler.with_clean_env do
+      sh command
+    end
+  end
+end
+
 def on_razum2um_me(command)
   puts "About to run: #{command}"
   system %Q{ssh lurker@razum2um.me 'bash -l -c "source ~/.bashrc; cd ~/lurker; rvm use 2.1.1; #{command}"'}
@@ -164,8 +173,10 @@ task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generat
 desc 'run cucumber in a fresh env'
 task :features => [:regenerate, :cucumber]
 
-desc 'convert docs for example app'
+desc 'convert docs for example app, prepages gh-pages'
 task :build_example_docs => :features do
+  in_lurker_app "rm -rf html"
+  in_lurker_app "ln -s ../../gh-pages html"
   in_lurker_app "bin/lurker convert -c #{File.expand_path('../README.md', __FILE__)}"
   in_lurker_app "bin/lurker convert -f pdf -o html"
 end
@@ -222,6 +233,23 @@ namespace :razum2um do
 
   desc 'rebuilds & pushes app to razum2um.me'
   task :deploy => [:build_example_docs, 'razum2um:push'] do
+  end
+end
+
+namespace :github do
+  desc 'pushes example lurker_app to gh-pages'
+  task :push do
+    do_deploy = Proc.new {
+      in_gh_pages "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'" rescue nil
+      in_gh_pages "git push origin gh-pages"
+    }
+    in_gh_pages "git add -A"
+    in_gh_pages "git status"
+    ask_for_deploy("gh-pages", do_deploy)
+  end
+
+  desc 'rebuilds & pushes app to gh-pages'
+  task :deploy => [:build_example_docs, 'github:push'] do
   end
 end
 
