@@ -213,6 +213,7 @@ namespace :razum2um do
       on_razum2um_me "RAILS_ENV=production bin/rake db:migrate"
       on_razum2um_me "RAILS_ENV=production bin/rake db:import"
       on_razum2um_me "touch tmp/restart.txt"
+      on_razum2um_me "mv html public/lurker"
     }
     ask_for_deploy("razum2um.me", do_deploy)
   end
