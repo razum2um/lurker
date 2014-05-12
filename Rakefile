@@ -174,10 +174,17 @@ task :features => [:regenerate, :cucumber]
 
 desc 'convert docs for example app, prepages gh-pages'
 task :build_example_docs => :features do
-  in_lurker_app "rm -rf html"
-  in_lurker_app "ln -s ../../gh-pages html"
-  in_lurker_app "bin/lurker convert -c #{File.expand_path('../README.md', __FILE__)}"
+  if File.exists? '../README.md'
+    in_lurker_app "bin/lurker convert -c #{File.expand_path('../README.md', __FILE__)}"
+  else
+    in_lurker_app "bin/lurker convert"
+  end
+
   in_lurker_app "bin/lurker convert -f pdf -o html"
+
+  if File.exists? '../../gh-pages'
+    in_lurker_app "cp -R html/* ../../gh-pages"
+  end
 end
 
 def ask_for_deploy(name, callback)
