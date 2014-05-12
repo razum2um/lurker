@@ -89,7 +89,7 @@ are increasing notwithstanding ROLLBACK is called. As such:
 
 ## Demo application
 
-You can clone the repo & run `rake build_example_docs`.
+You can clone the repo & run `rake features`.
 It will generate testing rails application under `tmp/lurker_app`.
 Currently it is deployed [here][demo_app] within sandbox mode and [here][demo_app2].
 
