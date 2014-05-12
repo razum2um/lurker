@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'lurker/version'
+require "lurker/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "lurker"
@@ -32,7 +32,8 @@ Gem::Specification.new do |spec|
   # testing
   spec.add_development_dependency("psych", "~> 2.0")
   spec.add_development_dependency("bundler", "~> 1.3")
-  spec.add_development_dependency("rails", '>= 3.2', '< 4.2')
+  spec.add_development_dependency("rack-cors", "~> 0.2")
+  spec.add_development_dependency("rails", ">= 3.2", "< 4.2")
   spec.add_development_dependency("rake", "~> 10.2")
   spec.add_development_dependency("rspec", "~> 2.14")
   spec.add_development_dependency("cucumber", "~> 1.3")
@@ -46,7 +47,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("coveralls", "~> 0.7")
 
   # FIXME: these gems are needed while cucumber runs
-  # inner Gemfile isn't getting used, but lib's one
+  # inner Gemfile isn"t getting used, but lib"s one
   spec.add_development_dependency("rspec-rails", "~> 2.14")
   spec.add_development_dependency("pg", "~> 0.16")
 end

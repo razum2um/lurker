@@ -252,6 +252,7 @@ inject_into_class 'config/application.rb', 'Application' do
       config.middleware.use Lurker::Sandbox
     end
 
+    require 'rack/cors' # FIXME
     config.middleware.insert 0, Rack::Cors do
       allow do
         origins 'localhost:3000', '127.0.0.1:3000', 'razum2um.github.io', 'lurker-app.herokuapp.com', 'lurker.razum2um.me'

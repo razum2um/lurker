@@ -110,18 +110,17 @@ namespace :generate do
   desc "generate a fresh app with rspec installed"
   task :app do |t|
     if needs_generation?
-      sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --quiet"
+      sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --skip-bundle --quiet"
+      in_lurker_app "bundle config --local local.lurker $PWD/../.."
+      in_lurker_app "bundle install"
+      %w[rake rspec-core spring].each do |gem|
+        in_lurker_app "bundle binstubs #{gem}"
+      end
     end
   end
 
   desc "generate a bunch of stuff with generators"
   task :stuff do
-    in_lurker_app "bundle install"
-    if ENV['BUNDLE_GEMFILE'].to_s.match(/Gemfile(32|40)\.ci$/)
-      %w[rake rspec-core spring].each do |gem|
-        in_lurker_app "bundle binstubs #{gem}"
-      end
-    end
     in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
 
     unless ENV['TRAVIS']
@@ -257,19 +256,32 @@ task :default => ["clobber:coverage", :spec, :regenerate, :cucumber, 'coveralls:
 
 desc 'commits lurker app'
 task :predeploy do
-  in_lurker_app "echo 'bin/lurker' > .gitignore"
-  in_lurker_app "echo 'log' >> .gitignore"
-  # commit migration and deploy by hand first time
-  in_lurker_app "echo 'db/*' >> .gitignore"
-  in_lurker_app "echo 'tmp/*log' >> .gitignore"
-  in_lurker_app "echo '.bundle/*' >> .gitignore"
+  do_predeploy = Proc.new {
+    in_lurker_app "echo 'bin/lurker' > .gitignore"
+    in_lurker_app "echo 'log' >> .gitignore"
+    # commit migration and deploy by hand first time
+    in_lurker_app "echo 'db/*' >> .gitignore"
+    in_lurker_app "echo 'tmp/*log' >> .gitignore"
+    in_lurker_app "echo '.bundle/*' >> .gitignore"
 
-  in_lurker_app "git add -A"
-  in_lurker_app "git status"
+    in_lurker_app "git add -A"
+    in_lurker_app "git status"
+  }
+
+  if (stage = `git log @{u}..`).lines.size > 0
+    puts stage
+    do_push_and_predeploy = Proc.new {
+      sh "git push origin master"
+      do_predeploy.call
+    }
+    ask_for_deploy("push master", do_push_and_predeploy)
+  else
+    do_predeploy.call
+  end
 end
 
 desc 'deploys everything'
-task :deploy => ["razum2um:deploy", "heroku:deploy"]
+task :deploy => ["razum2um:deploy", "heroku:deploy", "github:deploy"]
 
 desc 'pushes everything'
 task :push => ["razum2um:push", "heroku:push", "github:push"]
