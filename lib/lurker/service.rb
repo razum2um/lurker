@@ -43,8 +43,8 @@ class Lurker::Service
     @opened_endpoints.each { |e| e.persist! if e.respond_to? :persist! }
   end
 
-  def verify!(verb, path, extensions, request_params, response_params,
-                   response_status, successful)
+  def verify!(verb, path, request_params,
+              extensions, response_status, response_params, successful=true)
     endpoint = open(verb, path, extensions)
     endpoint.consume!(request_params, response_params, response_status, successful)
   end

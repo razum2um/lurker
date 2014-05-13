@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency("pdfkit", "~> 0.6")
   spec.add_dependency("wkhtmltopdf-binary", "~> 0.9")
   # spec.add_dependency("coderay", "~> 1.0")
+  spec.add_dependency("hashie", "~> 2.1")
 
   # testing
   spec.add_development_dependency("psych", "~> 2.0")

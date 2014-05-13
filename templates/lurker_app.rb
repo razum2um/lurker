@@ -3,8 +3,14 @@ gem 'rspec-rails'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
-gem 'pry-debugger', group: :development
+
+if RUBY_VERSION > '2.0.0'
+  gem 'pry-byebug', group: :development
+else
+  gem 'pry-debugger', group: :development
+end
 gem 'pry-stack_explorer', group: :development
+
 gem 'unicorn', group: :production
 gem 'therubyracer', group: :production
 

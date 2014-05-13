@@ -51,6 +51,9 @@ require 'lurker/presenters/service_presenter'
 require 'lurker/presenters/endpoint_presenter'
 require 'lurker/presenters/schema_presenter'
 require 'lurker/presenters/response_code_presenter'
+require 'lurker/spy'
+require 'lurker/request'
+require 'lurker/response'
 
 if defined? Rails
   require 'lurker/engine'

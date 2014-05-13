@@ -24,15 +24,18 @@ module Lurker
       if successful = Lurker.decide_success(response_params, real_response.status)
         @__request_params.stringify_keys! # FIXME
         @__lurker_service.verify!(
-          verb, endpoint_path, extensions.merge(path_params: path_params),
-          parsed_request_params(@__request_params), response_params,
-          real_response.status, successful
+          verb, endpoint_path, 
+          parsed_request_params(@__request_params),
+          extensions,
+          real_response.status,
+          response_params
         )
       end
     end
 
     def extensions
       @extensions = {
+        path_params: path_params,
         path_info: request.env['PATH_INFO'],
         method: request.env['REQUEST_METHOD'],
         suffix: ''

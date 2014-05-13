@@ -18,10 +18,10 @@ module Lurker
           @__env ||= {}
 
           if @__action.is_a?(Symbol)
-            unless @__example.metadata.described_class.is_a?(Class)
+            unless Spy.current.block.metadata.described_class.is_a?(Class)
               raise 'cannot determine request url: provide proper described class like: "describe MyController do"'
             end
-            controller_name = @__example.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
+            controller_name = Spy.current.block.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
             @__action = URI.parse(url_for({ controller: controller_name, action: @__action }.merge(@__request_params))).path
           end
 
@@ -51,7 +51,12 @@ module Lurker
             )
           end
 
-          verify(verb, endpoint_path)
+          Spy.current.verb = verb
+          Spy.current.endpoint_path = endpoint_path
+          Spy.current.payload = @__request_params
+          Spy.current.extensions = extensions
+          Spy.current.status = real_response.status
+          Spy.current.body = response_params
         end
 
         begin
@@ -67,7 +72,7 @@ module Lurker
       end
 
       around do |example|
-        wrapper(example)
+        Spy.on(&example)
       end
     end
   end
