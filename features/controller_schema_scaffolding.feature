@@ -32,17 +32,24 @@ Feature: controller schema scaffolding
     description: user
     prefix: users management
     requestParameters:
+      description: ''
+      type: object
+      additionalProperties: false
+      required: []
       properties:
         id:
           description: ''
           type: integer
           example: 1
-      required: []
     responseCodes:
     - status: 200
       successful: true
       description: ''
     responseParameters:
+      description: ''
+      type: object
+      additionalProperties: false
+      required: []
       properties:
         id:
           description: ''
@@ -52,7 +59,6 @@ Feature: controller schema scaffolding
           description: ''
           type: string
           example: razum2um
-      required: []
     extensions:
       method: GET
       path_info: "/api/v1/users/1"

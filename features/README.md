@@ -8,7 +8,7 @@ This is the official documentation site for [Lurker][Github]
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/87ced56265849ad6386c2ba0a78f8038 "githalytics.com")](http://githalytics.com/razum2um/lurker)
 
 
-[Github]: https://github.com/razum2um/lurker
+[Github]: https://razum2um.github.io/lurker
 [Gem Version]: https://rubygems.org/gems/lurker
 [Build Status]: https://travis-ci.org/razum2um/lurker
 [Dependency Status]: https://gemnasium.com/razum2um/lurker

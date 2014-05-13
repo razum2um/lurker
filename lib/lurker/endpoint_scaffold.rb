@@ -69,7 +69,7 @@ class Lurker::EndpointScaffold < Lurker::Endpoint
 
   def scaffold_hash(schema, params, options = {})
     schema["description"] ||= ""
-    schema["type"] ||= "object" unless options[:root_object]
+    schema["type"] ||= "object"
     schema["additionalProperties"] = false if schema["additionalProperties"].nil?
     schema["required"] ||= []
     schema["properties"] ||= {}

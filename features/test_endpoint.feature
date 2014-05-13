@@ -13,8 +13,19 @@ Feature: test endpoint
     Given a file named "lurker/api/v1/users/__id-PATCH.json.yml" with:
       """yml
       ---
-      prefix: ''
-      description: ''
+      prefix: 'users management'
+      description: 'user updating'
+      requestParameters:
+        properties:
+          id:
+            type: integer
+            example: 1
+          user:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Bob
       responseCodes:
       - status: 400
         successful: true
@@ -22,33 +33,14 @@ Feature: test endpoint
       - status: 200
         successful: true
         description: ''
-      requestParameters:
-        properties:
-          id:
-            description: ''
-            type: integer
-            example: 1
-          user:
-            description: ''
-            type: object
-            properties:
-              name:
-                description: ''
-                type: string
-                example: Bob
-            required: []
-        required: []
       responseParameters:
         properties:
           id:
-            description: ''
             type: integer
             example: 1
           name:
-            description: ''
             type: string
             example: Bob
-        required: []
       extensions:
         path_info: "/api/v1/users/1"
         method: PATCH

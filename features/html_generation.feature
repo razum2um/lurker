@@ -16,15 +16,11 @@ Feature: html generation
       requestParameters:
         properties:
           user:
-            description: ''
             type: object
             properties:
               name:
-                description: ''
                 type: string
                 example: Bob
-            required: []
-        required: []
       responseCodes:
       - status: 200
         successful: true
@@ -32,11 +28,9 @@ Feature: html generation
       responseParameters:
         properties:
           id:
-            description: ''
             type: integer
             example: 1
           name:
-            description: ''
             type: string
             example: Bob
         required: []

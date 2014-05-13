@@ -34,6 +34,10 @@ Feature: controller nested schema scaffolding
     description: repo listing
     prefix: repos management
     requestParameters:
+      description: ''
+      type: object
+      additionalProperties: false
+      required: []
       properties:
         user_id:
           description: ''
@@ -43,7 +47,6 @@ Feature: controller nested schema scaffolding
           description: ''
           type: integer
           example: 1
-      required: []
     responseCodes:
     - status: 200
       successful: true
@@ -53,6 +56,8 @@ Feature: controller nested schema scaffolding
       items:
         description: ''
         type: object
+        additionalProperties: false
+        required: []
         properties:
           id:
             description: ''
@@ -66,7 +71,6 @@ Feature: controller nested schema scaffolding
             description: ''
             type: integer
             example: 1
-        required: []
     extensions:
       method: GET
       path_info: "/api/v1/users/1/repos"

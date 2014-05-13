@@ -31,13 +31,20 @@ Feature: request nested schema scaffolding
     description: repo
     prefix: repos management
     requestParameters:
-      properties: {}
+      description: ''
+      type: object
+      additionalProperties: false
       required: []
+      properties: {}
     responseCodes:
     - status: 200
       successful: true
       description: ''
     responseParameters:
+      description: ''
+      type: object
+      additionalProperties: false
+      required: []
       properties:
         id:
           description: ''
@@ -51,7 +58,6 @@ Feature: request nested schema scaffolding
           description: ''
           type: integer
           example: 1
-      required: []
     extensions:
       method: GET
       path_info: "/api/v1/users/1/repos/1"

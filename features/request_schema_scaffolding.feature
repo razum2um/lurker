@@ -35,12 +35,15 @@ Feature: request schema scaffolding
     description: user listing
     prefix: users management
     requestParameters:
+      description: ''
+      type: object
+      additionalProperties: false
+      required: []
       properties:
         limit:
           description: ''
           type: string
           example: '1'
-      required: []
     responseCodes:
     - status: 200
       successful: true
@@ -50,6 +53,8 @@ Feature: request schema scaffolding
       items:
         description: ''
         type: object
+        additionalProperties: false
+        required: []
         properties:
           id:
             description: ''
@@ -59,7 +64,6 @@ Feature: request schema scaffolding
             description: ''
             type: string
             example: razum2um
-        required: []
     extensions:
       method: GET
       path_info: "/api/v1/users"

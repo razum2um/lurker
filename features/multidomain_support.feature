@@ -24,7 +24,7 @@ Feature: mutidomain support
       domains:
         '[Sandbox] Heroku': 'http://lurker-app.herokuapp.com'
         '[Real] razum2um.me': 'http://lurker.razum2um.me'
-      name: LurkerApp
+      name: Lurker
       extensions: {}
       """
     And a file named "lurker/api/v1/users/__id-DELETE.json.yml" with:
@@ -35,10 +35,8 @@ Feature: mutidomain support
       requestParameters:
         properties:
           id:
-            description: ''
             type: integer
             example: 1
-        required: []
       responseCodes:
       - status: 200
         successful: true

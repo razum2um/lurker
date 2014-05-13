@@ -15,42 +15,33 @@ Feature: schema suffixes
       ---
       prefix: 'repos management'
       description: 'repo updating'
+      requestParameters:
+        properties:
+          id:
+            type: string
+            example: 1
+          user_id:
+            type: string
+            example: razum2um
+          repo:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'updated-name'
       responseCodes:
       - status: 200
         successful: true
         description: ''
-      requestParameters:
-        properties:
-          id:
-            description: ''
-            type: string
-            example: 1
-          user_id:
-            description: ''
-            type: string
-            example: razum2um
-          repo:
-            description: ''
-            type: object
-            properties:
-              name:
-                description: ''
-                type: string
-                example: 'updated-name'
-            required: []
-        required: []
       responseParameters:
         properties:
           id:
-            description: ''
             type: integer
             example: 1
           name:
-            description: ''
             type: string
             example: 'updated-name'
           user_id:
-            description: ''
             type: integer
             example: 1
         required: []
@@ -96,45 +87,35 @@ Feature: schema suffixes
       ---
       prefix: 'repos management'
       description: 'failed repo updating'
+      requestParameters:
+        properties:
+          id:
+            type: string
+            example: 1
+          user_id:
+            type: string
+            example: razum2um
+          repo:
+            type: object
+            properties:
+              name:
+                type: string
+                example: ''
       responseCodes:
       - status: 400
         successful: true
         description: ''
-      requestParameters:
-        properties:
-          id:
-            description: ''
-            type: string
-            example: 1
-          user_id:
-            description: ''
-            type: string
-            example: razum2um
-          repo:
-            description: ''
-            type: object
-            properties:
-              name:
-                description: ''
-                type: string
-                example: ''
-            required: []
-        required: []
       responseParameters:
         properties:
           errors:
-            description: ''
             type: object
             example: 1
             properties:
               name:
-                description: ''
                 type: array
                 items:
-                  description: ''
                   type: string
                   example: can't be blank
-        required: []
       extensions:
         path_info: "/api/v1/users/razum2um/repos/lurker"
         method: PATCH
