@@ -33,6 +33,9 @@ but scaffolded schemas are pretty good by default.
     A  lurker/api/v1/users-GET.json.yml
     A  lurker/api/v1/users/__user_id/repos-GET.json.yml
 
+I also advise you to look on [Understanding JSON Schema][json_schema_book] book,
+it is up-to-date with draft4 and contains lot's of examples.
+
 ## Profit!
 
 Now, every test run lurker will look into your requests and [vaditate them][failed_spec_example]
@@ -159,6 +162,7 @@ Also thanks to
 [rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
 [json_schema]: http://json-schema.org/
 [json_schema_example]: http://json-schema.org/example2.html
+[json_schema_book]: http://spacetelescope.github.io/understanding-json-schema/
 [evil_martians]: http://evilmartians.com/
 
 [failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/test-endpoint
