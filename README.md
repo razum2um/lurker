@@ -177,7 +177,7 @@ Also thanks to
 [demo_app2]: http://lurker.razum2um.me
 [demo_app3]: http://razum2um.github.io/lurker/
 [demo_live]: http://lurker.razum2um.me/lurker/api/v1/users-POST.html
-[pdf_example]: http://razum2um.github.io/lurker/LurkerApp.pdf
+[pdf_example]: http://razum2um.github.io/lurker/Lurker%20Demo%20Application.pdf
 [partial_example_demo]: http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html
 
 [Gem Version]: https://rubygems.org/gems/lurker
