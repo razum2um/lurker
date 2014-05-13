@@ -36,8 +36,8 @@
       <div class="row">
         <div class="col-md-9" role="main">
           <div class="bs-docs-section">
-            <h1 id="endpoint" class="page-header">repo updating</h1>
-<pre>PATCH /api/v1/users/:user_id/repos/:id</pre>
+            <h1 id="endpoint" class="page-header">user updating</h1>
+<pre>PATCH /api/v1/users/:id</pre>
 
 <h3>Example</h3>
 <script type="text/jsx">
@@ -49,8 +49,8 @@
     },
     getInitialState: function() {
       var state = {};
-      var values = JSON.parse('[{"label":"user_id","value":"razum2um"},{"label":"id","value":"lurker"}]');
-      var template = '/api/v1/users/:user_id/repos/:id';
+      var values = JSON.parse('[{"label":"id","value":1}]');
+      var template = '/api/v1/users/:id';
       var method = 'PATCH';
       var hosts = JSON.parse('{"[Sandbox] Heroku":"http://lurker-app.herokuapp.com","[Real] razum2um.me":"http://lurker.razum2um.me"}');
       var host = 'http://lurker-app.herokuapp.com';
@@ -82,7 +82,7 @@
       state.values = values;
       state.template = template;
       state.action = this.renderAction(host, template, values);
-      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('{"repo":{"name":"updated-name"}}')));
+      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('{"user":{"name":"Bob"}}')));
       return state;
     },
     getPayload: function() {
@@ -148,15 +148,9 @@
             <div className="bs-example url-params" id="url-payload">
               <fieldset ref="url-params">
                   <div className="form-group">
-                    <label className="control-label col-sm-3" htmlFor="user_id">user_id</label>
-                    <div className="col-sm-9">
-                      <input type="text" valueLink={this.linkState('values.0.value')} className="form-control"></input>
-                    </div>
-                  </div>
-                  <div className="form-group">
                     <label className="control-label col-sm-3" htmlFor="id">id</label>
                     <div className="col-sm-9">
-                      <input type="text" valueLink={this.linkState('values.1.value')} className="form-control"></input>
+                      <input type="text" valueLink={this.linkState('values.0.value')} className="form-control"></input>
                     </div>
                   </div>
               </fieldset>
@@ -165,9 +159,9 @@
             <div className="bs-example post-params" id="post-payload">
               <fieldset ref="post-params">
                 <div className="form-group">
-  <label className="control-label col-sm-3" htmlFor="repo[name]">repo[name]</label>
+  <label className="control-label col-sm-3" htmlFor="user[name]">user[name]</label>
   <div className="col-sm-9">
-        <input type="text" name="repo[name]" defaultValue="updated-name" className="form-control" onChange={this.afterSetPartialState}></input>
+        <input type="text" name="user[name]" defaultValue="Bob" className="form-control" onChange={this.afterSetPartialState}></input>
   </div>
 </div>
 
@@ -184,7 +178,7 @@
     }
   });
 
-  var submitForm = <SubmitForm template="/api/v1/users/:user_id/repos/:id" />;
+  var submitForm = <SubmitForm template="/api/v1/users/:id" />;
   // FIXME: see multidomain feature - cannot select node in phantomjs
   window.submitForm = submitForm;
   React.renderComponent(submitForm, document.getElementById('submit-form'));
@@ -212,34 +206,28 @@
   </table>
   <pre><code id="response" ref="response-example" class="hljs">{
   "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"updated-name"</span></span>,
-  "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Bob"</span>
 </span>}</code></pre>
   <pre><code ref="response-raw" style="display: none;"></code></pre>
 </div> <!-- ./#show-api-response-div -->
 
 <h3>Request Schema</h3>
-<div class="schema"><ul><li>    <span id="id-0--2561620409877939635">
-      <a href="#id-0--2561620409877939635" class="anchor">
+<div class="schema"><ul><li>    <span id="id-0--3884904566308561014">
+      <a href="#id-0--3884904566308561014" class="anchor">
         <tt>id</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="user_id-0--2702762705953396340">
-      <a href="#user_id-0--2702762705953396340" class="anchor">
-        <tt>user_id</tt>
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="user-0--2365316712142155748">
+      <a href="#user-0--2365316712142155748" class="anchor">
+        <tt>user</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;razum2um&quot;</tt></li></ul></div></li><li>    <span id="repo-0--1623962235864121573">
-      <a href="#repo-0--1623962235864121573" class="anchor">
-        <tt>repo</tt>
-      </a>
-    </span>
-<div class="schema"><ul><li>Required: no</li><li>    <span id="name-1--1577220092733098822">
-      <a href="#name-1--1577220092733098822" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>    <span id="name-1--4491770282104517150">
+      <a href="#name-1--4491770282104517150" class="anchor">
         <tt>name</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;updated-name&quot;</tt></li></ul></div></li></ul></div></li></ul></div>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;Bob&quot;</tt></li></ul></div></li></ul></div></li></ul></div>
 
 <h3>Response Schema</h3>
 <div class="schema"><ul><li>    <span id="id-0--3884904566308561014">
@@ -247,24 +235,19 @@
         <tt>id</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-0--1577220092733098822">
-      <a href="#name-0--1577220092733098822" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-0--4491770282104517150">
+      <a href="#name-0--4491770282104517150" class="anchor">
         <tt>name</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;updated-name&quot;</tt></li></ul></div></li><li>    <span id="user_id-0--3884904566308561014">
-      <a href="#user_id-0--3884904566308561014" class="anchor">
-        <tt>user_id</tt>
-      </a>
-    </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li></ul></div>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;Bob&quot;</tt></li></ul></div></li></ul></div>
 
           </div>
         </div>
         <div class="col-md-3">
           <div class="bs-docs-sidebar hidden-print" role="complementary">
             <ul class="nav bs-docs-sidenav">
-                <li class="endpoint-group false">
+                <li class="endpoint-group active">
       <a href="#">users management</a>
       <ul class="nav">
             <li class="false">
@@ -295,7 +278,7 @@
                   <span>user</span>
                 </a>
             </li>
-            <li class="false">
+            <li class="active">
                 <a href="/lurker/api/v1/users/__id-PATCH.html">
                   <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:id</span>
                   <br>
@@ -304,7 +287,7 @@
             </li>
       </ul>
   </li>
-  <li class="endpoint-group active">
+  <li class="endpoint-group false">
       <a href="#">repos management</a>
       <ul class="nav">
             <li class="false">
@@ -328,7 +311,7 @@
                   <span>repo</span>
                 </a>
             </li>
-            <li class="active">
+            <li class="false">
                 <a href="/lurker/api/v1/users/__user_id/repos/__id-PATCH.html">
                   <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id</span>
                   <br>
