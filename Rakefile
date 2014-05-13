@@ -182,8 +182,8 @@ task :build_example_docs => :features do
 
   in_lurker_app "bin/lurker convert -f pdf -o html"
 
-  if File.exists? '../../gh-pages'
-    in_lurker_app "cp -R html/* ../../gh-pages"
+  if File.exists?(pages = File.expand_path('../gh-pages', __FILE__))
+    in_lurker_app "cp -R html/* #{pages}"
   end
 end
 
