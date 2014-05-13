@@ -2,20 +2,17 @@ require 'json'
 
 module Lurker
   class Spy
-    attr_reader :block, :service, :request, :response
+    attr_reader :block, :service
+    attr_accessor :request, :response
 
     extend Forwardable
-    delegate [:verb, :endpoint_path, :payload] => :request
-    delegate [:verb=, :endpoint_path=, :payload=] => :request
-    delegate [:status, :body, :extensions] => :response
-    delegate [:status=, :body=, :extensions=] => :response
+    delegate [:verb, :payload] => :request
+    delegate [:status, :body] => :response
 
     def initialize(options={}, &block)
       @options = options
       @block = block
 
-      @request = Request.new
-      @response = Response.new
       @service = if defined?(Rails)
         Service.new(Rails.root.join(DEFAULT_SERVICE_PATH).to_s, Rails.application.class.parent_name)
       else
@@ -23,26 +20,40 @@ module Lurker
       end
     end
 
-    %w[payload body extensions].each do |meth|
-      define_method "#{meth}_with_jsonify=" do |value|
-        value = JSON.parse(value) if value.is_a? String
-        value.stringify_keys! if value.is_a? Hash
-        send "#{meth}_without_jsonify=", value
-      end
-      alias_method_chain "#{meth}=", :jsonify
-    end
-
     def call
       @block.call.tap do |result|
-        @service.verify!(
-          verb, endpoint_path, payload,
-          extensions, status, body
-        )
+        if @request && @response
+          @service.verify!(
+            verb, endpoint_path, payload,
+            extensions, status, body
+          )
 
-        @service.persist! if success?(result)
+          @service.persist! if success?(result)
+        end
       end
-    ensure
-      # recover methods
+    end
+
+    def endpoint_path
+      [request.endpoint_path, suffix].compact.join('-')
+    end
+
+    def extensions
+      extensions = {
+        path_params: request.path_params.stringify_keys,
+        path_info: request.path_info,
+        method: request.verb,
+        suffix: suffix.to_s,
+      }
+      unless request.query_params.empty?
+        extensions[:query_params] = request.query_params
+      end
+      extensions
+    end
+
+    def suffix
+      if (suffix = @options[:suffix]).is_a?(String)
+        suffix.gsub(/[^[[:alnum:]]]/, '_')
+      end
     end
 
     def success?(result)
@@ -63,7 +74,9 @@ module Lurker
     end
 
     def self.current
-      Thread.current[:lurker_spy]
+      Thread.current[:lurker_spy].tap do |spy|
+        raise "No Lurker::Spy in threadlocal" if spy.nil?
+      end
     end
   end
 end

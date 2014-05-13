@@ -1,62 +1,46 @@
-require 'json'
 require 'lurker'
 
 module Lurker
   module RequestSpecWatcher
     extend ActiveSupport::Concern
-    include SpecWatcher
+
+    module ClassMethods
+      module LurkerSession
+        def process(method, path, parameters = nil, headers_or_env = nil)
+          super.tap do
+            Lurker::Spy.current.request  = Lurker::Request.build_from_action_dispatch(@request)
+            Lurker::Spy.current.response = Lurker::Response.build_from_action_dispatch(@response)
+          end
+        end
+      end
+
+      def new(*args, &blk)
+        super(*args, &blk).extend(LurkerSession)
+      end
+    end
+  end
+
+  module RspecRequestAction
+    extend ActiveSupport::Concern
+    ACTIONS = [:get, :post, :put, :delete, :patch].freeze
 
     included do
-      # _describe = self # RSpec::ExampleGroups::... # class
-      actions = [:get, :post, :put, :delete, :patch]
-      actions.each do |verb|
+      ACTIONS.each do |verb|
         send(:define_method, "#{verb}_with_lurker") do |*params|
-          @__action, @__request_params, @__env = params
+          action, request_params, env = params
 
-          @__request_params ||= {}
-          @__query_params ||= {}
-          @__env ||= {}
+          request_params ||= {}
+          env ||= {}
 
-          if @__action.is_a?(Symbol)
-            unless Spy.current.block.metadata.described_class.is_a?(Class)
+          if action.is_a?(Symbol)
+            unless @_example.metadata.described_class.is_a?(Class)
               raise 'cannot determine request url: provide proper described class like: "describe MyController do"'
             end
-            controller_name = Spy.current.block.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
-            @__action = URI.parse(url_for({ controller: controller_name, action: @__action }.merge(@__request_params))).path
+            controller_name = @_example.metadata.described_class.name.tableize.gsub(/_controllers$/, '')
+            action = URI.parse(url_for({ controller: controller_name, action: action }.merge(request_params))).path
           end
 
-          @__query_params.merge! ::Rack::Utils.parse_query URI.parse(@__action).query
-
-          send("#{verb}_without_lurker", @__action, @__request_params, @__env)
-
-          endpoint_path = explicit_path(@__example)
-
-          return if endpoint_path.nil? # not lurker
-
-          if inside_rails_controller_spec?
-            if endpoint_path == true
-              endpoint_path = path_regexp
-            elsif endpoint_path.to_s.match(/^[^\/]/)
-              endpoint_path = "#{path_regexp}-#{endpoint_path.gsub(/[^[[:alnum:]]]/, '_')}"
-            end
-          end
-
-          if endpoint_path.blank?
-            raise Lurker::ValidationError.new(<<-MSG.gsub(/^ {14}/, '')
-              cannot determine path for .lurker, please, do it explicitly:
-                it "tests", lurker: 'some-lurker-file-suffix' do
-                  ...
-                end
-              MSG
-            )
-          end
-
-          Spy.current.verb = verb
-          Spy.current.endpoint_path = endpoint_path
-          Spy.current.payload = @__request_params
-          Spy.current.extensions = extensions
-          Spy.current.status = real_response.status
-          Spy.current.body = response_params
+          send("#{verb}_without_lurker", action, request_params, env)
         end
 
         begin
@@ -70,16 +54,21 @@ module Lurker
           end
         end
       end
-
-      around do |example|
-        Spy.on(&example)
-      end
     end
   end
 end
 
 if defined?(RSpec)
   RSpec.configure do |config|
-    config.include Lurker::RequestSpecWatcher, type: :request
+    config.include Lurker::RspecRequestAction, type: :request
+    config.around(:each, type: :request) do |example|
+      @_example = example
+      if (metadata = example.metadata[:lurker]).present?
+        Lurker::Spy.on(suffix: metadata, &example)
+      else
+        example.call
+      end
+    end
   end
+  ActionDispatch::Integration::Session.send :include, Lurker::RequestSpecWatcher
 end

@@ -299,8 +299,6 @@ file 'spec/support/fixme.rb', force: true do
     require 'database_cleaner'
     DatabaseCleaner.strategy = :truncation
 
-    require 'lurker/spec_watcher'
-
     RSpec.configure do |c|
       c.treat_symbols_as_metadata_keys_with_true_values = true
       c.backtrace_exclusion_patterns += [
@@ -318,6 +316,9 @@ file 'spec/support/fixme.rb', force: true do
         DatabaseCleaner.clean
       end
     end
+
+    require 'lurker/spec_watcher'
+
   CODE
 end
 

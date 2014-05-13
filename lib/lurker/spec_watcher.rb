@@ -60,7 +60,7 @@ module Lurker
     # ActionDispatch::Journey::Route || nil
     def current_route_params
       return [@__current_route, @__path_params] if @__current_route && @__path_params
-      router.recognize(request) do |route, _, parameters|
+      router.recognize(request) do |route, _, parameters| # @request.env["action_dispatch.request.path_parameters"]
         return [@__current_route = route, @__path_params = parameters]
       end
       [] # never?
