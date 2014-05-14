@@ -69,6 +69,15 @@ Then /^the output should contain (failures|these lines):$/ do |_, lines|
   end
 end
 
+Then /^the output should contain unescaped (failures|these lines):$/ do |_, lines|
+  out = all_output.dup
+  lines.split(/\n/).map(&:strip).each do |line|
+    next if line.blank?
+    expect(out).to match /#{line}/
+    out.gsub!(/.*?#{line}/m, '')
+  end
+end
+
 Then(/^I should see JSON response with "([^"]*)"$/) do |name|
   within(find(:xpath, "//*[@id='show-api-response-div']")) do
     expect(page).to have_content name

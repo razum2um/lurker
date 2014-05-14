@@ -27,9 +27,9 @@ Feature: minitest
       """
 
   When I run `ruby test/integration/destroy_repo_test.rb`
-  Then the output should contain:
+  Then the output should contain unescaped these lines:
     """
-    1 runs, 3 assertions, 0 failures, 0 errors, 0 skips
+    1 (runs|tests), 3 assertions, 0 failures, 0 errors, 0 skips
     """
   Then a file named "lurker/api/v1/users/__user_id/repos/__id-DELETE.json.yml" should exist
   Then the file "lurker/api/v1/users/__user_id/repos/__id-DELETE.json.yml" should contain exactly:
@@ -133,5 +133,8 @@ Feature: minitest
       Response
         The property '#/' contains additional properties ["errors"]
 
-    1 runs, 1 assertions, 0 failures, 1 errors, 0 skips
+    """
+  And the output should contain unescaped these lines:
+    """
+    1 (runs|tests), 1 assertions, 0 failures, 1 errors, 0 skips
     """
