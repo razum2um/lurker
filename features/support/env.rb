@@ -41,7 +41,7 @@ Before do
     system "bin/spring stop"
     FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/lurker', __FILE__)
     FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/html', __FILE__)
-    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/spec/request', __FILE__)
+    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/spec/requests', __FILE__)
     FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/spec/controllers', __FILE__)
   end
 end

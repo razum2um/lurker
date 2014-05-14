@@ -18,12 +18,16 @@ module Lurker
         verb: request.method,
         endpoint_path: route_name(request),
         path_info: request.path_info,
-        path_params: request.env["#{PREFIX}.path_parameters"],
+        path_params: request.env["#{PREFIX}.path_parameters"].stringify_keys.except('format'),
         query_params: request.env["#{PREFIX}.query_parameters"],
         payload: request.env["#{PREFIX}.request_parameters"].merge(
           request.env["#{PREFIX}.query_parameters"]
-        )
+        ).stringify_keys.except('action', "controller", 'format', '_method')
       )
+    end
+
+    def self.reject_internal(hash)
+
     end
 
     def self.route_name(request)

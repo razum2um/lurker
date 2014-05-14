@@ -86,8 +86,8 @@ Feature: test endpoint
         end
 
         it "updates a user" do
-          patch :update, id: user.id, user: { name: 1 }
-          expect(response).not_to be_success
+          patch :update, id: user.id, user: { name: 1 }, format: 'json'
+          expect(response).to be_success
         end
       end
       """
@@ -103,7 +103,7 @@ Feature: test endpoint
     """
 
   Scenario: json schema tests response parameters and tell what fails using "users/update"
-    Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
+    Given a file named "spec/controllers/api/v1/users_controller_blank_spec.rb" with:
       """ruby
       require "spec_helper"
 
@@ -115,13 +115,13 @@ Feature: test endpoint
         end
 
         it "updates a user" do
-          patch :update, id: user.id, user: { name: '' }
+          patch :update, id: user.id, user: { name: '' }, format: 'json'
           expect(response).not_to be_success
         end
       end
       """
 
-  When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
+  When I run `bin/rspec spec/controllers/api/v1/users_controller_blank_spec.rb`
   Then the output should contain failures:
     """
     Lurker::ValidationError:

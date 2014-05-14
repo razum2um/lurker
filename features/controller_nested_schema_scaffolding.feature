@@ -18,7 +18,7 @@ Feature: controller nested schema scaffolding
         end
 
         it "lists all the repos of the user" do
-          get :index, user_id: user.id, limit: 1
+          get :index, user_id: user.id, limit: 1, format: 'json'
           expect(response).to be_success
           expect(JSON.parse(response.body).size).to eq 1
         end
@@ -39,10 +39,6 @@ Feature: controller nested schema scaffolding
       additionalProperties: false
       required: []
       properties:
-        user_id:
-          description: ''
-          type: integer
-          example: 1
         limit:
           description: ''
           type: integer
@@ -73,13 +69,13 @@ Feature: controller nested schema scaffolding
             example: 1
     extensions:
       method: GET
-      path_info: "/api/v1/users/1/repos"
+      path_info: "/api/v1/users/1/repos.json"
       path_params:
-        action: index
-        controller: api/v1/repos
         user_id: '1'
+        controller: api/v1/repos
+        action: index
       query_params:
-        limit: '1'
+        limit: 1
       suffix: ''
 
     """

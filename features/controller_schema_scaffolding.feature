@@ -17,7 +17,7 @@ Feature: controller schema scaffolding
         end
 
         it "shows user" do
-          get :show, id: user.id
+          get :show, id: user.id, format: 'json'
           expect(response).to be_success
         end
       end
@@ -36,11 +36,7 @@ Feature: controller schema scaffolding
       type: object
       additionalProperties: false
       required: []
-      properties:
-        id:
-          description: ''
-          type: integer
-          example: 1
+      properties: {}
     responseCodes:
     - status: 200
       successful: true
@@ -61,11 +57,11 @@ Feature: controller schema scaffolding
           example: razum2um
     extensions:
       method: GET
-      path_info: "/api/v1/users/1"
+      path_info: "/api/v1/users/1.json"
       path_params:
-        action: show
-        controller: api/v1/users
         id: '1'
+        controller: api/v1/users
+        action: show
       suffix: ''
 
   """

@@ -36,7 +36,7 @@ Feature: html generation
         required: []
       extensions:
         method: POST
-        path_info: "/api/v1/users"
+        path_info: "/api/v1/users.json"
         path_params:
           action: create
           controller: api/v1/users

@@ -16,7 +16,7 @@ Feature: request nested schema scaffolding
         end
 
         it "shows a user's repo" do
-          get "api/v1/users/#{user.id}/repos/#{user.repos.first.id}"
+          get "api/v1/users/#{user.id}/repos/#{user.repos.first.id}.json"
           expect(response).to be_success
         end
       end
@@ -60,7 +60,7 @@ Feature: request nested schema scaffolding
           example: 1
     extensions:
       method: GET
-      path_info: "/api/v1/users/1/repos/1"
+      path_info: "/api/v1/users/1/repos/1.json"
       path_params:
         action: show
         controller: api/v1/repos

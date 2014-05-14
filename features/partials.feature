@@ -42,7 +42,7 @@ Feature: partials
       requestParameters:
         properties:
           user_id:
-            type: integer
+            type: string
             example: 1
           repo:
             properties:
@@ -56,7 +56,7 @@ Feature: partials
         $ref: '../../../../definitions/repo.json#/'
       extensions:
         method: POST
-        path_info: "/api/v1/users/1/repos"
+        path_info: "/api/v1/users/1/repos.json"
         path_params:
           action: create
           controller: api/v1/repos
@@ -75,7 +75,7 @@ Feature: partials
 
         it "creates a new repo" do
           expect {
-            post "api/v1/users/#{user.id}/repos", repo: { name: 'new-gem' }
+            post "api/v1/users/#{user.id}/repos.json", repo: { name: 'new-gem' }
             expect(response).to be_success
             expect(JSON.parse(response.body)['user']).to eq JSON.parse(user.to_json)
           }.to change { Repo.count } .by(1)

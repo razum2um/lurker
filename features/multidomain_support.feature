@@ -45,7 +45,7 @@ Feature: mutidomain support
         properties: {}
       extensions:
         method: DELETE
-        path_info: "/api/v1/users/1"
+        path_info: "/api/v1/users/1.json"
         path_params:
           action: destroy
           controller: api/v1/users

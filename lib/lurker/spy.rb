@@ -2,6 +2,8 @@ require 'json'
 
 module Lurker
   class Spy
+    class BlindError < StandardError; end
+
     attr_reader :block, :service
     attr_accessor :request, :response
 
@@ -21,6 +23,7 @@ module Lurker
     end
 
     def call
+      #@request = @response = nil # fill in while test
       @block.call.tap do |result|
         if @request && @response
           @service.verify!(
@@ -39,7 +42,7 @@ module Lurker
 
     def extensions
       extensions = {
-        path_params: request.path_params.stringify_keys,
+        path_params: request.path_params,
         path_info: request.path_info,
         method: request.verb,
         suffix: suffix.to_s,
@@ -73,10 +76,12 @@ module Lurker
       end
     end
 
+    def self.enabled?
+      current.present?
+    end
+
     def self.current
-      Thread.current[:lurker_spy].tap do |spy|
-        raise "No Lurker::Spy in threadlocal" if spy.nil?
-      end
+      Thread.current[:lurker_spy]
     end
   end
 end

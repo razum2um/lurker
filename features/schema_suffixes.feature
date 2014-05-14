@@ -46,7 +46,7 @@ Feature: schema suffixes
             example: 1
         required: []
       extensions:
-        path_info: "/api/v1/users/razum2um/repos/lurker"
+        path_info: "/api/v1/users/razum2um/repos/lurker.json"
         method: PATCH
         suffix: ''
         path_params:
@@ -71,7 +71,7 @@ Feature: schema suffixes
 
         it "updates a repo name" do
           expect {
-            patch "/api/v1/users/#{user.name}/repos/#{repo.name}", repo: { name: 'updated-name' }
+            patch "/api/v1/users/#{user.name}/repos/#{repo.name}.json", repo: { name: 'updated-name' }
             expect(response).to be_success
           }.to change { repo.reload.name } .from('lurker').to('updated-name')
         end
@@ -117,7 +117,7 @@ Feature: schema suffixes
                   type: string
                   example: can't be blank
       extensions:
-        path_info: "/api/v1/users/razum2um/repos/lurker"
+        path_info: "/api/v1/users/razum2um/repos.json"
         method: PATCH
         suffix: 'failed'
         path_params:
@@ -142,7 +142,7 @@ Feature: schema suffixes
 
         it "fails to update a repo with a blank name", lurker: 'failed' do
           expect {
-            patch "/api/v1/users/#{user.name}/repos/#{repo.name}", repo: { name: '' }
+            patch "/api/v1/users/#{user.name}/repos/#{repo.name}.json", repo: { name: '' }
             expect(response).not_to be_success
           }.not_to change { repo.reload.name }
         end
