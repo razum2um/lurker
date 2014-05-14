@@ -14,7 +14,9 @@ module Lurker
             request_params ||= {}
             env ||= {}
 
-            if action.is_a?(Symbol)
+            # obsolete, support controller -> request migration
+            # supports `get :index` in request specs
+            if @_example && @_example.metadata[:type] == :request && action.is_a?(Symbol)
               unless @_example.metadata.described_class.is_a?(Class)
                 raise 'cannot determine request url: provide proper described class like: "describe MyController do"'
               end
@@ -28,6 +30,7 @@ module Lurker
           begin
             send :alias_method_chain, verb, :lurker
           rescue NameError
+            # no patch in Rails3.2
             if verb == :patch
               alias_method :patch_without_lurker, :put_without_lurker
               alias_method :patch, :patch_with_lurker
@@ -43,15 +46,13 @@ end
 
 if defined?(RSpec)
   RSpec.configure do |config|
-    # obsolete, support controller -> request migration
-    # supports `get :index` in request specs
+    config.include Lurker::SpecWatcher::Rspec, type: :controller
     config.include Lurker::SpecWatcher::Rspec, type: :request
 
     lurker = ->(example) {
       # RSpec::Core::ExampleGroup::Nested_1 === self
       @_example = example
 
-      #binding.pry
       if (metadata = example.metadata[:lurker]).present?
         Lurker::Spy.on(suffix: metadata, &example)
       else

@@ -2,7 +2,7 @@ require 'lurker/spy'
 
 module Lurker
   module SpecWatcher
-    module ActionDispatchHook
+    module Rails
       extend ActiveSupport::Concern
 
       module ClassMethods
@@ -32,9 +32,9 @@ module Lurker
 end
 
 if defined?(ActionDispatch::Integration::Session)
-  ActionDispatch::Integration::Session.send :include, Lurker::SpecWatcher::ActionDispatchHook
+  ActionDispatch::Integration::Session.send :include, Lurker::SpecWatcher::Rails
 end
 
 if defined?(ActionController::TestCase::Behavior)
-  ActionController::TestCase::Behavior.send :include, Lurker::SpecWatcher::ActionDispatchHook
+  ActionController::TestCase::Behavior.send :include, Lurker::SpecWatcher::Rails
 end
