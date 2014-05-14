@@ -4,12 +4,6 @@ gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
 
-if RUBY_VERSION > '2.1.0'
-  gem 'minitest-around'
-else
-  gem 'minitest-around', '~> 0.0.5'
-end
-
 unless ENV['TRAVIS']
   if RUBY_VERSION > '2.0.0'
     gem 'pry-byebug', group: [:development, :test]
