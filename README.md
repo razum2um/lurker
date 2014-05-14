@@ -77,6 +77,12 @@ and it fails if your code changes the api!
       - The property '#/user/last_sign_in_at' of type String did not match the following type:
         null in schema file:///.../lurker/api/v1/users-POST.json.yml#
 
+The generation of live-documentation is pretty simple:
+
+    bin/lurker convert                    # builds html under `Rails.root/html`
+    bin/lurker convert -o public/lurker   # builds html under `Rails.root/public/lurker`
+    bin/lurker convert -f convert -o html # builds `ServiceName.pdf` under `Rails.root/html`
+
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/)
 (or see [demo][demo_app2] for example)
 
@@ -107,7 +113,7 @@ For example:
 - [Generation PDF documentation][pdf_example]
 - [Multiple docs for many usecases][suffixes_example] (e.g `:lurker => '...'`)
 - ERB support inside `.json.yml.erb`
-- HTTP-Auth authorization for your online docs
+- HTTP-Auth authorization for your online docs (`mount Lurker::Server.to_rack username: '...', password: '...'`)
 - Separate API-services generated within one test suite
 - Capistrano integration
 - JSON-Schema draft-v4 support
