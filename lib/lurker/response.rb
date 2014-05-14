@@ -9,7 +9,7 @@ module Lurker
     def self.build_from_action_dispatch(response)
       new(
         status: response.status,
-        body: JSON.parse(response.body)
+        body: (JSON.parse(response.body) rescue {})
       )
     end
   end

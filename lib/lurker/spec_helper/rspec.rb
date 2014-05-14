@@ -1,7 +1,7 @@
 require 'lurker/spy'
 
 module Lurker
-  module SpecWatcher
+  module SpecHelper
     module Rspec
       extend ActiveSupport::Concern
       ACTIONS = [:get, :post, :put, :delete, :patch].freeze
@@ -44,10 +44,10 @@ module Lurker
   end
 end
 
-if defined?(RSpec)
+if defined?(RSpec) && RSpec.respond_to?(:configure)
   RSpec.configure do |config|
-    config.include Lurker::SpecWatcher::Rspec, type: :controller
-    config.include Lurker::SpecWatcher::Rspec, type: :request
+    config.include Lurker::SpecHelper::Rspec, type: :controller
+    config.include Lurker::SpecHelper::Rspec, type: :request
 
     lurker = ->(example) {
       # RSpec::Core::ExampleGroup::Nested_1 === self

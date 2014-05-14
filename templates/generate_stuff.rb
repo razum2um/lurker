@@ -276,6 +276,30 @@ inject_into_class 'config/application.rb', 'Application' do
   CODE
 end
 
+file 'test/test_helper.rb', force: true do
+  <<-CODE
+    ENV['RAILS_ENV'] ||= 'test'
+    require File.expand_path('../../config/environment', __FILE__)
+    require 'rails/test_help'
+    require 'database_cleaner'
+
+    class ActionDispatch::IntegrationTest
+      def setup
+        super if defined? super
+        %w[repos_id_seq users_id_seq].each do |id|
+          ActiveRecord::Base.connection.execute "ALTER SEQUENCE \#{id} RESTART WITH 1"
+        end
+        DatabaseCleaner.start
+      end
+
+      def teardown
+        super if defined? super
+        DatabaseCleaner.clean
+      end
+    end
+  CODE
+end
+
 file 'spec/support/fixme.rb', force: true do
   <<-CODE
     require 'simplecov'
@@ -317,7 +341,7 @@ file 'spec/support/fixme.rb', force: true do
       end
     end
 
-    require 'lurker/spec_watcher'
+    require 'lurker/spec_helper'
 
   CODE
 end

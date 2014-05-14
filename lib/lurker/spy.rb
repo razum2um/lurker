@@ -23,7 +23,7 @@ module Lurker
     end
 
     def call
-      #@request = @response = nil # fill in while test
+      @request = @response = nil # fill in while test
       @block.call.tap do |result|
         if @request && @response
           @service.verify!(
@@ -71,6 +71,7 @@ module Lurker
     private :success?
 
     def self.on(options={}, &block)
+      require 'lurker/spec_helper' unless defined? Lurker::SpecHelper
       (Thread.current[:lurker_spy] ||= new(options, &block)).tap do |spy|
         spy.call
       end

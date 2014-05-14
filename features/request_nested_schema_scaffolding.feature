@@ -11,7 +11,7 @@ Feature: request nested schema scaffolding
 
         let!(:user) do
           User.where(name: 'razum2um').first_or_create!.tap do |u|
-            u.repos.create!(name: 'lurker')
+            u.repos.first_or_create!(name: 'lurker')
           end
         end
 
