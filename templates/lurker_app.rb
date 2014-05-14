@@ -1,15 +1,18 @@
 gem 'rack-cors', require: 'rack/cors'
 gem 'rspec-rails'
+gem 'minitest-around'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
 
-if RUBY_VERSION > '2.0.0'
-  gem 'pry-byebug', group: :development
-else
-  gem 'pry-debugger', group: :development
+unless ENV['TRAVIS']
+  if RUBY_VERSION > '2.0.0'
+    gem 'pry-byebug', group: [:development, :test]
+  else
+    gem 'pry-debugger', group: [:development, :test]
+  end
+  gem 'pry-stack_explorer', group: [:development, :test]
 end
-gem 'pry-stack_explorer', group: :development
 
 gem 'unicorn', group: :production
 gem 'therubyracer', group: :production
