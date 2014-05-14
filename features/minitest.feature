@@ -7,7 +7,7 @@ Feature: minitest
   Scenario: scaffold a json schema for a "repos/destroy" in minitest
     Given a file named "test/integration/destroy_repo_test.rb" with:
       """ruby
-      require_relative 'test_helper'
+      require_relative '../test_helper'
 
       class DestroyRepoTest < ActionDispatch::IntegrationTest
         def test_destruction
@@ -65,4 +65,73 @@ Feature: minitest
 
     """
 
+  Scenario: json schema tests "users/update" in minitest
+    Given a file named "lurker/api/v1/users/__id-PATCH.json.yml" with:
+      """yml
+      ---
+      prefix: 'users management'
+      description: 'user updating'
+      requestParameters:
+        properties:
+          id:
+            type: integer
+            example: 1
+          user:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Bob
+      responseCodes:
+      - status: 400
+        successful: true
+        description: ''
+      - status: 200
+        successful: true
+        description: ''
+      responseParameters:
+        properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            example: Bob
+      extensions:
+        path_info: "/api/v1/users/1"
+        method: PATCH
+        suffix: ''
+        path_params:
+          action: update
+          controller: api/v1/users
+          id: 1
+          """
 
+    And a file named "test/integration/update_user_test.rb" with:
+      """ruby
+      require_relative '../test_helper'
+
+      class UpdateUserTest < ActionDispatch::IntegrationTest
+        def test_updating
+          user = User.where(name: 'razum2um').first_or_create!
+          assert_equal 1, User.count
+
+          Lurker::Spy.on do
+            patch "/api/v1/users/#{user.id}.json", user: { name: '' }
+          end
+
+          assert_equal 200, status
+          assert_equal 'John', user.reload.name
+        end
+      end
+      """
+
+  When I run `ruby test/integration/update_user_test.rb`
+  Then the output should contain failures:
+    """
+    Lurker::ValidationError:
+      Response
+        The property '#/' contains additional properties ["errors"]
+
+    1 runs, 1 assertions, 0 failures, 1 errors, 0 skips
+    """
