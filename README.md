@@ -113,7 +113,7 @@ For example:
 - [Generation PDF documentation][pdf_example]
 - [Multiple docs for many usecases][suffixes_example] (e.g `:lurker => '...'`)
 - ERB support inside `.json.yml.erb`
-- HTTP-Auth authorization for your online docs (`mount Lurker::Server.to_rack username: '...', password: '...'`)
+- HTTP-Auth authorization for docs (`mount Lurker::Server.to_rack username: '...', password: '...'`)
 - Separate API-services generated within one test suite
 - Capistrano integration
 - JSON-Schema draft-v4 support
