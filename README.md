@@ -47,6 +47,8 @@ You can use [minitest-around][minitest_around] to wrap your test classes like th
       end
     end
 
+You also can wrap any block with api requests [manually][minitest_example].
+
 ## Schemas
 
 Please, commit your files under `Rails.root/lurker` directory.
