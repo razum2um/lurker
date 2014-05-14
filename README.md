@@ -14,15 +14,40 @@ Add this line to your application's Gemfile:
 
     gem 'lurker'
 
+Add to `test_helper.rb` or `spec_helper.rb`:
+
+    require 'lurker/spec_helper'
+
 ## Usage
 
-Write your [RSpec][rspec] [controller][rspec_controller_spec] or [request][rspec_request_spec] specs as usual,
+Wrap your intergation test code, which does request like this
+
+    Lurker::Spy.on do
+      get "/api/v1/users.json"
+    end
+
+And run the specs and commit your schemas. That's all, easy!
+
+## RSpec usage
+
+Write your RSpec [controller][rspec_controller_spec] or [request][rspec_request_spec] specs as usual,
 but add `:lurker` mark (like documented [controller example][controler_spec_example] or [request spec example][request_spec_example]).
 
-    describe Api::V1::UsersController, :lurker do
-      ...
+    it "lists users", :lurker do
+      get "/api/v1/users.json"
+    end
 
-And run the specs. That's all, easy!
+## Minitest usage
+
+You can use [minitest-around][minitest_around] to wrap your test classes like this:
+
+    class DestroyRepoTest < ActionDispatch::IntegrationTest
+      def around(&block)
+        Lurker::Spy.on(&block)
+      end
+    end
+
+## Schemas
 
 Please, commit your files under `Rails.root/lurker` directory.
 Feel free to edit them according to [json-schema][json_schema] standart.
@@ -72,6 +97,7 @@ Now, you can test your API on-line (for real)
 - JSON-Schema draft-v4 support
 - Static site deploy and milti-domain support
 - Builtin Rack middlware `Lurker::Server.to_rack` serves cached digested assets
+- [RSpec][failed_spec_example] & [Minitest][minitest_example] support
 
 ## Token authentication with sandbox
 
@@ -140,7 +166,7 @@ so there are `<label htmlFor` instead of `<label for>` and `<div className` inst
 
 Sponsored by [Evil Martians][evil_martians], thanks!
 
-This gem is quite opinionated and relies on rails & rspec - if you're
+This gem is quite opinionated and relies on rails - if you're
 interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
 This gem is heavily inspirated by them. Thanks, @square & @fredwu
 
@@ -154,16 +180,16 @@ Also thanks to
 [hljs]: http://highlightjs.org/
 [waffle]: https://waffle.io/razum2um/lurker
 [gh_api]: https://developer.github.com/v3/meta/
-[rspec]: https://github.com/rspec/rspec-rails
 [api_taster]: https://github.com/fredwu/api_taster
 [reactjs]: http://facebook.github.io/react/
 [fdoc]: https://github.com/square/fdoc
-[rspec_controller_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs
-[rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
 [json_schema]: http://json-schema.org/
 [json_schema_example]: http://json-schema.org/example2.html
 [json_schema_book]: http://spacetelescope.github.io/understanding-json-schema/
 [evil_martians]: http://evilmartians.com/
+[rspec_controller_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs
+[rspec_request_spec]: https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec
+[minitest_around]: https://github.com/splattael/minitest-around
 
 [failed_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/test-endpoint
 [controler_spec_example]: https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding
@@ -172,6 +198,7 @@ Also thanks to
 [html_generation_example]: https://www.relishapp.com/razum2um/lurker/docs/html-generation
 [partial_example]: https://www.relishapp.com/razum2um/lurker/docs/partials
 [suffixes_example]: https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes
+[minitest_example]: https://www.relishapp.com/razum2um/lurker/docs/minitest
 
 [demo_app]: http://lurker-app.herokuapp.com
 [demo_app2]: http://lurker.razum2um.me
