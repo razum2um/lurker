@@ -4,10 +4,27 @@ if Rails::VERSION::MAJOR < 4
   # see http://weblog.rubyonrails.org/2012/2/26/edge-rails-patch-is-the-new-primary-http-method-for-updates/
   # https://github.com/rails/rails/pull/505
 
+  ActionDispatch::Routing::Mapper::HttpHelpers.module_eval do
+    # Define a route that only recognizes HTTP PATCH.
+    # For supported arguments, see <tt>Base#match</tt>.
+    #
+    # Example:
+    #
+    # patch 'bacon', :to => 'food#bacon'
+    def patch(*args, &block)
+      map_method(:patch, *args, &block)
+    end
+
+    def put(*args, &block)
+      map_method(:put, *args, &block)
+      map_method(:patch, *args, &block)
+    end
+  end
+
   # Be very conservative not to monkey-patch any methods until
   # the relevant files are loaded.
   ActiveSupport.on_load(:action_controller) do
-    ActionDispatch::Request.instance_eval do
+    ActionDispatch::Request.module_eval do
       # Is this a PATCH request?
       # Equivalent to <tt>request.request_method == :patch</tt>.
       def patch?
@@ -17,18 +34,7 @@ if Rails::VERSION::MAJOR < 4
     module ActionDispatch::Routing
       HTTP_METHODS << :patch unless HTTP_METHODS.include?(:patch)
     end
-    ActionDispatch::Routing::Mapper::HttpHelpers.instance_eval do
-      # Define a route that only recognizes HTTP PATCH.
-      # For supported arguments, see <tt>Base#match</tt>.
-      #
-      # Example:
-      #
-      # patch 'bacon', :to => 'food#bacon'
-      def patch(*args, &block)
-        map_method(:patch, *args, &block)
-      end
-    end
-    ActionDispatch::Integration::RequestHelpers.instance_eval do
+    ActionDispatch::Integration::RequestHelpers.module_eval do
       # Performs a PATCH request with the given parameters. See +#get+ for more
       # details.
       def patch(path, parameters = nil, headers = nil)
@@ -43,7 +49,7 @@ if Rails::VERSION::MAJOR < 4
     end
     ActionDispatch::Integration::Runner.class_eval do
       %w(patch).each do |method|
-  define_method(method) do |*args|
+        define_method(method) do |*args|
           reset! unless integration_session
           # reset the html_document variable, but only for new get/post calls
           @html_document = nil unless method.in?(["cookies", "assigns"])
@@ -62,7 +68,7 @@ if Rails::VERSION::MAJOR < 4
       ACTIONS_FOR_VERBS.update(:patch => :edit)
       delegate :patch?, :to => :request
     end
-    ActionView::Helpers::FormHelper.instance_eval do
+    ActionView::Helpers::FormHelper.module_eval do
       # = Action View Form Helpers
       def apply_form_for_options!(record, object, options) #:nodoc:
         object = convert_to_model(object)
