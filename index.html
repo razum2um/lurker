@@ -55,16 +55,46 @@ Works on Rails 3.2, 4.0, 4.1 &amp; Ruby 1.9.3, 2.0.0, 2.1.1.</p>
 <pre><code>gem 'lurker'
 </code></pre>
 
-<h2 id="usage">Usage</h2>
+<p>Add to <code>test_helper.rb</code> or <code>spec_helper.rb</code>:</p>
 
-<p>Write your <a href="https://github.com/rspec/rspec-rails">RSpec</a> <a href="https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs">controller</a> or <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request</a> specs as usual,
-but add <code>:lurker</code> mark (like documented <a href="https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding">controller example</a> or <a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-scaffolding">request spec example</a>).</p>
-
-<pre><code>describe Api::V1::UsersController, :lurker do
-  ...
+<pre><code>require 'lurker/spec_helper'
 </code></pre>
 
-<p>And run the specs. That’s all, easy!</p>
+<h2 id="usage">Usage</h2>
+
+<p>Wrap your intergation test code, which does request like this</p>
+
+<pre><code>Lurker::Spy.on do
+  get "/api/v1/users.json"
+end
+</code></pre>
+
+<p>And run the specs and commit your schemas. That’s all, easy!</p>
+
+<h2 id="rspec-usage">RSpec usage</h2>
+
+<p>Write your RSpec <a href="https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs">controller</a> or <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request</a> specs as usual,
+but add <code>:lurker</code> mark (like documented <a href="https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding">controller example</a> or <a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-scaffolding">request spec example</a>).</p>
+
+<pre><code>it "lists users", :lurker do
+  get "/api/v1/users.json"
+end
+</code></pre>
+
+<h2 id="minitest-usage">Minitest usage</h2>
+
+<p>You can use <a href="https://github.com/splattael/minitest-around">minitest-around</a> to wrap your test classes like this:</p>
+
+<pre><code>class DestroyRepoTest &lt; ActionDispatch::IntegrationTest
+  def around(&amp;block)
+    Lurker::Spy.on(&amp;block)
+  end
+end
+</code></pre>
+
+<p>You also can wrap any block with api requests <a href="https://www.relishapp.com/razum2um/lurker/docs/minitest">manually</a>.</p>
+
+<h2 id="schemas">Schemas</h2>
 
 <p>Please, commit your files under <code>Rails.root/lurker</code> directory.
 Feel free to edit them according to <a href="http://json-schema.org/">json-schema</a> standart.
@@ -99,6 +129,22 @@ Lurker::ValidationError:
 
 <p>Now, you can test your API on-line (for real)</p>
 
+<h2 id="demo-applicationdemoapp3"><a href="http://razum2um.github.io/lurker/">Demo application</a></h2>
+
+<p>You can clone the repo &amp; run <code>rake build_example_docs &amp;&amp; cd tmp/lurker_app &amp;&amp; bin/rails s</code>
+to get your running demo.</p>
+
+<p>Lurker supports multiple domains (usually <code>staging</code> and <code>production</code>) and can be deployed
+statically everywhere as well as be served by current <code>Rails</code> instance.</p>
+
+<p>For example:</p>
+
+<ul>
+  <li><a href="http://razum2um.github.io/lurker/">Github Pages</a> is deployed statically; no api endpoint</li>
+  <li><a href="http://lurker.razum2um.me">Custom domain</a> html deployed under nginx; passenger serves demo api production endpoint</li>
+  <li><a href="http://lurker-app.herokuapp.com">Heroku</a> html is served by unicorn as well as staging api endpoint in <code>Sandbox</code> mode</li>
+</ul>
+
 <h2 id="features">Features</h2>
 
 <ul>
@@ -108,7 +154,7 @@ Lurker::ValidationError:
   <li><a href="http://lurker.razum2um.me/lurker/api/v1/users-POST.html">Pretty submit form to test API endpoints (live) based on schemas</a> (enter a name &amp; press “Submit”)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-nested-schema-scaffolding">Handling URLs with dynamic segments</a> (such as <code>api/v1/:user_id/repos</code>)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/partials">JSON-Schema partials</a>, also in YAML format (<a href="http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html">demo</a>)</li>
-  <li><a href="http://razum2um.github.io/lurker/LurkerApp.pdf">Generation PDF documentation</a></li>
+  <li><a href="http://razum2um.github.io/lurker/Lurker%20Demo%20Application.pdf">Generation PDF documentation</a></li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes">Multiple docs for many usecases</a> (e.g <code>:lurker =&gt; '...'</code>)</li>
   <li>ERB support inside <code>.json.yml.erb</code></li>
   <li>HTTP-Auth authorization for your online docs</li>
@@ -117,6 +163,7 @@ Lurker::ValidationError:
   <li>JSON-Schema draft-v4 support</li>
   <li>Static site deploy and milti-domain support</li>
   <li>Builtin Rack middlware <code>Lurker::Server.to_rack</code> serves cached digested assets</li>
+  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/test-endpoint">RSpec</a> &amp; <a href="https://www.relishapp.com/razum2um/lurker/docs/minitest">Minitest</a> support</li>
 </ul>
 
 <h2 id="token-authentication-with-sandbox">Token authentication with sandbox</h2>
@@ -137,22 +184,6 @@ are increasing notwithstanding ROLLBACK is called. As such:</p>
   <li>run all your specs with <strong>the same</strong> testing token</li>
   <li>ensure the same token to be accepted on your demo application</li>
   <li>insert <code>Lurker::Sandbox</code> and the recorded examples should be ok to submit again</li>
-</ul>
-
-<h2 id="demo-applicationdemoapp3"><a href="http://razum2um.github.io/lurker/">Demo application</a></h2>
-
-<p>You can clone the repo &amp; run <code>rake build_example_docs &amp;&amp; cd tmp/lurker_app &amp;&amp; bin/rails s</code>
-to get your running demo.</p>
-
-<p>Lurker supports multiple domains (usually <code>staging</code> and <code>production</code>) and can be deployed
-statically everywhere as well as be served by current <code>Rails</code> instance.</p>
-
-<p>For example:</p>
-
-<ul>
-  <li><a href="http://razum2um.github.io/lurker/">Github Pages</a> is deployed statically; no api endpoint</li>
-  <li><a href="http://lurker.razum2um.me">Custom domain</a> html deployed under nginx; passenger serves demo api production endpoint</li>
-  <li><a href="http://lurker-app.herokuapp.com">Heroku</a> html is served by unicorn as well as staging api endpoint in <code>Sandbox</code> mode</li>
 </ul>
 
 <h2 id="contributions">Contributions</h2>
@@ -195,7 +226,7 @@ so there are <code>&lt;label htmlFor</code> instead of <code>&lt;label for&gt;</
 
 <p>Sponsored by <a href="http://evilmartians.com/">Evil Martians</a>, thanks!</p>
 
-<p>This gem is quite opinionated and relies on rails &amp; rspec - if you’re
+<p>This gem is quite opinionated and relies on rails - if you’re
 interested in anything else, please take a look at <a href="https://github.com/fredwu/api_taster">api_taster</a> or <a href="https://github.com/square/fdoc">fdoc</a>,
 This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
 
@@ -275,6 +306,13 @@ This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
                 </a>
             </li>
             <li class="opened">
+                <a href="/lurker/api/v1/users/__user_id/repos/__id-DELETE.html">
+                  <span class="btn btn-danger btn-xs">DELETE&nbsp;/api/v1/users/:user_id/repos/:id</span>
+                  <br>
+                  <span>repo descruction</span>
+                </a>
+            </li>
+            <li class="opened">
                 <a href="/lurker/api/v1/users/__user_id/repos/__id-GET.html">
                   <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos/:id</span>
                   <br>
@@ -308,9 +346,9 @@ This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
       <div class="container">
         <ul class="bs-docs-footer-links muted">
           <li>·</li>
-            <li>Lurker Demo Application&nbsp;ae0151a</li>
+            <li>Lurker Demo Application&nbsp;ed43ec5</li>
             <li>·</li>
-            <li>lurker (7e766a44303a4c275bbd8c93619c2a0ba51bfbb2)</li>
+            <li>lurker (3e186ca7d97f123577686602505f334759e5c379)</li>
             <li>·</li>
         </ul>
       </div>
