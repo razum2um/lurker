@@ -80,6 +80,20 @@ Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localh
 
 Now, you can test your API on-line (for real)
 
+## [Demo application][demo_app3]
+
+You can clone the repo & run `rake build_example_docs && cd tmp/lurker_app && bin/rails s`
+to get your running demo.
+
+Lurker supports multiple domains (usually `staging` and `production`) and can be deployed
+statically everywhere as well as be served by current `Rails` instance.
+
+For example:
+
+- [Github Pages][demo_app3] is deployed statically; no api endpoint
+- [Custom domain][demo_app2] html deployed under nginx; passenger serves demo api production endpoint
+- [Heroku][demo_app] html is served by unicorn as well as staging api endpoint in `Sandbox` mode
+
 ## Features
 
 - [Autoscaffolding for non-covered API endpoints][controler_spec_example]
@@ -115,20 +129,6 @@ are increasing notwithstanding ROLLBACK is called. As such:
 - run all your specs with **the same** testing token
 - ensure the same token to be accepted on your demo application
 - insert `Lurker::Sandbox` and the recorded examples should be ok to submit again
-
-## [Demo application][demo_app3]
-
-You can clone the repo & run `rake build_example_docs && cd tmp/lurker_app && bin/rails s`
-to get your running demo.
-
-Lurker supports multiple domains (usually `staging` and `production`) and can be deployed
-statically everywhere as well as be served by current `Rails` instance.
-
-For example:
-
-- [Github Pages][demo_app3] is deployed statically; no api endpoint
-- [Custom domain][demo_app2] html deployed under nginx; passenger serves demo api production endpoint
-- [Heroku][demo_app] html is served by unicorn as well as staging api endpoint in `Sandbox` mode
 
 ## Contributions
 
