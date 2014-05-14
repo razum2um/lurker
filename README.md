@@ -79,9 +79,9 @@ and it fails if your code changes the api!
 
 The generation of live-documentation is pretty simple:
 
-    bin/lurker convert                    # builds html under `Rails.root/html`
-    bin/lurker convert -o public/lurker   # builds html under `Rails.root/public/lurker`
-    bin/lurker convert -f convert -o html # builds `ServiceName.pdf` under `Rails.root/html`
+    bin/lurker convert                   # builds html under `Rails.root/html`
+    bin/lurker convert -o public/lurker  # builds html under `Rails.root/public/lurker`
+    bin/lurker convert -f pdf -o html    # builds `ServiceName.pdf` under `Rails.root/html`
 
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/)
 (or see [demo][demo_app2] for example)
