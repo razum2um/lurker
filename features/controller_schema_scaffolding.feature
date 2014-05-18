@@ -13,7 +13,7 @@ Feature: controller schema scaffolding
         render_views
 
         let!(:user) do
-          User.where(name: 'razum2um').first_or_create!
+          User.where(name: 'razum2um', surname: 'Marley').first_or_create!
         end
 
         it "shows user" do
@@ -55,6 +55,10 @@ Feature: controller schema scaffolding
           description: ''
           type: string
           example: razum2um
+        surname:
+          description: ''
+          type: string
+          example: Marley
     extensions:
       method: GET
       path_info: "/api/v1/users/1.json"

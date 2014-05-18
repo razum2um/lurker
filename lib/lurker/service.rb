@@ -57,13 +57,9 @@ class Lurker::Service
     endpoint_path = path_for(verb, path)
     endpoint_fname = Dir["#{endpoint_path}*"].first
 
-    endpoint = if endpoint_fname.present?
-      Lurker::Endpoint.new(endpoint_fname, path_params, self)
-    else
-      Lurker::EndpointScaffold.new(endpoint_path, path_params, self)
+    Lurker::Endpoint.new(endpoint_fname || endpoint_path, path_params, self).tap do |ep|
+      @opened_endpoints << ep
     end
-    @opened_endpoints << endpoint
-    endpoint
   end
 
   def endpoint_paths

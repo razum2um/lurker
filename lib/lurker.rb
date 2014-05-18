@@ -35,6 +35,10 @@ module Lurker
 end
 
 require 'lurker/schema'
+require 'lurker/schema_modifier'
+require 'lurker/schema_modifier/hash'
+require 'lurker/schema_modifier/array'
+require 'lurker/schema_modifier/atom'
 require 'lurker/ref_object'
 require 'lurker/erb_schema_context'
 require 'lurker/service'
@@ -42,7 +46,6 @@ require 'lurker/jaml_descriptor'
 require 'lurker/validator'
 require 'lurker/validation_error'
 require 'lurker/endpoint'
-require 'lurker/endpoint_scaffold'
 require 'lurker/rendering_controller'
 require 'lurker/form_builder'
 require 'lurker/presenters/json_presenter'

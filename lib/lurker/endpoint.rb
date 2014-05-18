@@ -12,20 +12,15 @@ class Lurker::Endpoint
   def initialize(endpoint_path, extensions={}, service=Lurker::Service.default_service)
     @endpoint_path = endpoint_path
     @extensions = extensions
-    @schema = Lurker::Schema.new(
-      load_file(@endpoint_path),
-      stringify_keys(extensions)
-    )
     @service = service
     @errors = []
-    @current_scaffold = Lurker::EndpointScaffold.new(
-      "#{endpoint_path}.new", extensions, service
-    )
+    @persisted = false
+    @schema = File.exist?(endpoint_path) ? load_schema : build_schema
   end
 
   def persist!
-    return unless ENV['LURKER_UPGRADE']
-    schema.write_to(endpoint_path)
+    schema.ordered!.write_to(endpoint_path)
+    @persisted = true
   end
 
   def indexed?
@@ -40,32 +35,25 @@ class Lurker::Endpoint
 
   def consume_request(params, successful=true)
     if successful
-      unless validate(request_parameters, params, 'Request')
-        current_scaffold.consume_request(params, successful)
-      end
+      Lurker::SchemaModifier.merge!(request_parameters, stringify_keys(params))
     end
   end
 
   def consume_response(params, status_code, successful=true)
-    response_code = response_codes.find do |rc|
-      rc["successful"] == successful && (
-        rc["status"]      == status_code || # 200
-        rc["status"].to_i == status_code    # "200 OK"
-      )
+    return validate_response(params, status_code, successful) if persisted?
+
+    if successful
+      Lurker::SchemaModifier.merge!(response_parameters, stringify_keys(params))
     end
 
+    if !status_code_exists?(status_code, successful)
+      response_code = {
+        "status" => status_code,
+        "successful" => successful,
+        "description" => ""
+      }
 
-    if !response_code
-      raise Lurker::UndocumentedResponseCode,
-        'Undocumented response: %s, successful: %s' % [
-          status_code, successful
-        ]
-    elsif successful
-      unless validate(response_parameters, params, 'Response')
-        current_scaffold.consume_response(params, status_code, successful)
-      end
-    else
-      true
+      Lurker::SchemaModifier.append!(response_codes, response_code)
     end
   end
 
@@ -116,6 +104,32 @@ class Lurker::Endpoint
 
   protected
 
+  def persisted?
+    !!@persisted
+  end
+
+  def load_schema
+    @persisted = true
+
+    Lurker::Schema.new(
+      load_file(endpoint_path),
+      stringify_keys(extensions)
+    )
+  end
+
+  def build_schema
+    @persisted = false
+
+    Lurker::Schema.new(
+      {
+        "prefix" => "",
+        "description" => "",
+        "responseCodes" => []
+      },
+      stringify_keys(extensions)
+    )
+  end
+
   def load_file(fname)
     if fname.match(/\.erb$/)
       context = Lurker::ErbSchemaContext.new
@@ -135,6 +149,27 @@ class Lurker::Endpoint
       return false
     end
     true
+  end
+
+  def validate_response(params, status_code, successful)
+    if !status_code_exists?(status_code, successful)
+      raise Lurker::UndocumentedResponseCode,
+        'Undocumented response: %s, successful: %s' % [
+          status_code, successful
+        ]
+    elsif successful
+      validate(response_parameters, params, 'Response')
+    else
+      true
+    end
+  end
+
+  def status_code_exists?(status_code, successful)
+    !!response_codes.detect do |code|
+      code["successful"] == successful &&
+        (code["status"] == status_code ||    # 200
+         code["status"].to_i == status_code) # "200 OK"
+    end
   end
 
   def raise_errors!

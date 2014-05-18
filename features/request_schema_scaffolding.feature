@@ -11,11 +11,11 @@ Feature: request schema scaffolding
 
       describe Api::V1::UsersController, :lurker do
         let!(:user) do
-          User.where(name: 'razum2um').first_or_create!
+          User.where(name: 'razum2um', surname: 'Marley').first_or_create!
         end
 
         let!(:bot) do
-          User.where(name: 'bot').first_or_create!
+          User.where(name: 'bot', surname: 'google').first_or_create!
         end
 
         it "lists all the users" do
@@ -64,6 +64,10 @@ Feature: request schema scaffolding
             description: ''
             type: string
             example: razum2um
+          surname:
+            description: ''
+            type: string
+            example: Marley
     extensions:
       method: GET
       path_info: "/api/v1/users.json"
@@ -75,5 +79,3 @@ Feature: request schema scaffolding
       suffix: ''
 
     """
-
-
