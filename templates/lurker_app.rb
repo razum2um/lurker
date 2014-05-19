@@ -22,10 +22,20 @@ gem 'unicorn', group: :production
 gem 'therubyracer', group: :production
 
 append_to_file 'Gemfile' do
+  gem = if ENV['TRAVIS']
+    "gem 'lurker', github: 'razum2um/lurker', branch: 'master'"
+  else
+    origin = `git config --get remote.origin.url`.scan(/github\.com.(.*).git/).flatten.first rescue 'razum2um/master'
+    branch = `git rev-parse --abbrev-ref HEAD` rescue 'master'
+    "gem 'lurker', github: '#{origin}', branch: '#{branch}'"
+  end
+
   <<-CODE
 
-    # new line above is important
-    gem 'lurker', github: 'razum2um/lurker', branch: 'master'
+    # new line above is important, branch is also important
+    # please, dont commit here: "gem 'lurker', path: '../../'"
+    # as I deploy this app instantly with this Gemfile
+    #{gem}
   CODE
 end
 
