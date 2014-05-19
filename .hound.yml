@@ -1,0 +1,15 @@
+StringLiterals:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+AlignParameters:
+  Enabled: false
+
+MultilineTernaryOperator:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
