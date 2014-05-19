@@ -53,6 +53,12 @@ route <<-ROUTE
         resources :repos
       end
     end
+
+    namespace :v2 do
+      resources :users do
+        resources :repos
+      end
+    end
   end
 
   get '/robots.txt', to: proc { |env| [
@@ -66,7 +72,7 @@ ROUTE
 
 remove_file 'public/robots.txt'
 
-generate 'model User name:string --no-timestamps --no-test-framework --no-migration'
+generate 'model User name:string surname:string --no-timestamps --no-test-framework --no-migration'
 generate 'model Repo user:references name:string --no-timestamps --no-test-framework --no-migration'
 
 file 'config/initializers/serializer.rb', force: true do
@@ -99,6 +105,10 @@ inject_into_class 'app/models/user.rb', 'User' do
     include ExactOrderAsJson
     has_many :repos
     validates :name, presence: true
+
+    def surname
+      read_attribute(:surname).to_s
+    end
   CODE
 end
 
@@ -178,7 +188,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
       def user_params
         @user_params = params[:user]
         if @user_params.respond_to? :permit
-          @user_params.permit(:name)
+          @user_params.permit(:name, :surname)
         else
           @user_params
         end
@@ -246,6 +256,18 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
         end
       end
     end
+  CODE
+end
+
+file 'app/controllers/api/v2/users_controller.rb', 'Api::V2::UsersController', force: true do
+  <<-CODE
+    class Api::V2::UsersController < Api::V1::UsersController;end
+  CODE
+end
+
+file 'app/controllers/api/v2/repos_controller.rb', 'Api::V2::ReposController', force: true do
+  <<-CODE
+    class Api::V2::ReposController < Api::V1::ReposController; end
   CODE
 end
 
@@ -373,8 +395,8 @@ file 'db/schema.rb', force: true do
 
       create_table "users", :force => true do |t|
         t.string "name"
+        t.string "surname"
       end
     end
   CODE
 end
-

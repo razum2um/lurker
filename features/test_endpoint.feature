@@ -3,7 +3,7 @@ Feature: test endpoint
   If your API is stable and the new code isn't breaking it
   you'll see nothing special, just passing specs
 
-  **NOTE:** the second request example is expecting a nonsuccessful response and it is,
+  **NOTE:** the second request example is expecting a successful response and it is,
   but specs are NOT passing because of nonsufficient `name` parameter
 
   **NOTE:** the third response example is expecting a successful response and it is,
@@ -41,6 +41,9 @@ Feature: test endpoint
           name:
             type: string
             example: Bob
+          surname:
+            type: string
+            example: Marley
       extensions:
         path_info: "/api/v1/users/1"
         method: PATCH
@@ -96,8 +99,8 @@ Feature: test endpoint
   Then the output should contain failures:
     """
     Lurker::ValidationError:
-      Request
-        The property '#/user/name' of type Fixnum did not match the following type: string
+      Response
+        The property '#/name' of type Fixnum did not match the following type: string
 
     1 example, 1 failure
     """

@@ -14,13 +14,12 @@ module Lurker
     }
     attr_reader :extensions
 
-    def initialize(json_schema_hash, extensions={})
+    def initialize(json_schema_hash, extensions = {})
       @hash = json_schema_hash
-      @extensions = if extensions.blank? && @hash.has_key?(KEY)
-        @hash.delete(KEY) || {}
-      else
-        extensions
-      end
+
+      existing_extensions = @hash.delete(KEY) || {}
+      @extensions = extensions.blank? ? existing_extensions
+                                      : extensions
     end
 
     def respond_to_missing?(method, include_private = false)
