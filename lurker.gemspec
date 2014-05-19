@@ -46,6 +46,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency("simplecov", "~> 0.7")
   spec.add_development_dependency("coveralls", "~> 0.7")
+  spec.add_development_dependency("rubocop", "~> 0.21")
 
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn"t getting used, but lib"s one
