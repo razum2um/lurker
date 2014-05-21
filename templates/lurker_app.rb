@@ -25,7 +25,7 @@ append_to_file 'Gemfile' do
   gem = if ENV['TRAVIS']
     "gem 'lurker', github: 'razum2um/lurker', branch: 'master'"
   else
-    origin = `git config --get remote.origin.url`.scan(/github\.com.(.*).git/).flatten.first rescue 'razum2um/master'
+    origin = `git config --get remote.origin.url`.scan(/github\.com.(.*).git/).flatten.first rescue 'razum2um/lurker'
     branch = `git rev-parse --abbrev-ref HEAD` rescue 'master'
     "gem 'lurker', github: '#{origin}', branch: '#{branch}'"
   end
