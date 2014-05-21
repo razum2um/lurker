@@ -7,11 +7,13 @@ Gem::Specification.new do |spec|
   spec.name          = "lurker"
   spec.version       = Lurker::VERSION
   spec.authors       = ["Vlad Bokov"]
-  spec.email         = ["razum2um@mail.ru"]
-  spec.summary       = %q{Lukrs into your API rquest to tell you the truth.}
-  spec.description   = %q{It hooks in rspec controller methods to check theirs schema and let people try it}
+  spec.email         = ["bokov.vlad@gmail.com"]
+  spec.summary       = %q{Get pretty, documented and visible API}
+  spec.description   = %q{The new de-facto for API testing your Rails application}
   spec.homepage      = "http://github.com/razum2um/lurker"
   spec.license       = "MIT"
+  spec.cert_chain    = ['certs/razum2um.pem']
+  spec.signing_key   = File.expand_path("~/.ssh/gem-private_key.pem") if $0 =~ /gem\z/
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
