@@ -6,6 +6,8 @@ gem 'simplecov', '~> 0.7.1', require: false
 gem 'kramdown',  '~> 1.3'
 gem 'pdfkit', '~> 0.5'
 gem 'wkhtmltopdf-binary', '~> 0.9'
+gem 'execjs'
+gem 'coderay'
 
 unless ENV['TRAVIS']
   if RUBY_VERSION > '2.0.0'
