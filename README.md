@@ -117,9 +117,11 @@ For example:
 - [Pretty submit form to test API endpoints (live) based on schemas][demo_live] (enter a name & press "Submit")
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
 - [JSON-Schema partials][partial_example], also in YAML format ([demo][partial_example_demo])
-- [Generation PDF documentation][pdf_example]
+- [Generation PDF documentation][pdf_example] (add `gem 'pdfkit'` to Gemfile)
 - [Multiple docs for many usecases][suffixes_example] (e.g `:lurker => '...'`)
 - ERB support inside `.json.yml.erb`
+- Insert custom content in Markdown into `index.html` (add `gem 'kramdown'` to Gemfile)
+- Syntax highlighting for sample response (add `gem 'execjs'` to Gemfile)
 - HTTP-Auth authorization for docs (`mount Lurker::Server.to_rack username: '...', password: '...'`)
 - Separate API-services generated within one test suite
 - Capistrano integration
