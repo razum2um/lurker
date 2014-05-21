@@ -2,7 +2,7 @@ require 'yaml'
 
 module Lurker
   class Schema
-    KEY = 'extensions'
+    EXTENSIONS = "extensions".freeze
     DESCRPTIONS = {
       'index' => 'listing',
       'show' => '',
@@ -16,9 +16,8 @@ module Lurker
     def initialize(json_schema_hash, extensions = {})
       @hash = json_schema_hash
 
-      existing_extensions = @hash.delete(KEY) || {}
-      @extensions = extensions.blank? ? existing_extensions
-                                      : extensions
+      existing_extensions = @hash.delete(EXTENSIONS) || {}
+      @extensions = select_extensions(existing_extensions, extensions)
     end
 
     def respond_to_missing?(method, include_private = false)
@@ -47,7 +46,7 @@ module Lurker
 
     def to_yaml
       YAML.dump(@hash.merge(
-        KEY => @extensions
+        EXTENSIONS => @extensions
       ))
     end
 
@@ -66,6 +65,14 @@ module Lurker
     end
 
     private
+
+    def select_extensions(existing, given)
+      if Lurker.upgrade? || (existing.blank? && given.present?)
+        given
+      else
+        existing
+      end
+    end
 
     def default_descrption
       "#{default_subject.singularize} #{DESCRPTIONS[path_params['action']]}"
