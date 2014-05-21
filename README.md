@@ -10,11 +10,18 @@ Works on Rails 3.2, 4.0, 4.1 & Ruby 1.9.3, 2.0.0, 2.1.1.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add my public key:
+
+    gem cert --add <(curl -Ls https://raw.github.com/razum2um/lurker/master/certs/razum2um.pem)
+
+    $ gem install lurker                 # without key
+    $ gem install lurker -P HighSecurity # secure, with key added
+
+Or this line to your application's Gemfile:
 
     gem 'lurker'
 
-Add to `test_helper.rb` or `spec_helper.rb`:
+Inject into `test_helper.rb` or `spec_helper.rb`:
 
     require 'lurker/spec_helper'
 
