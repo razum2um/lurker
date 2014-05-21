@@ -1,4 +1,3 @@
-require 'diffy'
 require 'yaml'
 
 module Lurker
@@ -28,13 +27,6 @@ module Lurker
 
     def method_missing(method, *args, &block)
       @hash.send method, *args, &block
-    end
-
-    def diff(schema)
-      ::Diffy::Diff.new(
-        schema.serialized_for_diff,
-        serialized_for_diff,
-        context: 1).to_s(:color)
     end
 
     def write_to(path)
