@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency("json", "~> 1.7")
   spec.add_dependency("json-schema", "~> 2.2")
-  spec.add_dependency("kramdown", "~> 1.3")
   spec.add_dependency("thor", "~> 0.19")
   spec.add_dependency("diffy", "~> 3.0")
   spec.add_dependency("sinatra", "~> 1.4")
