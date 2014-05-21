@@ -84,14 +84,20 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     return if endpoint.response_parameters.empty?
     response = example_from_schema(endpoint.response_parameters, endpoint.schema)
     @example_response = response.to_json
-    if defined? ExecJS
+    @highlighted = false
+    Lurker.safe_require("execjs", "to get samples highlighted") do
       jsfile = File.expand_path('javascripts/highlight.pack.js', Lurker::Cli.source_root)
       source = open(jsfile).read
       context = ExecJS.compile(source)
       @example_response = context.exec("return hljs.highlightAuto(JSON.stringify(#{@example_response}, null, 2)).value")
-    elsif defined? CodeRay
-      @example_response = ::CodeRay.scan(@example_response, :json).html(wrap: nil, css: :class)
-      #::CodeRay.scan(response.to_json, :jjson).html(wrap: nil, css: :class)
+      @highlighted = true
+    end
+    unless @highlighted
+      Lurker.safe_require("coderay", "to get samples highlighted") do
+        #::CodeRay.scan(response.to_json, :jjson).html(wrap: nil, css: :class) # forked compatible version
+        @example_response = ::CodeRay.scan(@example_response, :json).html(wrap: nil, css: :class)
+        @highlighted = true
+      end
     end
     @example_response
   end
