@@ -3,6 +3,7 @@ gem 'rspec-rails'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
+gem 'kramdown',  '~> 1.3'
 
 unless ENV['TRAVIS']
   if RUBY_VERSION > '2.0.0'

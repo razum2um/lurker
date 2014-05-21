@@ -204,7 +204,7 @@ module Lurker
       return unless content_fname
       content_fname = File.expand_path(content_fname)
       if content_fname.ends_with? 'md'
-        require 'kramdown'
+        Lurker.safe_require('kramdown')
         Kramdown::Document.new(open(content_fname).read).to_html
       else
         ''

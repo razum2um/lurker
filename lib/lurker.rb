@@ -3,6 +3,18 @@ $:.unshift(File.dirname(__FILE__))
 module Lurker
   DEFAULT_SERVICE_PATH = DEFAULT_URL_BASE = "lurker"
 
+  def self.safe_require(gem, desc=nil)
+    begin
+      require gem
+    rescue LoadError => e
+      $stderr.puts(e.message)
+      $stderr.puts(desc) if desc
+      $stderr.puts("Please, bundle `gem #{gem}` in your Gemfile")
+      exit 1 unless block_given?
+    end
+    yield if block_given?
+  end
+
   def self.scaffold_mode?
     ENV['LURKER_SCAFFOLD']
   end
