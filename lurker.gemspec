@@ -53,5 +53,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("execjs", "~> 2.0")
   spec.add_development_dependency("pdfkit", "~> 0.6")
   spec.add_development_dependency("wkhtmltopdf-binary", "~> 0.9")
-  spec.add_development_dependency("hashie", "~> 2.1")
 end
