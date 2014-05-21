@@ -1,6 +1,5 @@
 require 'thor'
 require 'execjs'
-require 'pdfkit'
 # require 'coderay'
 require 'digest/sha1'
 require 'lurker/service'
@@ -60,6 +59,7 @@ module Lurker
 
     no_tasks do
       def convert_to_pdf
+        Lurker.safe_require('pdfkit')
         css = File.expand_path('application.css', self.class.precompiled_static_root)
         in_root do
           service_presenters.each do |service_presenter|
