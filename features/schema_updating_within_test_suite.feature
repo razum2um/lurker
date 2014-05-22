@@ -58,7 +58,7 @@ Feature: schema updating within test suite
     """
 
   Scenario: json schema tests response parameters and update request parameters using "users/update"
-  Given a file named "spec/controllers/api/v2/users_fields_spec.rb" with:
+  Given a file named "spec/controllers/api/v2/users_controller_spec.rb" with:
     """ruby
       require "spec_helper"
 
@@ -76,7 +76,7 @@ Feature: schema updating within test suite
       end
     """
 
-  When I run `bin/rspec spec/controllers/api/v2/users_fields_spec.rb`
+  When I run `bin/rspec spec/controllers/api/v2/users_controller_spec.rb`
   Then the example should pass
   Then a file named "lurker/api/v2/users/__id-PATCH.json.yml" should exist
   Then the file "lurker/api/v2/users/__id-PATCH.json.yml" should contain exactly:

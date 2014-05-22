@@ -59,7 +59,7 @@ Feature: multitype request support
     """
 
   Scenario: json schema tests response parameters and update request parameters using "users/update"
-    Given a file named "spec/controllers/api/v2/users_multitype_spec.rb" with:
+    Given a file named "spec/controllers/api/v2/users_controller_spec.rb" with:
       """ruby
         require "spec_helper"
 
@@ -67,17 +67,17 @@ Feature: multitype request support
           render_views
 
           let(:user) do
-            User.where(name: 'razum2um', surname: 'Marley').first_or_create!
+            User.where(name: 'razum2um', surname: 'Unknown').first_or_create!
           end
 
           it "updates a user surname as string" do
-            patch :update, id: user.id, user: { surname: 'Unknown' }
+            patch :update, id: user.id, user: { surname: 'Marley' }
             expect(response).to be_success
           end
         end
       """
 
-  When I run `bin/rspec spec/controllers/api/v2/users_multitype_spec.rb`
+  When I run `bin/rspec spec/controllers/api/v2/users_controller_spec.rb`
   Then the example should pass
   Then a file named "lurker/api/v2/users/__id-PATCH.json.yml" should exist
   Then the file "lurker/api/v2/users/__id-PATCH.json.yml" should contain exactly:
@@ -104,7 +104,7 @@ Feature: multitype request support
                 example: 42
               - description: ''
                 type: string
-                example: Unknown
+                example: Marley
     responseCodes:
     - status: 200
       successful: true

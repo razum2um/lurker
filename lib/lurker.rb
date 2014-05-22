@@ -1,7 +1,8 @@
 $:.unshift(File.dirname(__FILE__))
 
 module Lurker
-  DEFAULT_SERVICE_PATH = DEFAULT_URL_BASE = "lurker"
+  DEFAULT_SERVICE_PATH = DEFAULT_URL_BASE = "lurker".freeze
+  LURKER_UPGRADE = "LURKER_UPGRADE".freeze
 
   def self.safe_require(gem, desc=nil)
     begin
@@ -15,8 +16,8 @@ module Lurker
     yield if block_given?
   end
 
-  def self.scaffold_mode?
-    ENV['LURKER_SCAFFOLD']
+  def self.upgrade?
+    !!ENV[LURKER_UPGRADE]
   end
 
   def self.service_path=(service_path)
