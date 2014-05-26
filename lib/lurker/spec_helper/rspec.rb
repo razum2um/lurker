@@ -62,5 +62,9 @@ if defined?(RSpec) && RSpec.respond_to?(:configure)
 
     config.around(:each, type: :controller, &lurker)
     config.around(:each, type: :request, &lurker)
+
+    unless RSpec::Core::Version::STRING > '3'
+      config.treat_symbols_as_metadata_keys_with_true_values = true
+    end
   end
 end
