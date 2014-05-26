@@ -17,10 +17,12 @@ module Lurker
 
     def merge!
       modifier_klass.new(@schema).merge!(@data)
+      @schema
     end
 
     def append!
       schema_klass.new(@schema).append!(@data)
+      @schema
     end
 
     private

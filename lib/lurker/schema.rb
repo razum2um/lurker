@@ -45,9 +45,9 @@ module Lurker
     end
 
     def to_yaml
-      YAML.dump(@hash.merge(
+      @hash.merge(
         EXTENSIONS => @extensions
-      ))
+      ).to_yaml
     end
 
     def ordered!

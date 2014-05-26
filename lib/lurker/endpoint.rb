@@ -36,7 +36,9 @@ class Lurker::Endpoint
 
   def consume_request(params, successful=true)
     if successful
-      Lurker::SchemaModifier.merge!(Lurker::JsonSchemaHash.new(request_parameters, endpoint_path), params)
+      schema['requestParameters'] = Lurker::SchemaModifier.merge!(
+        Lurker::JsonSchemaHash.new(request_parameters, endpoint_path), params
+      ).schema_hash
     end
   end
 
@@ -44,7 +46,9 @@ class Lurker::Endpoint
     return validate_response(params, status_code, successful) if persisted?
 
     if successful
-      Lurker::SchemaModifier.merge!(Lurker::JsonSchemaHash.new(response_parameters, endpoint_path), params)
+      schema['responseParameters'] = Lurker::SchemaModifier.merge!(
+        Lurker::JsonSchemaHash.new(response_parameters, endpoint_path), params
+      ).schema_hash
     end
 
     if !status_code_exists?(status_code, successful)

@@ -1,5 +1,6 @@
 module Lurker
   class JsonSchemaHash
+    attr_accessor :schema_hash
     include JamlDescriptor::Rescue
 
     def initialize(schema_hash, uri)
