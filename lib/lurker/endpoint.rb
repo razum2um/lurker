@@ -38,7 +38,7 @@ class Lurker::Endpoint
     if successful
       schema['requestParameters'] = Lurker::SchemaModifier.merge!(
         Lurker::JsonSchemaHash.new(request_parameters, endpoint_path), params
-      ).schema_hash
+      ).to_h
     end
   end
 
@@ -48,7 +48,7 @@ class Lurker::Endpoint
     if successful
       schema['responseParameters'] = Lurker::SchemaModifier.merge!(
         Lurker::JsonSchemaHash.new(response_parameters, endpoint_path), params
-      ).schema_hash
+      ).to_h
     end
 
     if !status_code_exists?(status_code, successful)

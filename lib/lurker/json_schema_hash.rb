@@ -32,5 +32,15 @@ module Lurker
     def is_a?(*args)
       @schema_hash.is_a?(*args)
     end
+
+    def to_h
+      Hash[@schema_hash.map do |k,v|
+        if JsonSchemaHash === v
+          [k, v.to_h]
+        else
+          [k, v]
+        end
+      end]
+    end
   end
 end
