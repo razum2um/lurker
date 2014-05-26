@@ -31,7 +31,7 @@ module Lurker
         return @atom.clear.merge!(atom) unless @atom.key?("type")
 
         if @atom["type"] != atom["type"]
-          existing_atom = @atom.dup
+          existing_atom = JsonSchemaHash === @atom ? @atom.to_h : @atom.dup
           @atom.clear
           @atom["anyOf"] = [existing_atom, atom]
         end

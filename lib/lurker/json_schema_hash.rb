@@ -37,6 +37,8 @@ module Lurker
       Hash[@schema_hash.map do |k,v|
         if JsonSchemaHash === v
           [k, v.to_h]
+        elsif v.is_a?(Array)
+          [k, v.map { |i| JsonSchemaHash === i ? i.to_h : i }]
         else
           [k, v]
         end
