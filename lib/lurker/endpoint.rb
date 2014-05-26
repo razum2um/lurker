@@ -19,7 +19,8 @@ class Lurker::Endpoint
   end
 
   def persist!
-    schema.ordered!.write_to(endpoint_path)
+    schema.ordered! unless @persisted
+    schema.write_to(endpoint_path)
     @persisted = true
   end
 
@@ -35,7 +36,7 @@ class Lurker::Endpoint
 
   def consume_request(params, successful=true)
     if successful
-      Lurker::SchemaModifier.merge!(request_parameters, params)
+      Lurker::SchemaModifier.merge!(Lurker::JsonSchemaHash.new(request_parameters, endpoint_path), params)
     end
   end
 
@@ -43,7 +44,7 @@ class Lurker::Endpoint
     return validate_response(params, status_code, successful) if persisted?
 
     if successful
-      Lurker::SchemaModifier.merge!(response_parameters, params)
+      Lurker::SchemaModifier.merge!(Lurker::JsonSchemaHash.new(response_parameters, endpoint_path), params)
     end
 
     if !status_code_exists?(status_code, successful)

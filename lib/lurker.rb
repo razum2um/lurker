@@ -47,7 +47,9 @@ module Lurker
   class UndocumentedResponseCode < ValidationError; end
 end
 
+require 'lurker/jaml_descriptor'
 require 'lurker/schema'
+require 'lurker/json_schema_hash'
 require 'lurker/schema_modifier'
 require 'lurker/schema_modifier/hash'
 require 'lurker/schema_modifier/array'
@@ -55,7 +57,6 @@ require 'lurker/schema_modifier/atom'
 require 'lurker/ref_object'
 require 'lurker/erb_schema_context'
 require 'lurker/service'
-require 'lurker/jaml_descriptor'
 require 'lurker/validator'
 require 'lurker/validation_error'
 require 'lurker/endpoint'
