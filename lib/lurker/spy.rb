@@ -45,10 +45,12 @@ module Lurker
         path_params: request.path_params,
         path_info: request.path_info,
         method: request.verb,
-        suffix: suffix.to_s,
       }
       unless request.query_params.empty?
         extensions[:query_params] = request.query_params
+      end
+      if suffix.present?
+        extensions[:suffix] = suffix.to_s
       end
       extensions
     end

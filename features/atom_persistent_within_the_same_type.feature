@@ -54,7 +54,6 @@ Feature: atom persistent within test suite
         id: '100'
         controller: api/v2/users
         action: update
-      suffix: ''
     """
 
   Scenario: json schema tests response parameters and keep atom unchanged using "users/update"
@@ -133,6 +132,5 @@ Feature: atom persistent within test suite
         id: '100'
         controller: api/v2/users
         action: update
-      suffix: ''
 
     """

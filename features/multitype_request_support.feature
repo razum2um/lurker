@@ -55,7 +55,6 @@ Feature: multitype request support
         id: '1'
         controller: api/v2/users
         action: update
-      suffix: ''
     """
 
   Scenario: json schema tests response parameters and update request parameters using "users/update"
@@ -134,6 +133,5 @@ Feature: multitype request support
         id: '1'
         controller: api/v2/users
         action: update
-      suffix: ''
 
     """

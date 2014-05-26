@@ -76,6 +76,5 @@ Feature: controller nested schema scaffolding
         action: index
       query_params:
         limit: 1
-      suffix: ''
 
     """

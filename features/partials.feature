@@ -61,7 +61,6 @@ Feature: partials
           action: create
           controller: api/v1/repos
           user_id: '1'
-        suffix: ''
       """
 
     Given a file named "spec/requests/repo_creation_spec.rb" with:

@@ -50,7 +50,6 @@ Feature: mutidomain support
           action: destroy
           controller: api/v1/users
           id: 1
-        suffix: ''
       """
 
   When I successfully run `bin/lurker convert`

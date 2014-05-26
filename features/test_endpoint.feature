@@ -47,7 +47,6 @@ Feature: test endpoint
       extensions:
         path_info: "/api/v1/users/1"
         method: PATCH
-        suffix: ''
         path_params:
           action: update
           controller: api/v1/users

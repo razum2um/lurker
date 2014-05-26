@@ -66,6 +66,5 @@ Feature: controller schema scaffolding
         id: '1'
         controller: api/v1/users
         action: show
-      suffix: ''
 
   """

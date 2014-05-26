@@ -40,7 +40,6 @@ Feature: html generation
         path_params:
           action: create
           controller: api/v1/users
-        suffix: ''
       """
 
   When I successfully run `bin/lurker convert`

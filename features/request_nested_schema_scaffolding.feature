@@ -66,6 +66,5 @@ Feature: request nested schema scaffolding
         controller: api/v1/repos
         user_id: '1'
         id: '1'
-      suffix: ''
 
     """

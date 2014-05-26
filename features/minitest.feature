@@ -61,7 +61,6 @@ Feature: minitest
         controller: api/v1/repos
         user_id: '1'
         id: '1'
-      suffix: ''
 
     """
 
@@ -100,7 +99,6 @@ Feature: minitest
       extensions:
         path_info: "/api/v1/users/1"
         method: PATCH
-        suffix: ''
         path_params:
           action: update
           controller: api/v1/users

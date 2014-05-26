@@ -48,7 +48,6 @@ Feature: schema suffixes
       extensions:
         path_info: "/api/v1/users/razum2um/repos/lurker.json"
         method: PATCH
-        suffix: ''
         path_params:
           action: update
           controller: api/v1/repos

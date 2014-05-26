@@ -76,6 +76,5 @@ Feature: request schema scaffolding
         controller: api/v1/users
       query_params:
         limit: '1'
-      suffix: ''
 
     """
