@@ -2,6 +2,7 @@ module Lurker
   class SchemaModifier
     class Atom
       TYPE_MAP = {
+        "ActionDispatch::Http::UploadedFile" => "string",
         "Fixnum" => "integer",
         "Float" => "number",
         "Hash" => "object",
@@ -51,7 +52,7 @@ module Lurker
         atom = {
           "description" => "",
           "type" => guess_type(data),
-          "example" => data
+          "example" => serialize(data)
         }
 
         if format = guess_format(data)
@@ -59,6 +60,14 @@ module Lurker
         end
 
         atom
+      end
+
+      def serialize(data)
+        if data.is_a?(ActionDispatch::Http::UploadedFile)
+          data.open.read
+        else
+          data
+        end
       end
 
       def guess_type(data)
