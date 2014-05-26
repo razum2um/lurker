@@ -52,7 +52,7 @@ module Lurker
         atom = {
           "description" => "",
           "type" => guess_type(data),
-          "example" => serialize(data)
+          "example" => serialize_example(data)
         }
 
         if format = guess_format(data)
@@ -62,9 +62,9 @@ module Lurker
         atom
       end
 
-      def serialize(data)
+      def serialize_example(data)
         if data.is_a?(ActionDispatch::Http::UploadedFile)
-          data.open.read
+          data.headers
         else
           data
         end
