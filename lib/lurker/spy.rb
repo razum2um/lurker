@@ -52,7 +52,7 @@ module Lurker
       if suffix.present?
         extensions[:suffix] = suffix.to_s
       end
-      extensions
+      extensions.stringify_keys
     end
 
     def suffix
