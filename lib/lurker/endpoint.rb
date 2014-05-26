@@ -35,7 +35,7 @@ class Lurker::Endpoint
 
   def consume_request(params, successful=true)
     if successful
-      Lurker::SchemaModifier.merge!(request_parameters, stringify_keys(params))
+      Lurker::SchemaModifier.merge!(request_parameters, params)
     end
   end
 
@@ -43,7 +43,7 @@ class Lurker::Endpoint
     return validate_response(params, status_code, successful) if persisted?
 
     if successful
-      Lurker::SchemaModifier.merge!(response_parameters, stringify_keys(params))
+      Lurker::SchemaModifier.merge!(response_parameters, params)
     end
 
     if !status_code_exists?(status_code, successful)
@@ -113,7 +113,7 @@ class Lurker::Endpoint
 
     Lurker::Schema.new(
       load_file(endpoint_path),
-      stringify_keys(extensions)
+      extensions
     )
   end
 
@@ -126,7 +126,7 @@ class Lurker::Endpoint
         "description" => "",
         "responseCodes" => []
       },
-      stringify_keys(extensions)
+      extensions
     )
   end
 
@@ -143,7 +143,7 @@ class Lurker::Endpoint
   def validate(expected_params, given_params, prefix=nil)
     schema = set_additional_properties_false_on(expected_params.dup)
     schema['id'] = "file://#{endpoint_path}"
-    unless (_errors = Lurker::Validator.new(schema, stringify_keys(given_params), record_errors: true).validate).empty?
+    unless (_errors = Lurker::Validator.new(schema, given_params, record_errors: true).validate).empty?
       self.errors << prefix
       _errors.each { |e| self.errors << "- #{e}" }
       return false
@@ -206,19 +206,6 @@ class Lurker::Endpoint
       end
     else
       value
-    end
-  end
-
-  def stringify_keys(obj)
-    case obj
-    when Hash
-      result = {}
-      obj.each do |k, v|
-        result[k.to_s] = stringify_keys(v)
-      end
-      result
-    when Array then obj.map { |v| stringify_keys(v) }
-    else obj
     end
   end
 end
