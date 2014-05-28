@@ -310,8 +310,8 @@ file 'test/test_helper.rb', force: true do
     class ActionDispatch::IntegrationTest
       def setup
         super if defined? super
-        %w[repos_id_seq users_id_seq].each do |id|
-          ActiveRecord::Base.connection.execute "ALTER SEQUENCE \#{id} RESTART WITH 1"
+        [User, Repo].each do |klass|
+          ActiveRecord::Base.connection.execute "ALTER SEQUENCE \#{klass.sequence_name} RESTART WITH 1"
         end
         DatabaseCleaner.start
       end
@@ -354,8 +354,8 @@ file 'spec/support/fixme.rb', force: true do
       ]
 
       c.before do
-        %w[repos_id_seq users_id_seq].each do |id|
-          ActiveRecord::Base.connection.execute "ALTER SEQUENCE \#{id} RESTART WITH 1"
+        [User, Repo].each do |klass|
+          ActiveRecord::Base.connection.execute "ALTER SEQUENCE \#{klass.sequence_name} RESTART WITH 1"
         end
         DatabaseCleaner.start
       end
