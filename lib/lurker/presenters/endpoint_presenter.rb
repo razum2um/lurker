@@ -2,9 +2,6 @@
 class Lurker::EndpointPresenter < Lurker::BasePresenter
   attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
-  extend Forwardable
-  def_delegators :endpoint, :description
-
   def initialize(endpoint, options = {})
     super(options)
     @endpoint = endpoint
@@ -29,7 +26,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def title
-    '%s %s - %s' % [ endpoint.verb, endpoint.path, endpoint.service.name ]
+    description_parts.first.to_s
   end
 
   def prefix
@@ -40,6 +37,14 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     # zero-width-space, makes long lines friendlier for breaking
     #str.gsub(/\//, '&#8203;/') if str
     str
+  end
+
+  def description
+    if description_parts.size > 1
+      description_parts[1..-1].join("\n")
+    else
+      endpoint.description
+    end
   end
 
   def root_path
@@ -223,5 +228,11 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     else
       [ example_from_schema(array["items"], parent) ]
     end
+  end
+
+  private
+
+  def description_parts
+    endpoint.description.to_s.strip.split(/\n+/)
   end
 end
