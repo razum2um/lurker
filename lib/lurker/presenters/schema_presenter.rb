@@ -1,6 +1,8 @@
 # An BasePresenter for a JSON Schema fragment. Like most JSON
 # schema things, has a tendency to recurse.
 class Lurker::SchemaPresenter < Lurker::BasePresenter
+  attr_reader :schema
+
   FORMATTED_KEYS = %w(
     description
     type
@@ -29,7 +31,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     options[:nested] > 0
   end
 
-  def to_html
+  def to_html(parent_key=nil)
     html = StringIO.new
 
     html << '<span class="deprecated">Deprecated</span>' if deprecated?
@@ -39,7 +41,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
 
     html << '<ul>'
     begin
-      html << '<li>Required: %s</li>' % required? if nested?
+      html << '<li>Required: %s</li>' % required?(parent_key) if nested?
       html << '<li>Type: %s</li>' % type if type
       html << '<li>Format: %s</li>' % format if format
       html << '<li>Example: %s</li>' % example.to_html if example
@@ -65,7 +67,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     if t.kind_of? Array
       types = t.map do |type|
         if type.kind_of? Hash
-          '<li>%s</li>' % self.class.new(type, options).to_html
+          '<li>%s</li>' % self.class.new(type, options.merge(parent: self)).to_html
         else
           '<li>%s</li>' % type
         end
@@ -91,8 +93,8 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     @schema["deprecated"]
   end
 
-  def required?
-    @schema["required"] ? "yes" : "no"
+  def required?(parent_key=nil)
+    ((options[:parent].schema['required'] || []).include?(parent_key)) ? "yes" : "no"
   end
 
   def enum_html
@@ -116,7 +118,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
     html = ""
     html << '<li>Items'
 
-    sub_options = options.merge(:nested => options[:nested] + 1)
+    sub_options = options.merge(:nested => options[:nested] + 1, :parent => self)
 
     if items.kind_of? Array
       item.compact.each do |item|
@@ -153,7 +155,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
         '<tt>%s</tt>' % key,
         schema_slug(key, property)
       )
-      html << self.class.new(property, options.merge(:nested => options[:nested] + 1)).to_html
+      html << self.class.new(property, options.merge(:nested => options[:nested] + 1, :parent => self)).to_html(key)
       html << '</li>'
     end
 
