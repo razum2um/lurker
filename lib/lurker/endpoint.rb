@@ -183,6 +183,7 @@ class Lurker::Endpoint
       end
       result
     when Array then obj.map { |v| stringify_keys(v) }
+    when ActionDispatch::Http::UploadedFile then obj.headers
     else obj
     end
   end
