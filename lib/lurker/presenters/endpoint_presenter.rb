@@ -40,11 +40,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def description
-    if description_parts.size > 1
-      description_parts[1..-1].join("\n")
-    else
-      endpoint.description
-    end
+    description_parts[1..-1].join("\n")
   end
 
   def root_path
