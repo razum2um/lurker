@@ -1,5 +1,7 @@
 <h1 id="endpoint" class="page-header"><%= @endpoint_presenter.title %></h1>
-<p class="lead"><%= @endpoint_presenter.description %></p>
+<% if @endpoint_presenter.description.present? %>
+  <p class="lead"><%= @endpoint_presenter.description %></p>
+<% end %>
 
 <pre><%= @endpoint_presenter.verb %> <%= @endpoint_presenter.named_path %></pre>
 
