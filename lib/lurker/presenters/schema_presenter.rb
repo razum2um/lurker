@@ -84,9 +84,9 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
   end
 
   def example
-    return unless e = @schema["example"]
+    return unless @schema.key?("example")
 
-    Lurker::JsonPresenter.new(e)
+    Lurker::JsonPresenter.new(@schema["example"])
   end
 
   def deprecated?
