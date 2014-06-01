@@ -37,9 +37,9 @@
       <div class="row">
         <div class="col-md-9" role="main">
           <div class="bs-docs-section">
-            <h1 id="endpoint" class="page-header">repo listing</h1>
+            <h1 id="endpoint" class="page-header">user updating</h1>
 
-<pre>GET /api/v1/users/:user_id/repos</pre>
+<pre>PATCH /api/v2/users/:id</pre>
 
 <h3>Example</h3>
 <script type="text/jsx">
@@ -51,9 +51,9 @@
     },
     getInitialState: function() {
       var state = {};
-      var values = JSON.parse('[{"label":"user_id","value":"1"}]');
-      var template = '/api/v1/users/:user_id/repos';
-      var method = 'GET';
+      var values = JSON.parse('[{"label":"id","value":"1"}]');
+      var template = '/api/v2/users/:id';
+      var method = 'PATCH';
       var hosts = JSON.parse('{"[Sandbox] Heroku":"http://lurker-app.herokuapp.com","[Real] razum2um.me":"http://lurker.razum2um.me"}');
       var host = 'http://lurker-app.herokuapp.com';
 
@@ -84,7 +84,7 @@
       state.values = values;
       state.template = template;
       state.action = this.renderAction(host, template, values);
-      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('{"limit":1}')));
+      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('{"user":{"name":"Bob","surname":"Marley"}}')));
       return state;
     },
     getPayload: function() {
@@ -129,8 +129,8 @@
         hostOptions.push(<option value={hostUrl}>{name}</option>);
       };
       return (
-        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="bs-example hidden-print form-horizontal" method="GET">
-          <input name="_method" value="GET" type="hidden" />
+        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="bs-example hidden-print form-horizontal" method="POST">
+          <input name="_method" value="PATCH" type="hidden" />
           <div className="form-group">
             <label className="control-label col-sm-1"forHtml="hostname">Lurk!</label>
             <div className="col-sm-11">
@@ -150,7 +150,7 @@
             <div className="bs-example url-params" id="url-payload">
               <fieldset ref="url-params">
                   <div className="form-group">
-                    <label className="control-label col-sm-3" htmlFor="user_id">user_id</label>
+                    <label className="control-label col-sm-3" htmlFor="id">id</label>
                     <div className="col-sm-9">
                       <input type="text" valueLink={this.linkState('values.0.value')} className="form-control"></input>
                     </div>
@@ -161,9 +161,15 @@
             <div className="bs-example post-params" id="post-payload">
               <fieldset ref="post-params">
                 <div className="form-group">
-  <label className="control-label col-sm-3" htmlFor="limit">limit</label>
+  <label className="control-label col-sm-3" htmlFor="user[name]">user[name]</label>
   <div className="col-sm-9">
-        <input type="text" name="limit" defaultValue="1" className="form-control" onChange={this.afterSetPartialState}></input>
+        <input type="text" name="user[name]" defaultValue="Bob" className="form-control" onChange={this.afterSetPartialState}></input>
+  </div>
+</div>
+<div className="form-group">
+  <label className="control-label col-sm-3" htmlFor="user[surname]">user[surname]</label>
+  <div className="col-sm-9">
+        <input type="text" name="user[surname]" defaultValue="Marley" className="form-control" onChange={this.afterSetPartialState}></input>
   </div>
 </div>
 
@@ -180,7 +186,7 @@
     }
   });
 
-  var submitForm = <SubmitForm template="/api/v1/users/:user_id/repos" />;
+  var submitForm = <SubmitForm template="/api/v2/users/:id" />;
   // FIXME: see multidomain feature - cannot select node in phantomjs
   window.submitForm = submitForm;
   React.renderComponent(submitForm, document.getElementById('submit-form'));
@@ -206,48 +212,56 @@
       </td>
     </tr>
   </table>
-  <pre><code id="response" ref="response-example" class="hljs">[
-  {
-    "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"lurker"</span></span>,
-    "<span class="hljs-attribute">user_id</span>": <span class="hljs-value"><span class="hljs-number">1</span>
-  </span>}
-]</code></pre>
+  <pre><code id="response" ref="response-example" class="hljs">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"razum2um"</span></span>,
+  "<span class="hljs-attribute">surname</span>": <span class="hljs-value"><span class="hljs-string">"Unknown"</span>
+</span>}</code></pre>
   <pre><code ref="response-raw" style="display: none;"></code></pre>
 </div> <!-- ./#show-api-response-div -->
 
 <h3>Request Schema</h3>
-<div class="schema"><ul><li>additionalProperties: false</li><li>    <span id="limit-0-1695865894464051771">
-      <a href="#limit-0-1695865894464051771" class="anchor">
-        <tt>limit</tt>
+<div class="schema"><ul><li>additionalProperties: false</li><li>    <span id="user-0--4008696648232202693">
+      <a href="#user-0--4008696648232202693" class="anchor">
+        <tt>user</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li></ul></div>
-
-<h3>Response Schema</h3>
-<div class="schema"><ul><li>Type: array</li><li>Items<div class="schema"><ul><li>Required: no</li><li>additionalProperties: false</li><li>    <span id="id-1-1695865894464051771">
-      <a href="#id-1-1695865894464051771" class="anchor">
-        <tt>id</tt>
-      </a>
-    </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-1-340820616877926353">
-      <a href="#name-1-340820616877926353" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>additionalProperties: false</li><li>    <span id="name-1-2720907023340443513">
+      <a href="#name-1-2720907023340443513" class="anchor">
         <tt>name</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;lurker&quot;</tt></li></ul></div></li><li>    <span id="user_id-1-1695865894464051771">
-      <a href="#user_id-1-1695865894464051771" class="anchor">
-        <tt>user_id</tt>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;Bob&quot;</tt></li></ul></div></li><li>    <span id="surname-1--4550609466039092774">
+      <a href="#surname-1--4550609466039092774" class="anchor">
+        <tt>surname</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li></ul></div></li></ul></div>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;Marley&quot;</tt></li></ul></div></li></ul></div></li></ul></div>
+
+<h3>Response Schema</h3>
+<div class="schema"><ul><li>additionalProperties: false</li><li>    <span id="id-0-1695865894464051771">
+      <a href="#id-0-1695865894464051771" class="anchor">
+        <tt>id</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-0--3595691357161423793">
+      <a href="#name-0--3595691357161423793" class="anchor">
+        <tt>name</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;razum2um&quot;</tt></li></ul></div></li><li>    <span id="surname-0--184025331442253368">
+      <a href="#surname-0--184025331442253368" class="anchor">
+        <tt>surname</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;Unknown&quot;</tt></li></ul></div></li></ul></div>
 
           </div>
         </div>
         <div class="col-md-3">
           <div class="bs-docs-sidebar hidden-print" role="complementary">
             <ul class="nav bs-docs-sidenav">
-                <li class="endpoint-group false">
+                <li class="endpoint-group active">
       <a href="#">users management</a>
       <ul class="nav">
             <li class="false">
@@ -285,7 +299,7 @@
                   <span>user updating</span>
                 </a>
             </li>
-            <li class="false">
+            <li class="active">
                 <a href="/lurker/api/v2/users/__id-PATCH.html">
                   <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v2/users/:id</span>
                   <br>
@@ -294,10 +308,10 @@
             </li>
       </ul>
   </li>
-  <li class="endpoint-group active">
+  <li class="endpoint-group false">
       <a href="#">repos management</a>
       <ul class="nav">
-            <li class="active">
+            <li class="false">
                 <a href="/lurker/api/v1/users/__user_id/repos-GET.html">
                   <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos</span>
                   <br>

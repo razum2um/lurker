@@ -3,10 +3,11 @@
 
 <head>
 
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Lurker | Lurker Demo Application</title>
-    <link href="/lurker/application-3c66db86529152013dbba3fa933e14dd67ab791d.css" media="all" rel="stylesheet">
+    <link href="/lurker/application-74b99559f786fb2e49ea831bb908ac824fac248b.css" media="all" rel="stylesheet">
     <style type="text/css">
       @font-face {
         font-family: 'FontAwesome';
@@ -37,6 +38,7 @@
         <div class="col-md-9" role="main">
           <div class="bs-docs-section">
             <h1 id="endpoint" class="page-header">repo creation</h1>
+
 <pre>POST /api/v1/users/:user_id/repos</pre>
 
 <h3>Example</h3>
@@ -216,46 +218,46 @@
 </div> <!-- ./#show-api-response-div -->
 
 <h3>Request Schema</h3>
-<div class="schema"><ul><li>    <span id="user_id-0--604989630191162989">
-      <a href="#user_id-0--604989630191162989" class="anchor">
+<div class="schema"><ul><li>additionalProperties: false</li><li>    <span id="user_id-0-4352694415961571350">
+      <a href="#user_id-0-4352694415961571350" class="anchor">
         <tt>user_id</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="repo-0-4262311779151755892">
-      <a href="#repo-0-4262311779151755892" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="repo-0-3381479989332774175">
+      <a href="#repo-0-3381479989332774175" class="anchor">
         <tt>repo</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>    <span id="name-1--1331485571198190644">
-      <a href="#name-1--1331485571198190644" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>additionalProperties: false</li><li>    <span id="name-1--2957123191948217818">
+      <a href="#name-1--2957123191948217818" class="anchor">
         <tt>name</tt>
       </a>
     </span>
 <div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;new-gem&quot;</tt></li></ul></div></li></ul></div></li></ul></div>
 
 <h3>Response Schema</h3>
-<div class="schema"><ul><li>    <span id="id-0-1818801056752441806">
-      <a href="#id-0-1818801056752441806" class="anchor">
+<div class="schema"><ul><li>    <span id="id-0--1943539416987893082">
+      <a href="#id-0--1943539416987893082" class="anchor">
         <tt>id</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-0--1331485571198190644">
-      <a href="#name-0--1331485571198190644" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-0--2957123191948217818">
+      <a href="#name-0--2957123191948217818" class="anchor">
         <tt>name</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;new-gem&quot;</tt></li></ul></div></li><li>    <span id="user-0-776831116167873542">
-      <a href="#user-0-776831116167873542" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;new-gem&quot;</tt></li></ul></div></li><li>    <span id="user-0--2564735495785032482">
+      <a href="#user-0--2564735495785032482" class="anchor">
         <tt>user</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>    <span id="id-1-1818801056752441806">
-      <a href="#id-1-1818801056752441806" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>    <span id="id-1--1943539416987893082">
+      <a href="#id-1--1943539416987893082" class="anchor">
         <tt>id</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-1-3211252776985669525">
-      <a href="#name-1-3211252776985669525" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-1-3086346854683906498">
+      <a href="#name-1-3086346854683906498" class="anchor">
         <tt>name</tt>
       </a>
     </span>
@@ -300,6 +302,13 @@
             <li class="false">
                 <a href="/lurker/api/v1/users/__id-PATCH.html">
                   <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:id</span>
+                  <br>
+                  <span>user updating</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v2/users/__id-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v2/users/:id</span>
                   <br>
                   <span>user updating</span>
                 </a>
@@ -364,9 +373,9 @@
       <div class="container">
         <ul class="bs-docs-footer-links muted">
           <li>·</li>
-            <li>Lurker Demo Application&nbsp;ed43ec5</li>
+            <li>Lurker Demo Application&nbsp;58ef50b</li>
             <li>·</li>
-            <li>lurker (3e186ca7d97f123577686602505f334759e5c379)</li>
+            <li>lurker (99641888f33915617ddd346cf93c5e1c03af44e3)</li>
             <li>·</li>
         </ul>
       </div>

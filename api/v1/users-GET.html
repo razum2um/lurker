@@ -3,10 +3,11 @@
 
 <head>
 
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Lurker | Lurker Demo Application</title>
-    <link href="/lurker/application-3c66db86529152013dbba3fa933e14dd67ab791d.css" media="all" rel="stylesheet">
+    <link href="/lurker/application-74b99559f786fb2e49ea831bb908ac824fac248b.css" media="all" rel="stylesheet">
     <style type="text/css">
       @font-face {
         font-family: 'FontAwesome';
@@ -37,6 +38,7 @@
         <div class="col-md-9" role="main">
           <div class="bs-docs-section">
             <h1 id="endpoint" class="page-header">user listing</h1>
+
 <pre>GET /api/v1/users</pre>
 
 <h3>Example</h3>
@@ -197,32 +199,38 @@
   <pre><code id="response" ref="response-example" class="hljs">[
   {
     "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
-    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"razum2um"</span>
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"razum2um"</span></span>,
+    "<span class="hljs-attribute">surname</span>": <span class="hljs-value"><span class="hljs-string">"Marley"</span>
   </span>}
 ]</code></pre>
   <pre><code ref="response-raw" style="display: none;"></code></pre>
 </div> <!-- ./#show-api-response-div -->
 
 <h3>Request Schema</h3>
-<div class="schema"><ul><li>additionalProperties: false</li><li>    <span id="limit-0-2316095749234398715">
-      <a href="#limit-0-2316095749234398715" class="anchor">
+<div class="schema"><ul><li>additionalProperties: false</li><li>    <span id="limit-0--4061196722836412177">
+      <a href="#limit-0--4061196722836412177" class="anchor">
         <tt>limit</tt>
       </a>
     </span>
 <div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;1&quot;</tt></li></ul></div></li></ul></div>
 
 <h3>Response Schema</h3>
-<div class="schema"><ul><li>Type: array</li><li>Items<div class="schema"><ul><li>Required: yes</li><li>additionalProperties: false</li><li>    <span id="id-1--3370620505414887448">
-      <a href="#id-1--3370620505414887448" class="anchor">
+<div class="schema"><ul><li>Type: array</li><li>Items<div class="schema"><ul><li>Required: no</li><li>additionalProperties: false</li><li>    <span id="id-1-1695865894464051771">
+      <a href="#id-1-1695865894464051771" class="anchor">
         <tt>id</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-1--1156968682357077309">
-      <a href="#name-1--1156968682357077309" class="anchor">
+<div class="schema"><ul><li>Required: no</li><li>Type: integer</li><li>Example: <tt>1</tt></li></ul></div></li><li>    <span id="name-1--3595691357161423793">
+      <a href="#name-1--3595691357161423793" class="anchor">
         <tt>name</tt>
       </a>
     </span>
-<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;razum2um&quot;</tt></li></ul></div></li></ul></div></li></ul></div>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;razum2um&quot;</tt></li></ul></div></li><li>    <span id="surname-1--4550609466039092774">
+      <a href="#surname-1--4550609466039092774" class="anchor">
+        <tt>surname</tt>
+      </a>
+    </span>
+<div class="schema"><ul><li>Required: no</li><li>Type: string</li><li>Example: <tt>&quot;Marley&quot;</tt></li></ul></div></li></ul></div></li></ul></div>
 
           </div>
         </div>
@@ -263,6 +271,13 @@
             <li class="false">
                 <a href="/lurker/api/v1/users/__id-PATCH.html">
                   <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:id</span>
+                  <br>
+                  <span>user updating</span>
+                </a>
+            </li>
+            <li class="false">
+                <a href="/lurker/api/v2/users/__id-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v2/users/:id</span>
                   <br>
                   <span>user updating</span>
                 </a>
@@ -327,9 +342,9 @@
       <div class="container">
         <ul class="bs-docs-footer-links muted">
           <li>·</li>
-            <li>Lurker Demo Application&nbsp;ed43ec5</li>
+            <li>Lurker Demo Application&nbsp;58ef50b</li>
             <li>·</li>
-            <li>lurker (3e186ca7d97f123577686602505f334759e5c379)</li>
+            <li>lurker (99641888f33915617ddd346cf93c5e1c03af44e3)</li>
             <li>·</li>
         </ul>
       </div>

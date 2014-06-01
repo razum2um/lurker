@@ -3,10 +3,11 @@
 
 <head>
 
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Lurker | Lurker Demo Application</title>
-    <link href="/lurker/application-3c66db86529152013dbba3fa933e14dd67ab791d.css" media="all" rel="stylesheet">
+    <link href="/lurker/application-74b99559f786fb2e49ea831bb908ac824fac248b.css" media="all" rel="stylesheet">
     <style type="text/css">
       @font-face {
         font-family: 'FontAwesome';
@@ -30,7 +31,7 @@
           <a class="navbar-brand" href="/lurker">Lurker Demo Application</a>
         </div>
       </div>
-    </header>
+    </header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>
 
     <div class="container bs-docs-container">
       <div class="row">
@@ -50,12 +51,20 @@ Works on Rails 3.2, 4.0, 4.1 &amp; Ruby 1.9.3, 2.0.0, 2.1.1.</p>
 
 <h2 id="installation">Installation</h2>
 
-<p>Add this line to your application’s Gemfile:</p>
+<p>Add my public key:</p>
+
+<pre><code>gem cert --add &lt;(curl -Ls https://raw.github.com/razum2um/lurker/master/certs/razum2um.pem)
+
+$ gem install lurker                 # without key
+$ gem install lurker -P HighSecurity # secure, with key added
+</code></pre>
+
+<p>Or this line to your application’s Gemfile:</p>
 
 <pre><code>gem 'lurker'
 </code></pre>
 
-<p>Add to <code>test_helper.rb</code> or <code>spec_helper.rb</code>:</p>
+<p>Inject into <code>test_helper.rb</code> or <code>spec_helper.rb</code>:</p>
 
 <pre><code>require 'lurker/spec_helper'
 </code></pre>
@@ -124,6 +133,13 @@ Lurker::ValidationError:
     null in schema file:///.../lurker/api/v1/users-POST.json.yml#
 </code></pre>
 
+<p>The generation of live-documentation is pretty simple:</p>
+
+<pre><code>bin/lurker convert                   # builds html under `Rails.root/html`
+bin/lurker convert -o public/lurker  # builds html under `Rails.root/public/lurker`
+bin/lurker convert -f pdf -o html    # builds `ServiceName.pdf` under `Rails.root/html`
+</code></pre>
+
 <p>Let’s run your <code>rails s</code> and visit <a href="http://localhost:3000/lurker/">http://localhost:3000/lurker/</a>
 (or see <a href="http://lurker.razum2um.me">demo</a> for example)</p>
 
@@ -154,10 +170,12 @@ statically everywhere as well as be served by current <code>Rails</code> instanc
   <li><a href="http://lurker.razum2um.me/lurker/api/v1/users-POST.html">Pretty submit form to test API endpoints (live) based on schemas</a> (enter a name &amp; press “Submit”)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-nested-schema-scaffolding">Handling URLs with dynamic segments</a> (such as <code>api/v1/:user_id/repos</code>)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/partials">JSON-Schema partials</a>, also in YAML format (<a href="http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html">demo</a>)</li>
-  <li><a href="http://razum2um.github.io/lurker/Lurker%20Demo%20Application.pdf">Generation PDF documentation</a></li>
+  <li><a href="http://razum2um.github.io/lurker/Lurker%20Demo%20Application.pdf">Generation PDF documentation</a> (add <code>gem 'pdfkit'</code> to Gemfile)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes">Multiple docs for many usecases</a> (e.g <code>:lurker =&gt; '...'</code>)</li>
   <li>ERB support inside <code>.json.yml.erb</code></li>
-  <li>HTTP-Auth authorization for your online docs</li>
+  <li>Insert custom content in Markdown into <code>index.html</code> (add <code>gem 'kramdown'</code> to Gemfile)</li>
+  <li>Syntax highlighting for sample response (add <code>gem 'execjs'</code> to Gemfile)</li>
+  <li>HTTP-Auth authorization for docs (<code>mount Lurker::Server.to_rack username: '...', password: '...'</code>)</li>
   <li>Separate API-services generated within one test suite</li>
   <li>Capistrano integration</li>
   <li>JSON-Schema draft-v4 support</li>
@@ -286,6 +304,13 @@ This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
                   <span>user updating</span>
                 </a>
             </li>
+            <li class="opened">
+                <a href="/lurker/api/v2/users/__id-PATCH.html">
+                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v2/users/:id</span>
+                  <br>
+                  <span>user updating</span>
+                </a>
+            </li>
       </ul>
   </li>
   <li class="endpoint-group opened">
@@ -346,9 +371,9 @@ This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
       <div class="container">
         <ul class="bs-docs-footer-links muted">
           <li>·</li>
-            <li>Lurker Demo Application&nbsp;ed43ec5</li>
+            <li>Lurker Demo Application&nbsp;58ef50b</li>
             <li>·</li>
-            <li>lurker (3e186ca7d97f123577686602505f334759e5c379)</li>
+            <li>lurker (99641888f33915617ddd346cf93c5e1c03af44e3)</li>
             <li>·</li>
         </ul>
       </div>
