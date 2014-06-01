@@ -6,6 +6,7 @@ def on_razum2um_me(command)
 end
 
 def in_gh_pages(command)
+  FileUtils.mkdir_p(GH_PAGES)
   Dir.chdir(GH_PAGES) do
     Bundler.with_clean_env do
       sh command
@@ -36,13 +37,13 @@ namespace :heroku do
     do_deploy = Proc.new {
       in_lurker_app "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'" rescue nil
       in_lurker_app "git push origin master"
-      in_lurker_app "heroku run rake db:import --app lurker-app"
+      in_lurker_app "heroku run rake db:import --app lurker-app" rescue nil
     }
     ask_for_deploy("heroku", do_deploy)
   end
 
   desc 'rebuilds & pushes app to heroku'
-  task :deploy => [:build_example_docs, 'heroku:push'] do
+  task :deploy => [:prepull, :build_example_docs, 'heroku:push'] do
   end
 end
 
@@ -64,7 +65,7 @@ namespace :razum2um do
   end
 
   desc 'rebuilds & pushes app to razum2um.me'
-  task :deploy => [:build_example_docs, 'razum2um:push'] do
+  task :deploy => [:prepull, :build_example_docs, 'razum2um:push'] do
   end
 end
 
@@ -81,20 +82,21 @@ namespace :github do
   end
 
   desc 'rebuilds & pushes app to gh-pages'
-  task :deploy => [:build_example_docs, 'github:push'] do
+  task :deploy => [:prepull, :build_example_docs, 'github:push'] do
+  end
+end
+
+desc 'pulls if lurker app is empty'
+task :prepull do
+  unless File.exists?("#{EXAMPLE_PATH}/.git")
+    sh "git clone git@heroku.com:lurker-app.git #{EXAMPLE_APP}"
+    in_lurker_app "git remote add razum2um lurker@lurker.razum2um.me:~/git"
   end
 end
 
 desc 'commits lurker app'
 task :predeploy do
   do_predeploy = Proc.new {
-    unless File.exists?("#{EXAMPLE_APP}/.git")
-      in_lurker_app "git init"
-      in_lurker_app "git remote add origin git@heroku.com:lurker-app.git"
-      in_lurker_app "git remote add razum2um lurker@lurker.razum2um.me:~/git"
-      in_lurker_app "git fetch -a"
-      in_lurker_app "git fetch -a razum2um"
-    end
     in_lurker_app %Q{sed -i "" "s|<body>|<body><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" html/index.html}
     in_lurker_app "echo 'bin/lurker' > .gitignore"
     in_lurker_app "echo 'log' >> .gitignore"

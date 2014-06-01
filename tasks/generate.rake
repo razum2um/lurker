@@ -46,6 +46,7 @@ namespace :generate do
 end
 
 def in_lurker_app(command)
+  FileUtils.mkdir_p(EXAMPLE_PATH)
   Dir.chdir(EXAMPLE_PATH) do
     Bundler.with_clean_env do
       sh command
