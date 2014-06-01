@@ -74,9 +74,5 @@ task :build_example_docs => :features do
 
   in_lurker_app %Q{sed -i "" "s|</header>|</header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" html/index.html}
   in_lurker_app "bin/lurker convert -f pdf -o html"
-
-  if File.exists?(pages = File.expand_path('../gh-pages', __FILE__))
-    in_lurker_app "cp -R html/* #{pages}"
-  end
 end
 

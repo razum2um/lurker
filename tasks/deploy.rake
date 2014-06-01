@@ -70,8 +70,15 @@ namespace :razum2um do
 end
 
 namespace :github do
+  desc 'copies htmls from deployed app'
+  task :copy_html do
+    if File.exists?(pages = File.expand_path('../../gh-pages', __FILE__))
+      in_lurker_app "cp -R html/* #{pages}"
+    end
+  end
+
   desc 'pushes example lurker_app to gh-pages'
-  task :push do
+  task :push => :copy_html do
     do_deploy = Proc.new {
       in_gh_pages "git commit -a -m 'auto commit: #{`git log --oneline -n 1`.strip}'" rescue nil
       in_gh_pages "git push origin gh-pages"
