@@ -66,12 +66,13 @@ task :features => [:regenerate, :cucumber]
 
 desc 'convert docs for example app, prepages gh-pages'
 task :build_example_docs => :features do
-  if File.exists?(readme = File.expand_path('../README.md', __FILE__))
+  if File.exists?(readme = File.expand_path('../../README.md', __FILE__))
     in_lurker_app "bin/lurker convert -c #{readme}"
   else
     in_lurker_app "bin/lurker convert"
   end
 
+  in_lurker_app %Q{sed -i "" "s|</header>|</header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" html/index.html}
   in_lurker_app "bin/lurker convert -f pdf -o html"
 
   if File.exists?(pages = File.expand_path('../gh-pages', __FILE__))

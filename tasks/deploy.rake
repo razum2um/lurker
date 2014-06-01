@@ -101,7 +101,6 @@ end
 desc 'commits lurker app'
 task :predeploy do
   do_predeploy = Proc.new {
-    in_lurker_app %Q{sed -i "" "s|<body>|<body><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" html/index.html}
     in_lurker_app "echo 'bin/lurker' > .gitignore"
     in_lurker_app "echo 'log' >> .gitignore"
     # commit migration and deploy by hand first time
