@@ -99,9 +99,9 @@ task :prepull do
     sh "git clone git@heroku.com:lurker-app.git #{EXAMPLE_APP}"
     in_lurker_app "git remote add razum2um lurker@lurker.razum2um.me:~/git"
   end
-  unless File.exists?(File.expand_path("../../#{GH_PAGES}", __FILE__))
-    sh "mkdir #{GH_PAGES}"
-    sh "git --work-tree=#{File.expand_path("../../#{GH_PAGES}", __FILE__)} checkout gh-pages -- ."
+  unless File.exists?(File.expand_path("../../#{GH_PAGES}/.git", __FILE__))
+    sh "git clone git@github.com:razum2um/lurker.git #{GH_PAGES}"
+    in_gh_pages "git checkout gh-pages"
   end
 end
 
