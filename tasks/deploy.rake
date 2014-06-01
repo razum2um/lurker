@@ -93,6 +93,7 @@ task :predeploy do
       in_lurker_app "git remote add origin git@heroku.com:lurker-app.git"
       in_lurker_app "git remote add razum2um lurker@lurker.razum2um.me:~/git"
       in_lurker_app "git fetch -a"
+      in_lurker_app "git fetch -a razum2um"
     end
     in_lurker_app %Q{sed -i "" "s|<body>|<body><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" html/index.html}
     in_lurker_app "echo 'bin/lurker' > .gitignore"
