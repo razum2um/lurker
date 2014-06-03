@@ -1,5 +1,5 @@
 gem 'rack-cors', require: 'rack/cors'
-gem 'rspec-rails'
+gem 'rspec-rails', '~> 2.14.0'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
