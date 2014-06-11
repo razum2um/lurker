@@ -2,6 +2,8 @@ require 'hashie/dash'
 
 module Lurker
   class Request < Hashie::Dash
+    class NonroutableRequest < RuntimeError; end
+
     PREFIX = 'action_dispatch.request'
 
     property :verb, required: true
@@ -35,7 +37,9 @@ module Lurker
         Rails.application.routes.router.recognize(request) do |route, _|
           return route.path.spec.to_s.sub('(.:format)', '')
         end
+        raise NonroutableRequest.new("Cannot find named route for: #{request.env['HTTP_HOST']}#{request.path_info}")
       end
     end
   end
 end
+
