@@ -76,6 +76,7 @@ module Lurker
       require 'lurker/spec_helper' unless defined? Lurker::SpecHelper
       (Thread.current[:lurker_spy] = new(options, &block)).tap do |spy|
         spy.call
+        Thread.current[:lurker_spy] = nil
       end
     end
 
