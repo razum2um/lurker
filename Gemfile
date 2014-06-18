@@ -4,7 +4,7 @@ gemspec
 # Add any gems and groups that you don't want to keep local
 group :development do
   # tools
-  gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'pry-stack_explorer'
   # rspec --format fuubar
   gem 'fuubar'
