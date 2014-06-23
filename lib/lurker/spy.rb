@@ -74,10 +74,10 @@ module Lurker
 
     def self.on(options={}, &block)
       require 'lurker/spec_helper' unless defined? Lurker::SpecHelper
-      (Thread.current[:lurker_spy] = new(options, &block)).tap do |spy|
-        spy.call
-        Thread.current[:lurker_spy] = nil
-      end
+      Thread.current[:lurker_spy] = new(options, &block)
+      block.call
+    ensure
+      Thread.current[:lurker_spy] = nil
     end
 
     def self.enabled?
