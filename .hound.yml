@@ -13,3 +13,15 @@ MultilineTernaryOperator:
 LineLength:
   Enabled: false
 
+RedundantSelf:
+  Enabled: false
+
+GuardClause:
+  Enabled: false
+
+Next:
+  Enabled: false
+
+SpaceAroundEqualsInParameterDefault:
+  Enabled: false
+
