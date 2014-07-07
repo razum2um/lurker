@@ -11,20 +11,26 @@ module Lurker
         @schema[RESPONSE_CODES] ||= []
       end
 
-      def add(options)
+      def add(status_code, successful, options = {})
         response_code = {
-          STATUS => options.fetch(:status_code),
-          SUCCESSFUL => options.fetch(:successful),
+          STATUS => status_code,
+          SUCCESSFUL => successful,
           DESCRIPTION => options.fetch(:description, '')
         }
 
         Lurker::SchemaModifier.append!(@schema[RESPONSE_CODES], response_code)
       end
 
-      def exists?(options)
-        status_code = options.fetch(:status_code)
-        successful = options.fetch(:successful)
+      def validate!(status_code, successful)
+        return if exists?(status_code, successful)
 
+        raise Lurker::UndocumentedResponseCode,
+          'Undocumented response: %s, successful: %s' % [
+            status_code, successful
+          ]
+      end
+
+      def exists?(status_code, successful)
         !!@schema[RESPONSE_CODES].detect do |response_code|
           response_code[SUCCESSFUL] == successful &&
             (response_code[STATUS] == status_code ||    # 200
