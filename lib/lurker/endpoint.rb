@@ -6,16 +6,21 @@ require 'json-schema'
 # The #consume_* methods will raise exceptions if input differs from the schema
 module Lurker
   class Endpoint
-    attr_reader :schema, :service, :endpoint_path, :current_scaffold, :extensions
+    include Lurker::Utils
+
+    attr_reader :schema, :service, :endpoint_path, :extensions
+    attr_reader :request_parameters, :response_parameters, :response_codes
     attr_accessor :errors
 
-    def initialize(endpoint_path, extensions={}, service=Lurker::Service.default_service)
+    def initialize(endpoint_path, extensions = {}, service = Lurker::Service.default_service)
       @endpoint_path = endpoint_path
       @extensions = extensions
       @service = service
       @errors = []
       @persisted = false
       @schema = File.exist?(endpoint_path) ? load_schema : build_schema
+
+      initialize_schema_properties
     end
 
     def persist!
@@ -28,32 +33,27 @@ module Lurker
       prefix.present? && description.present?
     end
 
-    def consume!(request_params, response_params, status_code, successful=true)
+    def consume!(request_params, response_params, status_code, successful = true)
       consume_request(request_params, successful)
       consume_response(response_params, status_code, successful)
       raise_errors!
     end
 
-    def consume_request(params, successful=true)
-      if successful
-        schema['requestParameters'] = Lurker::SchemaModifier.merge!(
-          Lurker::JsonSchemaHash.new(request_parameters, endpoint_path), stringify_keys(params)
-        ).to_h
-      end
+    def consume_request(params, successful = true)
+      request_parameters.add(params) if successful
     end
 
-    def consume_response(params, status_code, successful=true)
-      return validate_response(params, status_code, successful) if persisted?
+    def consume_response(params, status_code, successful = true)
+      if persisted?
+        response_codes.validate!(status_code, successful)
+        response_parameters.validate(params) if successful
 
-      if successful
-        schema['responseParameters'] = Lurker::SchemaModifier.merge!(
-          Lurker::JsonSchemaHash.new(response_parameters, endpoint_path), stringify_keys(params)
-        ).to_h
+        return
       end
 
-      if !response_codes.exists?(status_code: status_code, successful: successful)
-        response_codes.add(status_code: status_code, successful: successful)
-      end
+      response_parameters.add(params) if successful
+      response_codes.add(status_code, successful) unless response_codes.exists?(
+        status_code, successful)
     end
 
     def verb
@@ -88,19 +88,17 @@ module Lurker
       (schema.extensions['query_params'] || {})
     end
 
-    def request_parameters
-      @schema["requestParameters"] ||= {}
-    end
-
-    def response_parameters
-      @schema["responseParameters"] ||= {}
-    end
-
-    def response_codes
-      ResponseCodes.new(schema)
-    end
-
     protected
+
+    def initialize_schema_properties
+      @response_codes = ResponseCodes.new(schema)
+
+      @response_parameters = HttpParameters.new(schema,
+        schema_key: 'responseParameters', schema_id: endpoint_path, human_name: 'Response')
+
+      @request_parameters = HttpParameters.new(schema,
+        schema_key: 'requestParameters', schema_id: endpoint_path, human_name: 'Request')
+    end
 
     def persisted?
       !!@persisted
@@ -138,78 +136,15 @@ module Lurker
       end
     end
 
-    def validate(expected_params, given_params, prefix=nil)
-      schema = set_additional_properties_false_on(expected_params.dup)
-      schema['id'] = "file://#{endpoint_path}"
-      unless (_errors = Lurker::Validator.new(schema, stringify_keys(given_params), record_errors: true).validate).empty?
-        self.errors << prefix
-        _errors.each { |e| self.errors << "- #{e}" }
-        return false
-      end
-      true
-    end
-
-    def validate_response(params, status_code, successful)
-      if !response_codes.exists?(status_code: status_code, successful: successful)
-        raise Lurker::UndocumentedResponseCode,
-          'Undocumented response: %s, successful: %s' % [
-            status_code, successful
-          ]
-      elsif successful
-        validate(response_parameters, params, 'Response')
-      else
-        true
-      end
-    end
-
     def raise_errors!
-      unless errors.empty?
-        raise Lurker::ValidationError.new(word_wrap((
-          # ['Schema', "- #{endpoint_path}"] +
-          errors
-          # + ['Diff', current_scaffold.schema.diff(schema)]
-        ).join("\n")))
-      end
+      return if response_parameters.errors.empty?
+
+      raise Lurker::ValidationError.new(word_wrap(
+        response_parameters.errors * "\n"))
     end
 
     def word_wrap(text)
       text.gsub(/\s+in schema/m, "\n  in schema")
-    end
-
-    # default additionalProperties on objects to false
-    # create a copy, so we don't mutate the input
-    def set_additional_properties_false_on(value)
-      if value.kind_of? Hash
-        copy = value.dup
-        if value["type"] == "object" || value.has_key?("properties")
-          copy["additionalProperties"] ||= false
-        end
-        value.each do |key, hash_val|
-          unless key == "additionalProperties"
-            copy[key] = set_additional_properties_false_on(hash_val)
-          end
-        end
-        copy
-      elsif value.kind_of? Array
-        copy = value.map do |arr_val|
-          set_additional_properties_false_on(arr_val)
-        end
-      else
-        value
-      end
-    end
-
-    def stringify_keys(obj)
-      case obj
-      when Hash
-        result = {}
-        obj.each do |k, v|
-          result[k.to_s] = stringify_keys(v)
-        end
-        result
-      when Array then obj.map { |v| stringify_keys(v) }
-      else obj
-      end
     end
   end
 end
