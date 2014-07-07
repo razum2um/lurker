@@ -26,6 +26,9 @@ Feature: schema updating within test suite
               type: string
               example: 'Bob'
     responseCodes:
+    - status: 400
+      successful: true
+      description: ''
     - status: 200
       successful: true
       description: ''
@@ -54,6 +57,37 @@ Feature: schema updating within test suite
         id: '1'
         controller: api/v2/users
         action: update
+    """
+
+  Scenario: json schema tests response parameters and request parameters and show errors from both using "users/update"
+  Given a file named "spec/controllers/api/v2/users_controller_blank_spec.rb" with:
+    """ruby
+      require "spec_helper"
+
+      describe Api::V2::UsersController, :lurker do
+        render_views
+
+        let(:user) do
+          User.where(name: 'razum2um', surname: 'Unknown').first_or_create!
+        end
+
+        it "updates a user surname as string" do
+          patch :update, id: user.id, user: { name: '', surname: 'Marley' }
+          expect(response).not_to be_success
+        end
+      end
+    """
+
+  When I run `bin/rspec spec/controllers/api/v2/users_controller_blank_spec.rb`
+  Then the output should contain failures:
+    """
+    Lurker::ValidationError:
+      Request
+        The property '#/user' contains additional properties ["surname"]
+      Response
+        The property '#/' contains additional properties ["errors"]
+
+    1 example, 1 failure
     """
 
   Scenario: json schema tests response parameters and update request parameters using "users/update"
@@ -104,6 +138,9 @@ Feature: schema updating within test suite
               type: string
               example: Marley
     responseCodes:
+    - status: 400
+      successful: true
+      description: ''
     - status: 200
       successful: true
       description: ''
