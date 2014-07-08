@@ -24,8 +24,9 @@ module Lurker
     end
 
     def persist!
-      schema.ordered! unless @persisted
+      schema.ordered! unless persisted?
       schema.write_to(endpoint_path)
+
       @persisted = true
     end
 
@@ -36,10 +37,12 @@ module Lurker
     def consume!(request_params, response_params, status_code, successful = true)
       consume_request(request_params, successful)
       consume_response(response_params, status_code, successful)
+
       raise_errors!
     end
 
     def consume_request(params, successful = true)
+      request_parameters.validate(params) if persisted?
       request_parameters.add(params) if successful
     end
 
@@ -139,8 +142,8 @@ module Lurker
     def raise_errors!
       return if response_parameters.errors.empty?
 
-      raise Lurker::ValidationError.new(word_wrap(
-        response_parameters.errors * "\n"))
+      errors = (request_parameters.errors | response_parameters.errors) * "\n"
+      raise Lurker::ValidationError.new(word_wrap errors)
     end
 
     def word_wrap(text)
