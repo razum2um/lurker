@@ -20,6 +20,9 @@ Feature: partials
         name:
           type: string
           example: razum2um
+        surname:
+          type: string
+          example: Unknown
       """
     And a file named "lurker/definitions/repo.json.yml" with:
       """yml
@@ -94,4 +97,3 @@ Feature: partials
     create  index.html
     create  api/v1/users/__user_id/repos-POST.html
     """
-
