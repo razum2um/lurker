@@ -5,12 +5,11 @@ module Lurker
   class Server
     # fixed rack_contrib implementation
     class TryStatic
-
       def initialize(app, options)
         @app = app
         @try = ['', *options.delete(:try)]
         @static = ::Rack::Static.new(
-          Proc.new { [404, {}, []] }, # HERE proc, not lambda
+          proc { [404, {}, []] }, # HERE proc, not lambda
           options)
       end
 
@@ -18,7 +17,7 @@ module Lurker
         orig_path = env['PATH_INFO']
         found = nil
         @try.each do |path|
-          resp = @static.call(env.merge!({'PATH_INFO' => orig_path + path}))
+          resp = @static.call(env.merge!('PATH_INFO' => orig_path + path))
           break if 404 != resp[0] && found = resp
         end
         found or @app.call(env.merge!('PATH_INFO' => orig_path))
@@ -42,8 +41,8 @@ module Lurker
          :root => "#{::Rails.root}/#{default_path}",  # static files root dir
          :urls => %w[/],     # match all requests
          :header_rules => [
-           [%w(css js), {'Cache-Control' => 'public, max-age=31536000'}],
-           [:fonts, {'Access-Control-Allow-Origin' => '*'}]
+           [%w(css js), { 'Cache-Control' => 'public, max-age=31536000' }],
+           [:fonts, { 'Access-Control-Allow-Origin' => '*' }]
          ],
          :try => ['.html', 'index.html', '/index.html'] # try these postfixes sequentially
 

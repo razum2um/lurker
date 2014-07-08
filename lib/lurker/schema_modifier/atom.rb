@@ -39,7 +39,7 @@ module Lurker
 
       def append_new(atom)
         # TODO : If example empty - fill from duplicate
-        return if !!@atom["anyOf"].detect { |atm| atm["type"] == atom["type"] }
+        return if @atom["anyOf"].detect { |atm| atm["type"] == atom["type"] }
 
         @atom["anyOf"] << atom
       end
@@ -76,9 +76,9 @@ module Lurker
       end
 
       def guess_format(data)
-        if data.kind_of?(Time)
+        if data.is_a?(Time)
           DATE_TIME_FORMAT
-        elsif data.kind_of?(String)
+        elsif data.is_a?(String)
           if data.start_with? "http://"
             URI_FORMAT
           elsif data.match(/\#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/)

@@ -48,13 +48,12 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
       html << enum_html
 
       (@schema.keys - FORMATTED_KEYS).each do |key|
-        html << '<li>%s: %s</li>' % [ key, @schema[key] ]
+        html << '<li>%s: %s</li>' % [key, @schema[key]]
       end
 
       html << items_html
       html << properties_html
     end
-
 
     html << '</ul>'
     html << '</div>'
@@ -64,9 +63,9 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
 
   def type
     t = @schema["type"]
-    if t.kind_of? Array
+    if t.is_a? Array
       types = t.map do |type|
-        if type.kind_of? Hash
+        if type.is_a? Hash
           '<li>%s</li>' % self.class.new(type, options.merge(parent: self)).to_html
         else
           '<li>%s</li>' % type
@@ -120,7 +119,7 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
 
     sub_options = options.merge(:nested => options[:nested] + 1, :parent => self)
 
-    if items.kind_of? Array
+    if items.is_a? Array
       item.compact.each do |item|
         html << self.class.new(item, sub_options).to_html
       end

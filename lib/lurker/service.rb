@@ -17,12 +17,12 @@ class Lurker::Service
     @schema = if persisted? && (schema = YAML.load_file(service_path)).is_a?(Hash)
       Lurker::Schema.new(schema)
     else
-      Lurker::Schema.new({
+      Lurker::Schema.new(
         'name'        => service_filename,
         'basePath'    => '',
         'description' => '',
         'domains'     => {}
-      })
+      )
     end
   end
 
@@ -39,7 +39,7 @@ class Lurker::Service
   end
 
   def persist!
-    schema.write_to(service_path) unless File.exists?(service_path)
+    schema.write_to(service_path) unless File.exist?(service_path)
     @opened_endpoints.each { |e| e.persist! if e.respond_to? :persist! }
   end
 
@@ -48,7 +48,6 @@ class Lurker::Service
     endpoint = open(verb, path, extensions)
     endpoint.consume!(request_params, response_params, response_status, successful)
   end
-
 
   # Returns an Endpoint described by (verb, path)
   # In scaffold_mode, it will return an EndpointScaffold an of existing file

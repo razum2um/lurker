@@ -84,7 +84,7 @@ module Lurker
     end
 
     def url_params
-      (schema.extensions['path_params'] || {}).reject { |k, _| ['action', 'controller', 'format'].include? k }
+      (schema.extensions['path_params'] || {}).reject { |k, _| %w(action controller format).include? k }
     end
 
     def query_params

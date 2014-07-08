@@ -5,7 +5,6 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   extend Forwardable
   def_delegators :service, :description, :discussion, :name, :service_dir
 
-
   def initialize(service, options = {}, &block)
     super(options)
     @service = service
@@ -24,7 +23,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
 
   def domains
     return service.domains if service.domains.present?
-    { '/' => 'Local'}
+    { '/' => 'Local' }
   end
 
   def default_domain
@@ -34,7 +33,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
 
   def name_as_link(options = {})
     path = index_path
-    '<a href="%s">%s %s</a>' % [ path, options[:prefix], service.name ]
+    '<a href="%s">%s %s</a>' % [path, options[:prefix], service.name]
   end
 
   def slug_name
@@ -42,11 +41,11 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def url(extension = ".html")
-    '%s-%s%s' % [ @endpoint.path, @endpoint.verb, extension ]
+    '%s-%s%s' % [@endpoint.path, @endpoint.verb, extension]
   end
 
   def endpoints
-    if !@endpoints
+    unless @endpoints
       @endpoints = []
       prefix = nil
 
@@ -73,7 +72,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
 
   def endpoints_by_prefix
     @endpoints_by_prefix ||= begin
-      hash = Hash.new { |h,k| h[k] = Array.new }
+      hash = Hash.new { |h, k| h[k] = Array.new }
       service.endpoints.sort_by(&:endpoint_path).each do |endpoint|
         presenter = Lurker::EndpointPresenter.new(endpoint, options)
         presenter.service_presenter = self

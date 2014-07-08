@@ -36,9 +36,9 @@ module Lurker
     end
 
     def klass_from_type(anything)
-      if anything.kind_of?(::Hash)
+      if anything.is_a?(::Hash)
         Lurker::SchemaModifier::Hash
-      elsif anything.kind_of?(::Array)
+      elsif anything.is_a?(::Array)
         Lurker::SchemaModifier::Array
       else
         Lurker::SchemaModifier::Atom

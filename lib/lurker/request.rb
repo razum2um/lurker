@@ -29,7 +29,6 @@ module Lurker
     end
 
     def self.reject_internal(hash)
-
     end
 
     def self.route_name(request)
@@ -42,4 +41,3 @@ module Lurker
     end
   end
 end
-

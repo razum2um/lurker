@@ -56,6 +56,5 @@ module Lurker
     def cookies
       {}
     end
-
   end
 end

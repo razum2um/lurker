@@ -53,10 +53,10 @@ module Lurker
       end
 
       def set_additional_properties_false_on(object)
-        if object.kind_of? Hash
+        if object.is_a? Hash
           copy = object.dup
 
-          if object[TYPE] == OBJECT || object.has_key?(PROPERTIES)
+          if object[TYPE] == OBJECT || object.key?(PROPERTIES)
             copy[ADDITIONAL_PROPERTIES] ||= false
           end
 
@@ -66,13 +66,12 @@ module Lurker
           end
 
           copy
-        elsif object.kind_of? Array
+        elsif object.is_a? Array
           copy = object.map { |value| set_additional_properties_false_on(value) }
         else
           object
         end
       end
-
     end
   end
 end

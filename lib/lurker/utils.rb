@@ -14,6 +14,5 @@ module Lurker
         object
       end
     end
-
   end
 end
