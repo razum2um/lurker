@@ -143,7 +143,11 @@ module Lurker
       return if response_parameters.errors.empty?
 
       errors = (request_parameters.errors | response_parameters.errors) * "\n"
-      raise Lurker::ValidationError.new(word_wrap errors)
+      exception = Lurker::ValidationError.new(word_wrap errors)
+      if (example = Lurker::Spy.current.block).respond_to?(:metadata) && (metadata = example.metadata).respond_to?(:location, true)
+        exception.set_backtrace [metadata.send(:location)]
+      end
+      raise exception
     end
 
     def word_wrap(text)
