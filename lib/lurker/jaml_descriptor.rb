@@ -19,4 +19,3 @@ class Lurker::JamlDescriptor
     @read ||= JSON.dump(YAML.load(@fd.read))
   end
 end
-

@@ -42,4 +42,3 @@ task :publish do
     system "gem push lurker-#{version}.gem"
   end
 end
-

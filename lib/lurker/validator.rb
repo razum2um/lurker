@@ -5,4 +5,3 @@ module Lurker
     include JamlDescriptor::Rescue
   end
 end
-

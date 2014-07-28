@@ -18,7 +18,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def relative_path(extension = ".html")
-    '%s%s-%s%s' % [ options[:prefix], endpoint.path, endpoint.verb, extension ]
+    '%s%s-%s%s' % [options[:prefix], endpoint.path, endpoint.verb, extension]
   end
 
   def url(extension = ".html")
@@ -35,7 +35,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
 
   def zws_ify(str)
     # zero-width-space, makes long lines friendlier for breaking
-    #str.gsub(/\//, '&#8203;/') if str
+    # str.gsub(/\//, '&#8203;/') if str
     str
   end
 
@@ -76,7 +76,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     return if endpoint.request_parameters.empty?
     Lurker::JsonPresenter.new(
       example_from_schema(endpoint.request_parameters, endpoint.schema)
-        .reject { |k,_| endpoint.url_params.keys.include? k }
+        .reject { |k, _| endpoint.url_params.keys.include? k }
     )
   end
 
@@ -209,20 +209,20 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def example_from_array(array, parent=nil)
-    if array["items"].kind_of? Array
+    if array["items"].is_a? Array
       example = []
       array["items"].each do |item|
         example << example_from_schema(item, parent)
       end
       example
-    elsif (array["items"] || {})["type"].kind_of? Array
+    elsif (array["items"] || {})["type"].is_a? Array
       example = []
       array["items"]["type"].each do |item|
         example << example_from_schema(item, parent)
       end
       example
     else
-      [ example_from_schema(array["items"], parent) ]
+      [example_from_schema(array["items"], parent)]
     end
   end
 

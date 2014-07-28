@@ -92,7 +92,7 @@ module Lurker
 
     # FIXME
     def url_params
-      (@schema['extensions']['path_params'] || {}).reject { |k, _| ['action', 'controller', 'format'].include? k }
+      (@schema['extensions']['path_params'] || {}).reject { |k, _| %w(action controller format).include? k }
     end
 
     # FIXME
@@ -148,11 +148,29 @@ module Lurker
     def raise_errors!
       return if @response_errors.empty?
 
-      raise Lurker::ValidationError.new(word_wrap((@request_errors + @response_errors) * "\n"))
+      errors = (@request_errors | @response_errors) * "\n"
+      exception = Lurker::ValidationError.new(word_wrap errors)
+      if (example = Lurker::Spy.current.block).respond_to?(:metadata) && (metadata = example.metadata).respond_to?(:location, true)
+        exception.set_backtrace [metadata.send(:location)]
+      end
+
+      raise exception
     end
 
     def word_wrap(text)
-      text.gsub(/\s+in schema/m, "\n  in schema")
+      # strip .json# | .json.yml# | .json.yml.erb#
+      text = text.reverse
+      text.gsub!(/(\n|^)#bre\./, "\nbre.")
+      text.gsub!(/(\n|^)#lmy\./, "\nlmy.")
+      text.gsub!(/(\n|^)#nosj\./, "\nnosj.")
+      text.strip!
+      text = text.reverse
+
+      text.gsub!(/\s+in schema/m, "\n  in schema")
+      if defined?(Rails)
+        text.gsub!(/file:\/\/#{Rails.root}\//m, "")
+      end
+      text
     end
   end
 end

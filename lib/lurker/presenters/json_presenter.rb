@@ -8,14 +8,14 @@ class Lurker::JsonPresenter
   end
 
   def to_html
-    if json.kind_of? String
+    if json.is_a? String
       '<tt>&quot;%s&quot;</tt>' % json.gsub(/\"/, 'quot;')
-    elsif json.kind_of?(Numeric) ||
-          json.kind_of?(TrueClass) ||
-          json.kind_of?(FalseClass)
+    elsif json.is_a?(Numeric) ||
+          json.is_a?(TrueClass) ||
+          json.is_a?(FalseClass)
       '<tt>%s</tt>' % json
-    elsif json.kind_of?(Hash) ||
-          json.kind_of?(Array)
+    elsif json.is_a?(Hash) ||
+          json.is_a?(Array)
       '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
     end
   end

@@ -26,4 +26,3 @@ module Lurker
     end
   end
 end
-

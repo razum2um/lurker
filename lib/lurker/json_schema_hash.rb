@@ -8,7 +8,7 @@ module Lurker
       @uri = URI.parse(uri)
       @uri = URI.parse("file://#{uri}") if @uri.relative?
 
-      @schema_hash = Hash[schema_hash.map do |k,v|
+      @schema_hash = Hash[schema_hash.map do |k, v|
         if k == '$ref' && v.is_a?(String)
           uri = @uri.merge(v)
           schema_hash = JSON.parse(open(uri.to_s).read)
@@ -34,7 +34,7 @@ module Lurker
     end
 
     def to_h
-      Hash[@schema_hash.map do |k,v|
+      Hash[@schema_hash.map do |k, v|
         if JsonSchemaHash === v
           [k, v.to_h]
         elsif v.is_a?(Array)
