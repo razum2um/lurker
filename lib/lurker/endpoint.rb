@@ -13,7 +13,12 @@ module Lurker
     CONTROLLER = 'controller'.freeze
     EXTENSIONS = 'extensions'.freeze
     PATH_PARAMS = 'path_params'.freeze
+    QUERY_PARAMS = 'query_params'.freeze
+    DEPRECATED = 'deprecated'.freeze
     DESCRIPTION = 'description'.freeze
+    RESPONSE_CODES = 'responseCodes'.freeze
+    REQUEST_PARAMETERS = 'requestParameters'.freeze
+    RESPONSE_PARAMETERS = 'responseParameters'.freeze
     DESCRPTIONS = {
       'index' => 'listing',
       'show' => '',
@@ -95,35 +100,35 @@ module Lurker
     # properties
 
     def deprecated?
-      @schema['deprecated']
+      @schema[DEPRECATED]
     end
 
     def prefix
-      @schema['prefix']
+      @schema[PREFIX]
     end
 
     def description
-      @schema['description']
+      @schema[DESCRIPTION]
     end
 
     def url_params
-      (@schema['extensions']['path_params'] || {}).reject { |k, _| %w(action controller format).include? k }
+      (@schema[EXTENSIONS][PATH_PARAMS] || {}).reject { |k, _| %w(action controller format).include? k }
     end
 
     def query_params
-      (@schema['extensions']['query_params'] || {})
+      (@schema[EXTENSIONS][QUERY_PARAMS] || {})
     end
 
     def request_parameters
-      @schema['requestParameters']
+      @schema[REQUEST_PARAMETERS]
     end
 
     def response_parameters
-      @schema['responseParameters']
+      @schema[RESPONSE_PARAMETERS]
     end
 
     def response_codes
-      @schema['responseCodes']
+      @schema[RESPONSE_CODES]
     end
 
     protected
@@ -143,11 +148,11 @@ module Lurker
       @persisted = false
 
       payload = {
-        'description' => '',
-        'prefix' => '',
-        'requestParameters' => {},
-        'responseCodes' => [],
-        'responseParameters' => {}
+        DESCRIPTION => '',
+        PREFIX => '',
+        REQUEST_PARAMETERS => {},
+        RESPONSE_CODES => [],
+        RESPONSE_PARAMETERS => {}
       }
       schemify(payload)
     end
@@ -155,7 +160,7 @@ module Lurker
     def schemify(payload)
       Lurker::Json::Parser.plain(uri: endpoint_path).parse(payload).tap do |schm|
         ext = Lurker::Json::Extensions.new(stringify_keys extensions)
-        schm.merge!('extensions' => ext)
+        schm.merge!(EXTENSIONS => ext)
       end
     end
 

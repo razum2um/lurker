@@ -51,6 +51,10 @@ module Lurker
         hashify(@schema, options)
       end
 
+      def to_json(options = {})
+        hashify(@schema, options).to_json
+      end
+
       def to_yaml(options = {})
         YAML.dump(to_hash(options))
       end

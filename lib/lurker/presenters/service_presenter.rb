@@ -22,12 +22,12 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def domains
-    return service.domains if service.domains.present?
+    return service_domains if service_domains.present?
     { '/' => 'Local' }
   end
 
   def default_domain
-    return service.domains.to_a[0][1] if service.domains.present?
+    return service_domains.to_a[0][1] if service_domains.present?
     '/'
   end
 
@@ -86,5 +86,11 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
       end
       hash
     end
+  end
+
+  private
+
+  def service_domains
+    service.domains.to_hash
   end
 end

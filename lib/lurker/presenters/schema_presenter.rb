@@ -48,7 +48,10 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
       html << enum_html
 
       (@schema.keys - FORMATTED_KEYS).each do |key|
-        html << '<li>%s: %s</li>' % [key, @schema[key]]
+        value = @schema[key]
+        value = value.to_hash if value.is_a?(Lurker::Json::Schema)
+
+        html << '<li>%s: %s</li>' % [key, value]
       end
 
       html << items_html

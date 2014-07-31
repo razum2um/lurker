@@ -15,9 +15,9 @@ class Lurker::Service
     @service_dir = File.expand_path(service_dir)
     @service_filename = service_name
     @schema = if persisted? && (schema = YAML.load_file(service_path)).is_a?(Hash)
-      Lurker::Schema.new(schema)
+      Lurker::Json::Schema.new(schema)
     else
-      Lurker::Schema.new(
+      Lurker::Json::Schema.new(
         'name'        => service_filename,
         'basePath'    => '',
         'description' => '',
@@ -39,8 +39,8 @@ class Lurker::Service
   end
 
   def persist!
-    schema.write_to(service_path) unless File.exist?(service_path)
-    @opened_endpoints.each { |e| e.persist! if e.respond_to? :persist! }
+    Lurker::Json::Writter.write(schema, service_path) unless File.exist?(service_path)
+    @opened_endpoints.each { |ep| ep.persist! if ep.respond_to?(:persist!) }
   end
 
   def verify!(verb, path, request_params,
