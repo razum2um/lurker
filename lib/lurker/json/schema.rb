@@ -111,7 +111,6 @@ module Lurker
       def subschema_options
         {uri: uri, root_schema: (root? ? self : root_schema), parent_schema: self}
       end
-
     end
   end
 end

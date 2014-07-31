@@ -29,7 +29,7 @@ module Lurker
         return if eql?(schema)
 
         replace_options = {root_schema: root_schema, parent_schema: parent_schema,
-          parent_property: parent_property}
+                           parent_property: parent_property}
 
         attributes_tuple = Lurker::Json::AttributesTuple.new(
           [to_hash, schema], replace_options)
@@ -110,7 +110,6 @@ module Lurker
           end
         end
       end
-
     end
   end
 end

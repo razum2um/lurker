@@ -33,7 +33,6 @@ module Lurker
         def parse_as_typed(payload)
           Lurker::Json::Parser.typed(schema_options).parse(payload)
         end
-
       end
     end
   end

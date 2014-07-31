@@ -1,7 +1,6 @@
 module Lurker
   module Json
     class Reader
-
       attr_reader :path
 
       def initialize(path)
@@ -23,8 +22,7 @@ module Lurker
 
         retry
       end
-      alias :payload :read
-
+      alias_method :payload, :read
     end
   end
 end

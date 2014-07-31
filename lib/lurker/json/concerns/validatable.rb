@@ -26,7 +26,7 @@ module Lurker
           when Hash
             copy = object.dup
 
-            if object[TYPE] == OBJECT || object.has_key?(PROPERTIES)
+            if object[TYPE] == OBJECT || object.key?(PROPERTIES)
               copy[ADDITIONAL_PROPERTIES] ||= false
             end
 
@@ -41,7 +41,6 @@ module Lurker
           else object
           end
         end
-
       end
     end
   end

@@ -14,7 +14,6 @@ module Lurker
         schema.reorder!
         schema[EXTENSIONS] = extensions
       end
-
     end
   end
 end

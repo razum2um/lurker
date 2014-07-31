@@ -51,7 +51,7 @@ module Lurker
 
       def replace_with_new_type(schema)
         replace_options = {root_schema: root_schema, parent_schema: parent_schema,
-          parent_property: parent_property}
+                           parent_property: parent_property}
 
         new_schema = Lurker::Json::Parser.typed(replace_options).parse(schema)
         parent_schema.replace!(parent_property, new_schema)
@@ -64,7 +64,6 @@ module Lurker
         @schema[REQUIRED] ||= []
         @schema[PROPERTIES] ||= {}
       end
-
     end
   end
 end

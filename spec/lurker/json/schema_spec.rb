@@ -4,7 +4,7 @@ describe Lurker::Json::Schema do
   let(:klass) { described_class }
 
   describe 'Merge request/response parameters' do
-    let(:schema) { klass.new({'responseParameters' => {}}) }
+    let(:schema) { klass.new('responseParameters' => {}) }
 
     context 'when request parameters is an object' do
       let(:parameters) do

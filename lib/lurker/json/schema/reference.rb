@@ -3,6 +3,8 @@ module Lurker
     class Reference < Schema
       REF = '$ref'.freeze
 
+      attr_reader :original_uri
+
       delegate :merge!, :replace!, :reorder!, to: :@schema
 
       def to_original_hash(options = {})
@@ -18,6 +20,8 @@ module Lurker
         # We use first read for correct relative path resolving
         reader = Lurker::Json::Reader.new(@uri.merge(schema[REF]).path)
         payload = reader.payload
+
+        @original_uri = parse_uri(reader.path)
         @schema = @parser.plain(uri: reader.path).parse(payload)
 
         # NOTE : The easiest way to get schema copy is to parse it again.

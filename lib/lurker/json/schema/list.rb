@@ -44,7 +44,6 @@ module Lurker
         @schema[TYPE] ||= ARRAY
         @schema[ITEMS] ||= {}
       end
-
     end
   end
 end

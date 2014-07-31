@@ -1,3 +1,10 @@
+Given /^a checked file "([^"]*)" with:$/ do |file_name, file_content|
+  write_file(file_name, file_content)
+
+  @files ||= {}
+  in_current_dir { @files[md5(file_name)] = checksum(file_name) }
+end
+
 Given /^an empty directory named "([^"]*)"$/ do |dir_name|
   FileUtils.rm_rf File.expand_path("../../../tmp/lurker_app/#{dir_name}", __FILE__)
   create_dir(dir_name)
@@ -81,5 +88,17 @@ end
 Then(/^I should see JSON response with "([^"]*)"$/) do |name|
   within(find(:xpath, "//*[@id='show-api-response-div']")) do
     expect(page).to have_content name
+  end
+end
+
+Then /(?:a|the) checked file "([^"]*)" should not change$/ do |file_name|
+  in_current_dir do
+    expect(@files.try(:[], md5(file_name))).to eq checksum(file_name)
+  end
+end
+
+Then /(?:a|the) checked file "([^"]*)" should change$/ do |file_name|
+  in_current_dir do
+    expect(@files.try(:[], md5(file_name))).not_to eq checksum(file_name)
   end
 end

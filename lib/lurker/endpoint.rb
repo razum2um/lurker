@@ -8,8 +8,22 @@ module Lurker
   class Endpoint
     include Lurker::Utils
 
+    PREFIX = 'prefix'.freeze
+    ACTION = 'action'.freeze
+    CONTROLLER = 'controller'.freeze
+    EXTENSIONS = 'extensions'.freeze
+    PATH_PARAMS = 'path_params'.freeze
+    DESCRIPTION = 'description'.freeze
+    DESCRPTIONS = {
+      'index' => 'listing',
+      'show' => '',
+      'edit' => 'editing',
+      'create' => 'creation',
+      'update' => 'updating',
+      'destroy' => 'descruction'
+    }.freeze
+
     attr_reader :schema, :service, :endpoint_path, :extensions
-    # attr_accessor :errors
 
     def initialize(endpoint_path, extensions = {}, service = Lurker::Service.default_service)
       @endpoint_path = endpoint_path
@@ -22,6 +36,8 @@ module Lurker
     end
 
     def persist!
+      finalize_schema!
+
       Lurker::Json::Orderer.reorder(schema) unless persisted?
       Lurker::Json::Writter.write(schema, endpoint_path)
 
@@ -90,12 +106,10 @@ module Lurker
       @schema['description']
     end
 
-    # FIXME
     def url_params
       (@schema['extensions']['path_params'] || {}).reject { |k, _| %w(action controller format).include? k }
     end
 
-    # FIXME
     def query_params
       (@schema['extensions']['query_params'] || {})
     end
@@ -143,6 +157,15 @@ module Lurker
         ext = Lurker::Json::Extensions.new(stringify_keys extensions)
         schm.merge!('extensions' => ext)
       end
+    end
+
+    def finalize_schema!
+      path_params = schema[EXTENSIONS][PATH_PARAMS] || {}
+      subject = path_params[CONTROLLER].to_s.split(/\//).last.to_s
+      description = DESCRPTIONS[path_params[ACTION]]
+
+      schema[DESCRIPTION] = "#{subject.singularize} #{description}".strip if schema[DESCRIPTION].blank?
+      schema[PREFIX] = "#{subject} management" if schema[PREFIX].blank?
     end
 
     def raise_errors!

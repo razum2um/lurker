@@ -22,7 +22,6 @@ module Lurker
           hash.key?(ANYOF) || hash.key?(ITEMS) ||
             hash.key?(PROPERTIES) || hash.key?(REF)
         end
-
       end
     end
   end

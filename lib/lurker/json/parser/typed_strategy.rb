@@ -59,7 +59,6 @@ module Lurker
             Lurker::Json::Attribute.new(payload, schema_options)
           end
         end
-
       end
     end
   end

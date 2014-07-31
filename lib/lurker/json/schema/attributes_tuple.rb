@@ -31,7 +31,6 @@ module Lurker
       def initialize_properties
         @schema[ANYOF] ||= []
       end
-
     end
   end
 end

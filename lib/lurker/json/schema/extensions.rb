@@ -14,7 +14,6 @@ module Lurker
 
         @schema = @parser.parse_property(parent_property, schema)
       end
-
     end
   end
 end

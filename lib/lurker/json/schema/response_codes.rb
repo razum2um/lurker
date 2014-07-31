@@ -34,7 +34,6 @@ module Lurker
              response_code[STATUS].to_i == status_code) # "200 OK"
         end
       end
-
     end
   end
 end

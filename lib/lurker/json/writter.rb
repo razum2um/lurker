@@ -1,21 +1,6 @@
 module Lurker
   module Json
     class Writter
-      PREFIX = 'prefix'.freeze
-      ACTION = 'action'.freeze
-      CONTROLLER = 'controller'.freeze
-      EXTENSIONS = 'extensions'.freeze
-      PATH_PARAMS = 'path_params'.freeze
-      DESCRIPTION = 'description'.freeze
-      DESCRPTIONS = {
-        'index' => 'listing',
-        'show' => '',
-        'edit' => 'editing',
-        'create' => 'creation',
-        'update' => 'updating',
-        'destroy' => 'descruction'
-      }.freeze
-
       class << self
         def write(schema, path)
           new(path).write(schema)
@@ -28,37 +13,36 @@ module Lurker
       end
 
       def write(schema)
-        schema[DESCRIPTION] = schema_description(schema) if schema[DESCRIPTION].blank?
-        schema[PREFIX] = schema_prefix(schema) if schema[PREFIX].blank?
+        write_to_file(schema)
 
-        FileUtils.mkdir_p(@dirname) unless File.directory?(@dirname)
-        File.open(@path, File::WRONLY|File::TRUNC|File::CREAT) do |file|
-          file.write(schema.to_yaml(reference: :original))
+        extract_references(schema).each do |reference|
+          Lurker::Json::Writter.write(reference, reference.original_uri.path)
         end
       end
 
       private
 
-      def schema_prefix(schema)
-        "#{extract_schema_subject(schema)} management"
+      # TODO : Separate schema dumping for JSON & YAML files
+      def write_to_file(schema)
+        FileUtils.mkdir_p(@dirname) unless File.directory?(@dirname)
+        File.open(@path, File::WRONLY | File::TRUNC | File::CREAT) do |file|
+          file.write(schema.to_yaml(reference: :original))
+        end
       end
 
-      def schema_description(schema)
-        action = path_params(schema)[ACTION]
+      def extract_references(schema, memo = [])
+        schema.each do |_, object|
+          if object.is_a?(Array)
+            object.each { |x| extract_references(x, memo) }
+          elsif object.is_a?(Hash) || object.is_a?(Lurker::Json::Schema)
+            memo << object if object.is_a?(Lurker::Json::Reference)
 
-        "#{extract_schema_subject(schema).singularize} #{DESCRPTIONS[action]}".strip
+            extract_references(object, memo)
+          end
+        end
+
+        memo
       end
-
-      def extract_schema_subject(schema)
-        controller = path_params(schema)[CONTROLLER]
-
-        "#{controller.to_s.split(/\//).last}"
-      end
-
-      def path_params(schema)
-        schema[EXTENSIONS][PATH_PARAMS] || {}
-      end
-
     end
   end
 end

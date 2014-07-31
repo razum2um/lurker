@@ -1,7 +1,6 @@
 module Lurker
   module Json
     class Parser
-
       class << self
         def plain(options = {})
           new(options).plain
@@ -69,7 +68,6 @@ module Lurker
           parent_schema: @parent_schema, parent_property: @parent_property
         }
       end
-
     end
   end
 end
