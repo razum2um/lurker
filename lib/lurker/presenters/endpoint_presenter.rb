@@ -115,7 +115,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   # TODO: remove in favor of named_path
   def path
     return @path if @path
-    unless (@path = @endpoint.schema.extensions.try(:[], 'path_info')).present?
+    unless (@path = @endpoint.schema['extensions'].try(:[], 'path_info')).present?
       @path = @endpoint.path.gsub(/__/, ':')
       @path = @path.gsub(/-#{@end}/) if @endpoint.schema.extensions.try(:[], 'suffix').present?
     end
@@ -127,7 +127,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   def named_path
     return @named_path if @named_path
     @named_path = base_path.sub(/\/?$/, '/') + endpoint.path.gsub(/__/, ':')
-    if (suffix = endpoint.schema.extensions.try(:[], 'suffix')).present?
+    if (suffix = endpoint.schema['extensions'].try(:[], 'suffix')).present?
       @named_path = @named_path.gsub(/-#{suffix}/, '')
     end
     @named_path

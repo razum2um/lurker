@@ -8,24 +8,38 @@ module Lurker
   class Endpoint
     include Lurker::Utils
 
+    PREFIX = 'prefix'.freeze
+    ACTION = 'action'.freeze
+    CONTROLLER = 'controller'.freeze
+    EXTENSIONS = 'extensions'.freeze
+    PATH_PARAMS = 'path_params'.freeze
+    DESCRIPTION = 'description'.freeze
+    DESCRPTIONS = {
+      'index' => 'listing',
+      'show' => '',
+      'edit' => 'editing',
+      'create' => 'creation',
+      'update' => 'updating',
+      'destroy' => 'descruction'
+    }.freeze
+
     attr_reader :schema, :service, :endpoint_path, :extensions
-    attr_reader :request_parameters, :response_parameters, :response_codes
-    attr_accessor :errors
 
     def initialize(endpoint_path, extensions = {}, service = Lurker::Service.default_service)
       @endpoint_path = endpoint_path
       @extensions = extensions
       @service = service
-      @errors = []
       @persisted = false
       @schema = File.exist?(endpoint_path) ? load_schema : build_schema
-
-      initialize_schema_properties
+      @request_errors = []
+      @response_errors = []
     end
 
     def persist!
-      schema.ordered! unless persisted?
-      schema.write_to(endpoint_path)
+      finalize_schema!
+
+      Lurker::Json::Orderer.reorder(schema) unless persisted?
+      Lurker::Json::Writter.write(schema, endpoint_path)
 
       @persisted = true
     end
@@ -42,21 +56,30 @@ module Lurker
     end
 
     def consume_request(params, successful = true)
-      request_parameters.validate(params) if persisted?
-      request_parameters.add(params) if successful
+      parameters = stringify_keys(params)
+
+      if persisted?
+        @request_errors = request_parameters.validate(parameters)
+        @request_errors.unshift('Request') unless @request_errors.empty?
+      end
+
+      request_parameters.merge!(parameters) if successful
     end
 
     def consume_response(params, status_code, successful = true)
+      parameters = stringify_keys(params)
+
       if persisted?
         response_codes.validate!(status_code, successful)
-        response_parameters.validate(params) if successful
+
+        @response_errors = response_parameters.validate(parameters)
+        @response_errors.unshift('Response') unless @response_errors.empty?
 
         return
       end
 
-      response_parameters.add(params) if successful
-      response_codes.add(status_code, successful) unless response_codes.exists?(
-        status_code, successful)
+      response_parameters.merge!(parameters) if successful
+      response_codes.merge!(status_code, successful)
     end
 
     def verb
@@ -65,43 +88,45 @@ module Lurker
 
     def path
       @path ||= endpoint_path.
-                  gsub(service.service_dir, "").
+                  gsub(service.service_dir, '').
                   match(/\/?(.*)[-\/][A-Z]+\.json(\.yml)?(\.erb)?$/)[1]
     end
 
     # properties
 
     def deprecated?
-      @schema["deprecated"]
+      @schema['deprecated']
     end
 
     def prefix
-      @schema["prefix"]
+      @schema['prefix']
     end
 
     def description
-      @schema["description"]
+      @schema['description']
     end
 
     def url_params
-      (schema.extensions['path_params'] || {}).reject { |k, _| %w(action controller format).include? k }
+      (@schema['extensions']['path_params'] || {}).reject { |k, _| %w(action controller format).include? k }
     end
 
     def query_params
-      (schema.extensions['query_params'] || {})
+      (@schema['extensions']['query_params'] || {})
+    end
+
+    def request_parameters
+      @schema['requestParameters']
+    end
+
+    def response_parameters
+      @schema['responseParameters']
+    end
+
+    def response_codes
+      @schema['responseCodes']
     end
 
     protected
-
-    def initialize_schema_properties
-      @response_codes = ResponseCodes.new(schema)
-
-      @response_parameters = HttpParameters.new(schema,
-        schema_key: 'responseParameters', schema_id: endpoint_path, human_name: 'Response')
-
-      @request_parameters = HttpParameters.new(schema,
-        schema_key: 'requestParameters', schema_id: endpoint_path, human_name: 'Request')
-    end
 
     def persisted?
       !!@persisted
@@ -110,43 +135,48 @@ module Lurker
     def load_schema
       @persisted = true
 
-      Lurker::Schema.new(
-        load_file(endpoint_path),
-        stringify_keys(extensions)
-      )
+      reader = Lurker::Json::Reader.new(endpoint_path)
+      schemify(reader.payload)
     end
 
     def build_schema
       @persisted = false
 
-      Lurker::Schema.new(
-        {
-          "prefix" => "",
-          "description" => "",
-          "responseCodes" => []
-        },
-        stringify_keys(extensions)
-      )
+      payload = {
+        'description' => '',
+        'prefix' => '',
+        'requestParameters' => {},
+        'responseCodes' => [],
+        'responseParameters' => {}
+      }
+      schemify(payload)
     end
 
-    def load_file(fname)
-      if fname.match(/\.erb$/)
-        context = Lurker::ErbSchemaContext.new
-        erb = ERB.new(IO.read(fname)).result(context.get_binding)
-        YAML.load(erb)
-      else
-        YAML.load_file(fname)
+    def schemify(payload)
+      Lurker::Json::Parser.plain(uri: endpoint_path).parse(payload).tap do |schm|
+        ext = Lurker::Json::Extensions.new(stringify_keys extensions)
+        schm.merge!('extensions' => ext)
       end
     end
 
-    def raise_errors!
-      return if response_parameters.errors.empty?
+    def finalize_schema!
+      path_params = schema[EXTENSIONS][PATH_PARAMS] || {}
+      subject = path_params[CONTROLLER].to_s.split(/\//).last.to_s
+      description = DESCRPTIONS[path_params[ACTION]]
 
-      errors = (request_parameters.errors | response_parameters.errors) * "\n"
+      schema[DESCRIPTION] = "#{subject.singularize} #{description}".strip if schema[DESCRIPTION].blank?
+      schema[PREFIX] = "#{subject} management" if schema[PREFIX].blank?
+    end
+
+    def raise_errors!
+      return if @response_errors.empty?
+
+      errors = (@request_errors | @response_errors) * "\n"
       exception = Lurker::ValidationError.new(word_wrap errors)
       if (example = Lurker::Spy.current.block).respond_to?(:metadata) && (metadata = example.metadata).respond_to?(:location, true)
         exception.set_backtrace [metadata.send(:location)]
       end
+
       raise exception
     end
 

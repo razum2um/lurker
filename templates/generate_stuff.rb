@@ -59,6 +59,12 @@ route <<-ROUTE
         resources :repos
       end
     end
+
+    namespace :v3 do
+      resources :users do
+        resources :repos
+      end
+    end
   end
 
   get '/robots.txt', to: proc { |env| [
@@ -90,7 +96,8 @@ file 'config/initializers/serializer.rb', force: true do
         else
           options[:methods] = attributes.keys.sort + methods
         end
-        options[:only] = []
+        options[:methods] -= Array.wrap(options[:except])
+        options[:only] = options[:except] = []
 
         super(options)
       end
@@ -259,16 +266,18 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
   CODE
 end
 
-file 'app/controllers/api/v2/users_controller.rb', 'Api::V2::UsersController', force: true do
-  <<-CODE
-    class Api::V2::UsersController < Api::V1::UsersController;end
-  CODE
-end
+[2, 3].each do |version|
+  file "app/controllers/api/v#{version}/users_controller.rb", "Api::V#{version}::UsersController", force: true do
+    <<-CODE
+      class Api::V#{version}::UsersController < Api::V1::UsersController; end
+    CODE
+  end
 
-file 'app/controllers/api/v2/repos_controller.rb', 'Api::V2::ReposController', force: true do
-  <<-CODE
-    class Api::V2::ReposController < Api::V1::ReposController; end
-  CODE
+  file "app/controllers/api/v#{version}/repos_controller.rb", "Api::V#{version}::ReposController", force: true do
+    <<-CODE
+      class Api::V#{version}::ReposController < Api::V1::ReposController; end
+    CODE
+  end
 end
 
 # FIXME: uninitialized constant User (NameError) in last creation line

@@ -6,6 +6,7 @@ group :development do
   # tools
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
+  gem 'pry-session'
   # rspec --format fuubar
   gem 'fuubar'
   # cucumber --format fuubar
