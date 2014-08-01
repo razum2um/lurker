@@ -1,0 +1,101 @@
+require 'spec_helper'
+
+describe Lurker::Json::List do
+  let(:klass) { described_class }
+
+  describe '#merge!' do
+    context 'when list is an array of attributes' do
+      let(:list) { klass.new([1, 2, 3]) }
+
+      context 'when merge an array' do
+        let(:expected) do
+          {
+            'type' => 'array',
+            'items' => {
+              'description' => '',
+              'type' => 'integer',
+              'example' => 1
+            }
+          }
+        end
+        before { list.merge!([42]) }
+
+        it { expect(list.to_hash).to eq expected }
+      end
+
+      context 'when merge a fixnum' do
+        let(:expected) do
+          {
+            'type' => 'array',
+            'items' => {
+              'description' => '',
+              'type' => 'integer',
+              'example' => 1
+            }
+          }
+        end
+        before { list.merge!(999) }
+
+        it { expect(list.to_hash).to eq expected }
+      end
+
+      context 'when merge a string' do
+        let(:expected) do
+          {
+            'type' => 'array',
+            'items' => {
+              'anyOf' => [
+                {
+                  'description' => '',
+                  'type' => 'integer',
+                  'example' => 1
+                },
+                {
+                  'description' => '',
+                  'type' => 'string',
+                  'example' => 'razum2um'
+                }
+              ]
+            }
+          }
+        end
+        before { list.merge!('razum2um') }
+
+        it { expect(list.to_hash).to eq expected }
+      end
+
+      context 'when merge a hash' do
+        let(:expected) do
+          {
+            'type' => 'array',
+            'items' => {
+              'anyOf' => [
+                {
+                  'description' => '',
+                  'type' => 'integer',
+                  'example' => 1
+                },
+                {
+                  'description' => '',
+                  'type' => 'object',
+                  'additionalProperties' => false,
+                  'required' => [],
+                  'properties' => {
+                    'name' => {
+                      'description' => '',
+                      'type' => 'string',
+                      'example' => 'razum2um'
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        end
+        before { list.merge!('name' => 'razum2um') }
+
+        it { expect(list.to_hash).to eq expected }
+      end
+    end
+  end
+end

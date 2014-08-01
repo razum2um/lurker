@@ -1,30 +1,32 @@
 module Lurker
   module Json
     class List < Schema
-      include Lurker::Json::Concerns::Validatable
-
       TYPE = 'type'.freeze
       ARRAY = 'array'.freeze
       ITEMS = 'items'.freeze
 
-      def initialize(schema, options = {})
-        @schema = {}
-        initialize_properties
-
-        super
-      end
-
       def merge!(schema)
-        @schema[ITEMS].merge!(schema)
+        if schema.is_a?(Array)
+          schema.each { |payload| @schema[ITEMS].merge!(payload) }
+        else
+          @schema[ITEMS].merge!(schema)
+        end
       end
 
       def replace!(property, schema)
-        @schema[ITEMS].replace!(property, schema)
+        if @schema[ITEMS].is_a?(Lurker::Json::Attribute)
+          @schema[ITEMS] = schema
+        else
+          @schema[ITEMS].replace!(property, schema)
+        end
       end
 
       private
 
       def parse_schema(schema)
+        @schema = {}
+        initialize_properties
+
         return if schema.empty?
 
         schema = schema.dup
@@ -33,7 +35,7 @@ module Lurker
 
           schema.each { |payload| @schema[ITEMS].merge!(payload) }
         else
-          @schema[ITEMS] = @parser.typed.parse(schema.delete(ITEMS))
+          @schema[ITEMS] = @parser.typed.parse(schema.delete ITEMS) if schema.key?(ITEMS)
           @schema.merge!(schema)
         end
 
@@ -42,7 +44,7 @@ module Lurker
 
       def initialize_properties
         @schema[TYPE] ||= ARRAY
-        @schema[ITEMS] ||= {}
+        @schema[ITEMS] ||= []
       end
     end
   end
