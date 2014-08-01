@@ -48,7 +48,6 @@ module Lurker
 end
 
 require 'lurker/jaml_descriptor'
-require 'lurker/schema'                      # TODO: delete
 require 'lurker/ref_object'
 require 'lurker/erb_schema_context'
 require 'lurker/service'
