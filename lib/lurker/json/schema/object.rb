@@ -1,8 +1,6 @@
 module Lurker
   module Json
     class Object < Schema
-      include Lurker::Json::Concerns::Validatable
-
       TYPE = 'type'.freeze
       OBJECT = 'object'.freeze
       REQUIRED = 'required'.freeze

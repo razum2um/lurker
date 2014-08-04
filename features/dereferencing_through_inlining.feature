@@ -18,23 +18,7 @@ Feature: $ref defererencing through inlining
         successful: true
         description: ''
       responseParameters:
-        description: ''
-        type: object
-        additionalProperties: false
-        required: []
-        properties:
-          id:
-            description: ''
-            type: integer
-            example: 1
-          name:
-            description: ''
-            type: string
-            example: razum2um
-          surname:
-            description: ''
-            type: string
-            example: Unknown
+        "$ref": "../../../definitions/user.json#/"
       extensions:
         method: PATCH
         path_info: "/api/v3/users/1"
@@ -43,6 +27,31 @@ Feature: $ref defererencing through inlining
           controller: api/v3/users
           action: update
 
+      """
+    And a file named "lurker/definitions/user_request_parameters.json" with:
+      """json
+      {
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Bob"
+          }
+        }
+      }
+      """
+    And a file named "lurker/definitions/user.json.yml" with:
+      """yml
+      ---
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: razum2um
+        surname:
+          type: string
+          example: Unknown
       """
     And a file named "spec/controllers/api/v3/users_controller_spec.rb" with:
       """ruby
@@ -63,58 +72,31 @@ Feature: $ref defererencing through inlining
       """
 
   Scenario: json schema left $ref keyword as is using "users/update"
-    Given a file named "lurker/definitions/user_request_parameters.json.yml" with:
-      """yml
-      ---
-      description: ''
-      type: object
-      additionalProperties: false
-      required: []
-      properties:
-        name:
-          description: ''
-          type: string
-          example: 'Bob'
-      """
-
     When I run `bin/rspec spec/controllers/api/v3/users_controller_spec.rb`
     Then the example should pass
     Then a file named "lurker/api/v3/users/__id-PATCH.json.yml" should exist
     Then the checked file "lurker/api/v3/users/__id-PATCH.json.yml" should not change
+    Then a file named "lurker/definitions/user_request_parameters.json" should exist
+    Then the file "lurker/definitions/user_request_parameters.json" should contain exactly:
+      """json
+      {
+        "description": "",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
 
-  Scenario: json schema update $ref definition using "users/update"
-    Given a file named "lurker/definitions/user_request_parameters.json.yml" with:
-      """yml
-      ---
-      description: ''
-      type: object
-      additionalProperties: false
-      required: []
-      properties:
-        name:
-          description: ''
-          type: string
-          example: 'Bob'
-      """
-
-    When I run `bin/rspec spec/controllers/api/v3/users_controller_spec.rb`
-    Then the example should pass
-    Then a file named "lurker/definitions/user_request_parameters.json.yml" should exist
-    Then the file "lurker/definitions/user_request_parameters.json.yml" should contain exactly:
-      """yml
-      ---
-      description: ''
-      type: object
-      additionalProperties: false
-      required: []
-      properties:
-        name:
-          description: ''
-          type: string
-          example: Bob
-        surname:
-          description: ''
-          type: string
-          example: Marley
-
+        ],
+        "properties": {
+          "name": {
+            "description": "",
+            "type": "string",
+            "example": "Bob"
+          },
+          "surname": {
+            "description": "",
+            "type": "string",
+            "example": "Marley"
+          }
+        }
+      }
       """

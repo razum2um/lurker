@@ -1,6 +1,8 @@
 module Lurker
   module Json
     class Schema
+      include Lurker::Json::Concerns::Validatable
+
       EXTENSIONS = 'extensions'.freeze
       RESPONSE_CODES = 'responseCodes'.freeze
       REQUEST_PARAMETERS = 'requestParameters'.freeze

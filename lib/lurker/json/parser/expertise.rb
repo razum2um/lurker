@@ -5,6 +5,8 @@ module Lurker
         REF = '$ref'.freeze
         TYPE = 'type'.freeze
         ANYOF = 'anyOf'.freeze
+        ALLOF = 'allOf'.freeze
+        ONEOF = 'oneOf'.freeze
         ITEMS = 'items'.freeze
         PROPERTIES = 'properties'.freeze
 
@@ -19,8 +21,8 @@ module Lurker
         def type_supposed?(hash)
           return false unless hash.is_a?(Hash)
 
-          hash.key?(ANYOF) || hash.key?(ITEMS) ||
-            hash.key?(PROPERTIES) || hash.key?(REF)
+          hash.key?(ANYOF) || hash.key?(ALLOF) || hash.key?(ONEOF) ||
+          hash.key?(ITEMS) || hash.key?(PROPERTIES) || hash.key?(REF)
         end
       end
     end

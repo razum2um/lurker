@@ -5,6 +5,8 @@ module Lurker
         include Lurker::Json::Parser::Expertise
 
         ANYOF = 'anyOf'.freeze
+        ALLOF = 'allOf'.freeze
+        ONEOF = 'oneOf'.freeze
         ITEMS = 'items'.freeze
         TYPE  = 'type'.freeze
         ARRAY = 'array'.freeze
@@ -41,7 +43,11 @@ module Lurker
           elsif payload.key?(PROPERTIES)
             Lurker::Json::Object.new(payload, schema_options)
           elsif payload.key?(ANYOF)
-            Lurker::Json::AttributesTuple.new(payload, schema_options)
+            Lurker::Json::Tuple::AnyOf.new(payload, schema_options)
+          elsif payload.key?(ALLOF)
+            Lurker::Json::Tuple::AllOf.new(payload, schema_options)
+          elsif payload.key?(ONEOF)
+            Lurker::Json::Tuple::OneOf.new(payload, schema_options)
           elsif payload.key?(REF)
             Lurker::Json::Reference.new(payload, schema_options)
           else
