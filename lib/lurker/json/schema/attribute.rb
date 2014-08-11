@@ -4,26 +4,23 @@ module Lurker
   module Json
     class Attribute < Schema
       URI = 'uri'.freeze
-      TYPE = 'type'.freeze
       COLOR = 'color'.freeze
       FORMAT = 'format'.freeze
-      EXAMPLE = 'example'.freeze
       DATE_TIME = 'date-time'.freeze
-      DESCRIPTION = 'description'.freeze
 
       TYPE_MAP = {
-        'Time' => 'string',
-        'Hash' => 'object',
-        'Float' => 'number',
-        'Fixnum' => 'integer',
-        'NilClass' => 'null',
-        'TrueClass' => 'boolean',
-        'FalseClass' => 'boolean',
-        'ActionDispatch::Http::UploadedFile' => 'string'
+        'Time' => Json::STRING,
+        'Hash' => Json::OBJECT,
+        'Float' => Json::NUMBER,
+        'Fixnum' => Json::INTEGER,
+        'NilClass' => Json::NULL,
+        'TrueClass' => Json::BOOLEAN,
+        'FalseClass' => Json::BOOLEAN,
+        'ActionDispatch::Http::UploadedFile' => Json::STRING
       }.freeze
 
       def merge!(schema)
-        return replace!(schema) if @schema[TYPE].blank?
+        return replace!(schema) if @schema[Json::TYPE].blank?
 
         schema = attributify(schema)
         return if eql?(schema)
@@ -42,7 +39,7 @@ module Lurker
       end
 
       def eql?(schema)
-        @schema[TYPE] == attributify(schema)[TYPE]
+        @schema[Json::TYPE] == attributify(schema)[Json::TYPE]
       end
 
       private
@@ -62,9 +59,9 @@ module Lurker
         return schema if schema.is_a?(Hash) || schema.is_a?(Lurker::Json::Schema)
 
         attribute = {
-          DESCRIPTION => '',
-          TYPE => guess_type(schema),
-          EXAMPLE => serialize_example(schema)
+          Json::DESCRIPTION => '',
+          Json::TYPE => guess_type(schema),
+          Json::EXAMPLE => serialize_example(schema)
         }
 
         if format = guess_format(schema)
@@ -75,9 +72,9 @@ module Lurker
       end
 
       def initialize_properties
-        @schema[DESCRIPTION] ||= ''
-        @schema[TYPE] ||= ''
-        @schema[EXAMPLE] ||= ''
+        @schema[Json::DESCRIPTION] ||= ''
+        @schema[Json::TYPE] ||= ''
+        @schema[Json::EXAMPLE] ||= ''
       end
 
       def serialize_example(data)

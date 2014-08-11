@@ -2,12 +2,6 @@ module Lurker
   module Json
     module Concerns
       module Validatable
-        ID = 'id'.freeze
-        TYPE = 'type'.freeze
-        OBJECT = 'object'.freeze
-        PROPERTIES = 'properties'.freeze
-        ADDITIONAL_PROPERTIES = 'additionalProperties'.freeze
-
         def validate(data)
           Lurker::Validator.new(to_validation_schema, data,
             record_errors: true).validate.map { |error| "- #{error}" }
@@ -15,7 +9,7 @@ module Lurker
 
         def to_validation_schema
           set_additional_properties_false_on(to_hash).tap do |schema|
-            schema[ID] = "file://#{uri}"
+            schema[Json::ID] = "file://#{uri}"
           end
         end
 
@@ -26,12 +20,12 @@ module Lurker
           when Hash
             copy = object.dup
 
-            if object[TYPE] == OBJECT || object.key?(PROPERTIES)
-              copy[ADDITIONAL_PROPERTIES] ||= false
+            if object[Json::TYPE] == Json::OBJECT || object.key?(Json::PROPERTIES)
+              copy[Json::ADDITIONAL_PROPERTIES] ||= false
             end
 
             object.each do |key, value|
-              next if key == ADDITIONAL_PROPERTIES
+              next if key == Json::ADDITIONAL_PROPERTIES
               copy[key] = set_additional_properties_false_on(value)
             end
 

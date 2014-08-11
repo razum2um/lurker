@@ -4,12 +4,10 @@ module Lurker
       class OneOf < Json::Schema
         include Tuple::InstanceMethods
 
-        ONEOF = 'oneOf'.freeze
-
         private
 
         def tuple_key
-          ONEOF
+          Json::ONEOF
         end
       end
     end

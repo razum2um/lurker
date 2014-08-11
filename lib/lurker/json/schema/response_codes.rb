@@ -3,7 +3,6 @@ module Lurker
     class ResponseCodes < Schema
       STATUS = 'status'.freeze
       SUCCESSFUL = 'successful'.freeze
-      DESCRIPTION = 'description'.freeze
 
       def initialize(schema, options = {})
         @parent_property = 'responseCodes'
@@ -14,7 +13,7 @@ module Lurker
       def merge!(status_code, successful)
         return if exists?(status_code, successful)
 
-        payload = {STATUS => status_code, SUCCESSFUL => successful, DESCRIPTION => ''}
+        payload = {STATUS => status_code, SUCCESSFUL => successful, Json::DESCRIPTION => ''}
         @schema << Lurker::Json::Parser.plain(root_schema: root_schema).parse(payload)
       end
 
