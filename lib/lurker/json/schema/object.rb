@@ -1,23 +1,16 @@
 module Lurker
   module Json
     class Object < Schema
-      TYPE = 'type'.freeze
-      OBJECT = 'object'.freeze
-      REQUIRED = 'required'.freeze
-      PROPERTIES = 'properties'.freeze
-      DESCRIPTION = 'description'.freeze
-      ADDITIONAL_PROPERTIES = 'additionalProperties'.freeze
-
       def merge!(schema)
         unless schema.is_a?(Hash)
-          return replace_with_new_type(schema) if @schema[PROPERTIES].blank?
+          return replace_with_new_type(schema) if @schema[Json::PROPERTIES].blank?
 
           raise TypeError, "Unable to merge #{schema.class} into JSON object"
         end
 
         schema.each do |property, property_schema|
-          if @schema[PROPERTIES].key?(property)
-            @schema[PROPERTIES][property].merge!(property_schema)
+          if @schema[Json::PROPERTIES].key?(property)
+            @schema[Json::PROPERTIES][property].merge!(property_schema)
             next
           end
 
@@ -26,7 +19,7 @@ module Lurker
       end
 
       def replace!(property, property_schema)
-        @schema[PROPERTIES][property] = Lurker::Json::Parser.typed(subschema_options)
+        @schema[Json::PROPERTIES][property] = Lurker::Json::Parser.typed(subschema_options)
           .parse_property(property, property_schema)
       end
 
@@ -37,10 +30,10 @@ module Lurker
         initialize_properties
 
         schema = schema.dup
-        merge_required = schema.key?(PROPERTIES)
+        merge_required = schema.key?(Json::PROPERTIES)
 
-        (schema.delete(PROPERTIES) || schema).each do |property, property_schema|
-          @schema[PROPERTIES][property] = @parser.typed.parse_property(
+        (schema.delete(Json::PROPERTIES) || schema).each do |property, property_schema|
+          @schema[Json::PROPERTIES][property] = @parser.typed.parse_property(
             property, property_schema)
         end
 
@@ -56,11 +49,11 @@ module Lurker
       end
 
       def initialize_properties
-        @schema[DESCRIPTION] ||= ''
-        @schema[TYPE] ||= OBJECT
-        @schema[ADDITIONAL_PROPERTIES] = !!@schema[ADDITIONAL_PROPERTIES]
-        @schema[REQUIRED] ||= []
-        @schema[PROPERTIES] ||= {}
+        @schema[Json::DESCRIPTION] ||= ''
+        @schema[Json::TYPE] ||= Json::OBJECT
+        @schema[Json::ADDITIONAL_PROPERTIES] = !!@schema[Json::ADDITIONAL_PROPERTIES]
+        @schema[Json::REQUIRED] ||= []
+        @schema[Json::PROPERTIES] ||= {}
       end
     end
   end

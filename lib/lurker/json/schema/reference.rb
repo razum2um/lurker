@@ -1,8 +1,6 @@
 module Lurker
   module Json
     class Reference < Schema
-      REF = '$ref'.freeze
-
       attr_reader :original_uri
 
       delegate :merge!, :replace!, :reorder!, to: :@schema
@@ -18,7 +16,7 @@ module Lurker
 
         # NOTE : We decide that reference is relative, so we are using merge
         # We use first read for correct relative path resolving
-        reader = Lurker::Json::Reader.new(@uri.merge(schema[REF]).path)
+        reader = Lurker::Json::Reader.new(@uri.merge(schema[Json::REF]).path)
         payload = reader.payload
 
         @original_uri = parse_uri(reader.path)

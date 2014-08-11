@@ -4,12 +4,10 @@ module Lurker
       class AllOf < Json::Schema
         include Tuple::InstanceMethods
 
-        ALLOF = 'allOf'.freeze
-
         private
 
         def tuple_key
-          ALLOF
+          Json::ALLOF
         end
       end
     end

@@ -1,23 +1,19 @@
 module Lurker
   module Json
     class List < Schema
-      TYPE = 'type'.freeze
-      ARRAY = 'array'.freeze
-      ITEMS = 'items'.freeze
-
       def merge!(schema)
         if schema.is_a?(Array)
-          schema.each { |payload| @schema[ITEMS].merge!(payload) }
+          schema.each { |payload| @schema[Json::ITEMS].merge!(payload) }
         else
-          @schema[ITEMS].merge!(schema)
+          @schema[Json::ITEMS].merge!(schema)
         end
       end
 
       def replace!(property, schema)
-        if @schema[ITEMS].is_a?(Lurker::Json::Attribute)
-          @schema[ITEMS] = schema
+        if @schema[Json::ITEMS].is_a?(Lurker::Json::Attribute)
+          @schema[Json::ITEMS] = schema
         else
-          @schema[ITEMS].replace!(property, schema)
+          @schema[Json::ITEMS].replace!(property, schema)
         end
       end
 
@@ -31,11 +27,11 @@ module Lurker
 
         schema = schema.dup
         if schema.is_a?(Array)
-          @schema[ITEMS] = @parser.typed.parse(schema.shift)
+          @schema[Json::ITEMS] = @parser.typed.parse(schema.shift)
 
-          schema.each { |payload| @schema[ITEMS].merge!(payload) }
+          schema.each { |payload| @schema[Json::ITEMS].merge!(payload) }
         else
-          @schema[ITEMS] = @parser.typed.parse(schema.delete ITEMS) if schema.key?(ITEMS)
+          @schema[Json::ITEMS] = @parser.typed.parse(schema.delete Json::ITEMS) if schema.key?(Json::ITEMS)
           @schema.merge!(schema)
         end
 
@@ -43,8 +39,8 @@ module Lurker
       end
 
       def initialize_properties
-        @schema[TYPE] ||= ARRAY
-        @schema[ITEMS] ||= []
+        @schema[Json::TYPE] ||= Json::ARRAY
+        @schema[Json::ITEMS] ||= []
       end
     end
   end

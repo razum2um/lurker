@@ -4,15 +4,6 @@ module Lurker
       class TypedStrategy
         include Lurker::Json::Parser::Expertise
 
-        ANYOF = 'anyOf'.freeze
-        ALLOF = 'allOf'.freeze
-        ONEOF = 'oneOf'.freeze
-        ITEMS = 'items'.freeze
-        TYPE  = 'type'.freeze
-        ARRAY = 'array'.freeze
-        OBJECT = 'object'.freeze
-        PROPERTIES = 'properties'.freeze
-
         attr_reader :schema_options
 
         def initialize(options)
@@ -38,17 +29,17 @@ module Lurker
         private
 
         def create_by_supposition(payload)
-          if payload.key?(ITEMS)
+          if payload.key?(Json::ITEMS)
             Lurker::Json::List.new(payload, schema_options)
-          elsif payload.key?(PROPERTIES)
+          elsif payload.key?(Json::PROPERTIES)
             Lurker::Json::Object.new(payload, schema_options)
-          elsif payload.key?(ANYOF)
+          elsif payload.key?(Json::ANYOF)
             Lurker::Json::Tuple::AnyOf.new(payload, schema_options)
-          elsif payload.key?(ALLOF)
+          elsif payload.key?(Json::ALLOF)
             Lurker::Json::Tuple::AllOf.new(payload, schema_options)
-          elsif payload.key?(ONEOF)
+          elsif payload.key?(Json::ONEOF)
             Lurker::Json::Tuple::OneOf.new(payload, schema_options)
-          elsif payload.key?(REF)
+          elsif payload.key?(Json::REF)
             Lurker::Json::Reference.new(payload, schema_options)
           else
             raise "Unknown type supposition for #{payload}"
@@ -56,10 +47,10 @@ module Lurker
         end
 
         def create_by_type(payload)
-          case payload[TYPE]
-          when OBJECT
+          case payload[Json::TYPE]
+          when Json::OBJECT
             Lurker::Json::Object.new(payload, schema_options)
-          when ARRAY
+          when Json::ARRAY
             Lurker::Json::List.new(payload, schema_options)
           else
             Lurker::Json::Attribute.new(payload, schema_options)

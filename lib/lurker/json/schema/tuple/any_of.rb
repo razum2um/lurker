@@ -4,12 +4,10 @@ module Lurker
       class AnyOf < Json::Schema
         include Tuple::InstanceMethods
 
-        ANYOF = 'anyOf'.freeze
-
         private
 
         def tuple_key
-          ANYOF
+          Json::ANYOF
         end
       end
     end

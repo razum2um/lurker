@@ -2,27 +2,20 @@ module Lurker
   module Json
     class Parser
       module Expertise
-        REF = '$ref'.freeze
-        TYPE = 'type'.freeze
-        ANYOF = 'anyOf'.freeze
-        ALLOF = 'allOf'.freeze
-        ONEOF = 'oneOf'.freeze
-        ITEMS = 'items'.freeze
-        PROPERTIES = 'properties'.freeze
-
         module_function
 
         def type_defined?(hash)
           return false unless hash.is_a?(Hash)
 
-          hash.key? TYPE
+          hash.key?(Json::TYPE) && Json::PRIMITIVES.include?(hash[Json::TYPE])
         end
 
         def type_supposed?(hash)
           return false unless hash.is_a?(Hash)
 
-          hash.key?(ANYOF) || hash.key?(ALLOF) || hash.key?(ONEOF) ||
-          hash.key?(ITEMS) || hash.key?(PROPERTIES) || hash.key?(REF)
+          hash.key?(Json::ANYOF) || hash.key?(Json::ALLOF) || hash.key?(Json::ONEOF) ||
+          hash.key?(Json::ITEMS) || hash.key?(Json::PROPERTIES) ||
+          hash.key?(Json::REF)
         end
       end
     end
