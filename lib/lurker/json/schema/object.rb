@@ -3,8 +3,6 @@ module Lurker
     class Object < Schema
       def merge!(schema)
         unless schema.is_a?(Hash)
-          return replace_with_new_type(schema) if @schema[Json::PROPERTIES].blank?
-
           raise TypeError, "Unable to merge #{schema.class} into JSON object"
         end
 
@@ -38,14 +36,6 @@ module Lurker
         end
 
         @schema.merge!(schema) if merge_required
-      end
-
-      def replace_with_new_type(schema)
-        replace_options = {root_schema: root_schema, parent_schema: parent_schema,
-                           parent_property: parent_property}
-
-        new_schema = Lurker::Json::Parser.typed(replace_options).parse(schema)
-        parent_schema.replace!(parent_property, new_schema)
       end
 
       def initialize_properties

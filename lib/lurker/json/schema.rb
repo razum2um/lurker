@@ -107,7 +107,7 @@ module Lurker
           when RESPONSE_CODES
             Lurker::Json::ResponseCodes.new(property_schema, subschema_options)
           when REQUEST_PARAMETERS, RESPONSE_PARAMETERS
-            @parser.typed.parse_property(property, property_schema)
+            @parser.typed(polymorph_if_empty: true).parse_property(property, property_schema)
           else
             @parser.plain.parse_property(property, property_schema)
           end
