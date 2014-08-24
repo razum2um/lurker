@@ -7,7 +7,10 @@ module Lurker
         attr_reader :schema_options
 
         def initialize(options)
-          @schema_options = options.dup
+          options = options.dup
+
+          @polymorph_if_empty = options.delete(:polymorph_if_empty)
+          @schema_options = options
         end
 
         def parse(payload)
@@ -17,9 +20,12 @@ module Lurker
           when Hash
             return create_by_type(payload) if type_defined?(payload)
             return create_by_supposition(payload) if type_supposed?(payload)
+            return create_polymorph(payload) if polymorph_if_empty? && type_polymorph?(payload)
 
             Lurker::Json::Object.new(payload, schema_options)
           when Array
+            return create_polymorph(payload) if polymorph_if_empty? && type_polymorph?(payload)
+
             Lurker::Json::List.new(payload, schema_options)
           else
             Lurker::Json::Attribute.new(payload, schema_options)
@@ -55,6 +61,14 @@ module Lurker
           else
             Lurker::Json::Attribute.new(payload, schema_options)
           end
+        end
+
+        def polymorph_if_empty?
+          @polymorph_if_empty
+        end
+
+        def create_polymorph(payload)
+          Lurker::Json::Polymorph.new(payload, schema_options)
         end
       end
     end

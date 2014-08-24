@@ -4,6 +4,12 @@ module Lurker
       module Expertise
         module_function
 
+        def type_polymorph?(array_or_hash)
+          return false unless array_or_hash.is_a?(Hash) || array_or_hash.is_a?(Array)
+
+          array_or_hash.empty?
+        end
+
         def type_defined?(hash)
           return false unless hash.is_a?(Hash)
 
