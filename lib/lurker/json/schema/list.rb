@@ -19,36 +19,30 @@ module Lurker
 
       private
 
-      def initialize_properties
+      def initialize_default_properties(empty_items = {})
         @schema[Json::TYPE] ||= Json::ARRAY
-        @schema[Json::ITEMS] ||= polymorph_items({})
+        @schema[Json::ITEMS] ||= polymorph_items(empty_items)
       end
 
       def parse_schema(schema)
         @schema = {}
-        initialize_properties
-
-        if schema_of_any_kind?(schema)
-          @schema[Json::ITEMS] = polymorph_items(schema)
-          return
-        end
-
-        schema = schema.dup
-        if schema.is_a?(Array)
-          @schema[Json::ITEMS] = @parser.typed.parse(schema.shift)
-
-          schema.each { |payload| @schema[Json::ITEMS].merge!(payload) }
-        else
-          @schema[Json::ITEMS] = @parser.typed.parse(schema.delete Json::ITEMS) if schema.key?(Json::ITEMS)
-          @schema.merge!(schema)
-        end
+        schema.is_a?(Array) ? parse_array(schema.dup) : parse_hash(schema.dup)
       end
 
-      def schema_of_any_kind?(schema)
-        return true if schema.empty?
-        return false unless schema.respond_to?(:key?) && schema.key?(Json::ITEMS)
+      def parse_array(schema)
+        initialize_default_properties([])
+        return if schema.empty?
 
-        schema[Json::ITEMS].empty?
+        @schema[Json::ITEMS] = @parser.typed.parse(schema.shift)
+        schema.each { |payload| @schema[Json::ITEMS].merge!(payload) }
+      end
+
+      def parse_hash(schema)
+        @schema.merge!(schema)
+        @schema[Json::ITEMS] = @parser.typed(polymorph_if_empty: true)
+          .parse(schema.delete(Json::ITEMS) || schema)
+
+        initialize_default_properties
       end
 
       def polymorph_items(schema)

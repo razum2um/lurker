@@ -44,15 +44,22 @@ module Lurker
 
       private
 
+      def initialize_default_properties
+        @schema[Json::DESCRIPTION] ||= ''
+        @schema[Json::TYPE] ||= ''
+        @schema[Json::EXAMPLE] ||= ''
+      end
+
       def parse_schema(schema)
         @schema = {}
-        initialize_properties
 
         if schema.is_a?(Hash)
           @schema.merge!(schema)
         else
           @schema = attributify(schema)
         end
+
+        initialize_default_properties
       end
 
       def attributify(schema)
@@ -69,12 +76,6 @@ module Lurker
         end
 
         attribute
-      end
-
-      def initialize_properties
-        @schema[Json::DESCRIPTION] ||= ''
-        @schema[Json::TYPE] ||= ''
-        @schema[Json::EXAMPLE] ||= ''
       end
 
       def serialize_example(data)
