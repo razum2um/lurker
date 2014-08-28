@@ -80,23 +80,23 @@ Feature: $ref defererencing through inlining
     Then the file "lurker/definitions/user_request_parameters.json" should contain exactly:
       """json
       {
-        "description": "",
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-
-        ],
         "properties": {
           "name": {
-            "description": "",
             "type": "string",
-            "example": "Bob"
+            "example": "Bob",
+            "description": ""
           },
           "surname": {
             "description": "",
             "type": "string",
             "example": "Marley"
           }
-        }
+        },
+        "description": "",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+
+        ]
       }
       """

@@ -18,6 +18,29 @@ describe Lurker::Json::Object do
 
       it { expect(object.to_hash).to eq expected }
     end
+
+    context 'when default attributes order are broken by user' do
+      let(:object) do
+        klass.new(
+          'type' => 'object',
+          'additionalProperties' => true,
+          'description' => '',
+          'properties' => {},
+          'required' => []
+        )
+      end
+      let(:expected) do
+        {
+          'type' => 'object',
+          'additionalProperties' => true,
+          'description' => '',
+          'properties' => {},
+          'required' => []
+        }.to_json
+      end
+
+      it { expect(object.to_json).to eq expected }
+    end
   end
 
   describe '#merge!' do

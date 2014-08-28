@@ -23,27 +23,28 @@ module Lurker
 
       private
 
-      def parse_schema(schema)
-        @schema = {}
-        initialize_properties
-
-        schema = schema.dup
-        merge_required = schema.key?(Json::PROPERTIES)
-
-        (schema.delete(Json::PROPERTIES) || schema).each do |property, property_schema|
-          @schema[Json::PROPERTIES][property] = @parser.typed.parse_property(
-            property, property_schema)
-        end
-
-        @schema.merge!(schema) if merge_required
-      end
-
-      def initialize_properties
+      def initialize_default_properties
         @schema[Json::DESCRIPTION] ||= ''
         @schema[Json::TYPE] ||= Json::OBJECT
         @schema[Json::ADDITIONAL_PROPERTIES] = !!@schema[Json::ADDITIONAL_PROPERTIES]
         @schema[Json::REQUIRED] ||= []
         @schema[Json::PROPERTIES] ||= {}
+      end
+
+      def parse_schema(schema)
+        @schema = {}
+
+        schema = schema.dup
+        if schema.key?(Json::PROPERTIES)
+          @schema.merge!(schema)
+        end
+
+        initialize_default_properties
+
+        (schema.delete(Json::PROPERTIES) || schema).each do |property, property_schema|
+          @schema[Json::PROPERTIES][property] = @parser.typed.parse_property(
+            property, property_schema)
+        end
       end
     end
   end
