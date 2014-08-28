@@ -47,7 +47,7 @@ module Lurker
       def initialize_default_properties
         @schema[Json::DESCRIPTION] ||= ''
         @schema[Json::TYPE] ||= ''
-        @schema[Json::EXAMPLE] ||= ''
+        @schema[Json::EXAMPLE] = '' if @schema[Json::EXAMPLE].nil?
       end
 
       def parse_schema(schema)

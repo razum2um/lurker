@@ -4,6 +4,25 @@ describe Lurker::Json::Attribute do
   let(:klass) { described_class }
 
   describe '#parse_schema' do
+    context 'when schema is boolean attribute' do
+      let(:attribute) do
+        klass.new(
+          'description' => '',
+          'type' => 'boolean',
+          'example' => false
+        )
+      end
+      let(:expected) do
+        {
+          'description' => '',
+          'type' => 'boolean',
+          'example' => false
+        }
+      end
+
+      it { expect(attribute.to_hash).to eq expected }
+    end
+
     context 'when default attributes order are broken by user' do
       let(:attribute) do
         klass.new(
