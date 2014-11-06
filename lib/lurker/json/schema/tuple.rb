@@ -14,7 +14,7 @@ module Lurker
         end
 
         def exists?(schema)
-          raise NotImplementedError
+          @schema[tuple_key].any? { |schm| schm.eql?(schema) }
         end
 
         private
@@ -36,3 +36,4 @@ module Lurker
     end
   end
 end
+
