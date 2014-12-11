@@ -8,8 +8,6 @@ Works on Rails 3.2, 4.0, 4.1 & Ruby 1.9.3, 2.0.0, 2.1.1.
 [![Dependency Status][DS img]][Dependency Status]
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/87ced56265849ad6386c2ba0a78f8038 "githalytics.com")](http://githalytics.com/razum2um/lurker)
 
-[![Sponsored by Evil Martians](https://evilmartians.com/badges/sponsored-by-evil-martians.svg)](http://evilmartians.com/)
-
 ## Installation
 
 Add my public key:
@@ -182,6 +180,8 @@ To run cucumber in a clean `lurker` & `html` directories run:
 so there are `<label htmlFor` instead of `<label for>` and `<div className` instead of `<div class`
 
 ## Acknoledgements
+
+[![Sponsored by Evil Martians](https://evilmartians.com/badges/sponsored-by-evil-martians.svg)](http://evilmartians.com/)
 
 This gem is quite opinionated and relies on rails - if you're
 interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
