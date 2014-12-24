@@ -4,6 +4,7 @@ gemfile:
   - gemfiles/Gemfile32.ci
   - gemfiles/Gemfile40.ci
   - gemfiles/Gemfile41.ci
+  - gemfiles/Gemfile42.ci
 install: bundle install -j4 --path vendor/bundle
 rvm:
   - 1.9.3
