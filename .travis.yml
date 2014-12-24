@@ -1,4 +1,5 @@
 language: ruby
+sudo: false
 gemfile:
   - gemfiles/Gemfile32.ci
   - gemfiles/Gemfile40.ci
