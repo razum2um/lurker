@@ -51,9 +51,9 @@ Feature: atom persistent within test suite
       method: PATCH
       path_info: "/api/v2/users/100"
       path_params:
-        id: '100'
         controller: api/v2/users
         action: update
+        id: '100'
     """
 
   Scenario: json schema tests response parameters and keep atom unchanged using "users/update"
@@ -129,8 +129,9 @@ Feature: atom persistent within test suite
       method: PATCH
       path_info: "/api/v2/users/100"
       path_params:
-        id: '100'
         controller: api/v2/users
         action: update
+        id: '100'
 
     """
+

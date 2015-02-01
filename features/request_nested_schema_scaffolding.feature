@@ -8,7 +8,6 @@ Feature: request nested schema scaffolding
       require "spec_helper"
 
       describe Api::V1::ReposController, :lurker do
-
         let!(:user) do
           User.where(name: 'razum2um').first_or_create!.tap do |u|
             u.repos.first_or_create!(name: 'lurker')
@@ -16,7 +15,7 @@ Feature: request nested schema scaffolding
         end
 
         it "shows a user's repo" do
-          get "api/v1/users/#{user.id}/repos/#{user.repos.first.id}.json"
+          get "/api/v1/users/#{user.id}/repos/#{user.repos.first.id}.json"
           expect(response).to be_success
         end
       end
@@ -62,9 +61,10 @@ Feature: request nested schema scaffolding
       method: GET
       path_info: "/api/v1/users/1/repos/1.json"
       path_params:
-        action: show
         controller: api/v1/repos
+        action: show
         user_id: '1'
         id: '1'
 
     """
+

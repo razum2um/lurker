@@ -69,3 +69,4 @@ file 'Procfile' do
     web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
   CODE
 end
+

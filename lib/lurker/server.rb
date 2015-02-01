@@ -47,8 +47,11 @@ module Lurker
          :try => ['.html', 'index.html', '/index.html'] # try these postfixes sequentially
 
       end
-      Lurker.const_set("Rack_#{rand 10}_#{Time.now.to_i}", cls)
+
+      rack_name = "Rack_#{srand}_#{Time.now.strftime('%s%N')}"
+      Lurker.const_set(rack_name, cls)
       cls
     end
   end
 end
+

@@ -54,9 +54,9 @@ Feature: schema updating within test suite
       method: PATCH
       path_info: "/api/v2/users/1"
       path_params:
-        id: '1'
         controller: api/v2/users
         action: update
+        id: '1'
     """
 
   Scenario: json schema tests response parameters and request parameters and show errors from both using "users/update"
@@ -166,8 +166,9 @@ Feature: schema updating within test suite
       method: PATCH
       path_info: "/api/v2/users/1"
       path_params:
-        id: '1'
         controller: api/v2/users
         action: update
+        id: '1'
 
     """
+

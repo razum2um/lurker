@@ -17,6 +17,9 @@ group :development do
   gem 'highline'
   # gem 'coderay', path: '../coderay'
 
+  # multiple rails versions support
+  gem 'appraisal'
+
   # build template static
   # run `rake assets:precompile`
   # to get bundled application.(js|css)
@@ -27,5 +30,6 @@ group :development do
   gem 'bootstrap-sass', '~> 3.1.1'
   gem 'jquery-rails'
   gem 'remotipart'
-  gem "launchy"
+  gem 'launchy'
 end
+

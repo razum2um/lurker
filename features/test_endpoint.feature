@@ -48,8 +48,8 @@ Feature: test endpoint
         path_info: "/api/v1/users/1"
         method: PATCH
         path_params:
-          action: update
           controller: api/v1/users
+          action: update
           id: 1
       """
 
@@ -74,35 +74,6 @@ Feature: test endpoint
 
   When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
   Then the example should pass
-
-  Scenario: json schema tests request parameters and tell what fails using "users/update"
-    Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
-      """ruby
-      require "spec_helper"
-
-      describe Api::V1::UsersController, :lurker do
-        render_views
-
-        let(:user) do
-          User.where(name: 'razum2um').first_or_create!
-        end
-
-        it "updates a user" do
-          patch :update, id: user.id, user: { name: 1 }, format: 'json'
-          expect(response).to be_success
-        end
-      end
-      """
-
-  When I run `bin/rspec spec/controllers/api/v1/users_controller_spec.rb`
-  Then the output should contain failures:
-    """
-    Lurker::ValidationError:
-      Response
-        The property '#/name' of type Fixnum did not match the following type: string
-
-    1 example, 1 failure
-    """
 
   Scenario: json schema tests response parameters and tell what fails using "users/update"
     Given a file named "spec/controllers/api/v1/users_controller_blank_spec.rb" with:
@@ -132,3 +103,4 @@ Feature: test endpoint
 
     1 example, 1 failure
     """
+
