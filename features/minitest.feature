@@ -57,8 +57,8 @@ Feature: minitest
       method: DELETE
       path_info: "/api/v1/users/1/repos/1.json"
       path_params:
-        action: destroy
         controller: api/v1/repos
+        action: destroy
         user_id: '1'
         id: '1'
 
@@ -100,8 +100,8 @@ Feature: minitest
         path_info: "/api/v1/users/1"
         method: PATCH
         path_params:
-          action: update
           controller: api/v1/users
+          action: update
           id: 1
           """
 
@@ -136,3 +136,4 @@ Feature: minitest
     """
     1 (runs|tests), 1 assertions, 0 failures, 1 errors, 0 skips
     """
+

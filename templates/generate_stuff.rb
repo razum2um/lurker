@@ -294,12 +294,12 @@ inject_into_class 'config/application.rb', 'Application' do
     end
 
     require 'rack/cors' # FIXME
-    config.middleware.insert 0, Rack::Cors do
+    config.middleware.insert 0, "Rack::Cors" do
       allow do
-        origins 'localhost:3000', '127.0.0.1:3000', 'razum2um.github.io', 'lurker-app.herokuapp.com', 'lurker.razum2um.me'
+        origins %w[localhost:3000 127.0.0.1:3000 razum2um.github.io lurker-app.herokuapp.com lurker.razum2um.me]
         resource '*',
           :headers => :any,
-          :methods => :any,
+          :methods => [:get, :post, :delete, :put, :options, :head],
           :credentials => false,
           :expose => %w[Etag Server X-Content-Type-Options X-Frame-Options X-Request-Id X-Runtime
                         X-Xss-Protection Date Access-Control-Request-Method Access-Control-Allow-Origin
@@ -409,3 +409,4 @@ file 'db/schema.rb', force: true do
     end
   CODE
 end
+

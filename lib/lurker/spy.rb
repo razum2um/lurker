@@ -42,7 +42,7 @@ module Lurker
 
     def extensions
       extensions = {
-        path_params: request.path_params,
+        path_params: reordered_request_path_params,
         path_info: request.path_info,
         method: request.verb,
       }
@@ -88,5 +88,19 @@ module Lurker
     def self.current
       Thread.current[:lurker_spy]
     end
+
+    private
+
+    def reordered_request_path_params
+      other_params = request.path_params.reject do |k, _|
+        k == 'controller' || k == 'action'
+      end
+
+      {
+        'controller' => request.path_params['controller'],
+        'action' => request.path_params['action']
+      }.merge!(other_params)
+    end
   end
 end
+

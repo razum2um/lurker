@@ -71,10 +71,11 @@ Feature: controller nested schema scaffolding
       method: GET
       path_info: "/api/v1/users/1/repos.json"
       path_params:
-        user_id: '1'
         controller: api/v1/repos
         action: index
+        user_id: '1'
       query_params:
         limit: 1
 
     """
+

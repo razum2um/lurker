@@ -6,8 +6,8 @@ require "lurker/version"
 Gem::Specification.new do |spec|
   spec.name          = "lurker"
   spec.version       = Lurker::VERSION
-  spec.authors       = ["Vlad Bokov"]
-  spec.email         = ["bokov.vlad@gmail.com"]
+  spec.authors       = ["Vlad Bokov", "Sergey Fedorov"]
+  spec.email         = ["bokov.vlad@gmail.com", "oni.strech@gmail.com"]
   spec.summary       = %q{Get pretty, documented and visible API}
   spec.description   = %q{The new de-facto for API testing your Rails application}
   spec.homepage      = "http://github.com/razum2um/lurker"
@@ -54,4 +54,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("execjs", "~> 2.0")
   spec.add_development_dependency("pdfkit", "~> 0.6")
   spec.add_development_dependency("wkhtmltopdf-binary", "~> 0.9")
+
+  if RUBY_VERSION >= "2.2.0"
+    # FIXME : this gem are needed to ruby 2.2.0
+    spec.add_development_dependency("test-unit", "~> 3.0")
+  end
 end
+

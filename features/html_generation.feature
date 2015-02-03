@@ -38,8 +38,8 @@ Feature: html generation
         method: POST
         path_info: "/api/v1/users.json"
         path_params:
-          action: create
           controller: api/v1/users
+          action: create
       """
 
   When I successfully run `bin/lurker convert`
@@ -73,3 +73,4 @@ Feature: html generation
    And I submit it
 
   Then I should see JSON response with "can't be blank"
+
