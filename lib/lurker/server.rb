@@ -48,8 +48,7 @@ module Lurker
 
       end
 
-      rack_name = "Rack_#{srand}_#{Time.now.strftime('%s%N')}"
-      Lurker.const_set(rack_name, cls)
+      Lurker.const_set("Rack_#{srand}", cls)
       cls
     end
   end
