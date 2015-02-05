@@ -31,7 +31,7 @@ namespace :generate do
     if needs_generation?
       sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --skip-bundle --quiet"
       in_lurker_app "bundle config --local local.lurker $PWD/../.." unless ENV['TRAVIS']
-      in_lurker_app "bundle install --quiet"
+      in_lurker_app "bundle install --without development --quiet"
       %w[rake rspec-core spring].each do |gem|
         in_lurker_app "bundle binstubs #{gem}"
       end
