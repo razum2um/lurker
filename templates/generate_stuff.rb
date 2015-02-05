@@ -1,15 +1,21 @@
-# gsub_file 'config/database.yml', /database: lurker_app.*/, 'database: lurker_app'
-# comment_lines 'config/database.yml', /username|password/
+# This is secondary testing/demo rails app template (passed to `rake rails:template`)
+
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+  base_db_name = "lurker_app_#{rails_version}"
+else
+  base_db_name = 'lurker_app'
+end
+
 file 'config/database.yml', force: true do
   <<-CODE
 default: &default
   adapter: postgresql
   encoding: unicode
-  database: lurker_app
+  database: #{base_db_name}
   pool: 5
 test:
   <<: *default
-  database: lurker_app_test
+  database: #{base_db_name}_test
 development:
   <<: *default
 production:
@@ -357,6 +363,7 @@ file 'spec/support/fixme.rb', force: true do
     DatabaseCleaner.strategy = :truncation
 
     RSpec.configure do |c|
+      c.infer_spec_type_from_file_location! if c.respond_to?(:infer_spec_type_from_file_location!)
       c.treat_symbols_as_metadata_keys_with_true_values = true
       c.backtrace_exclusion_patterns += [
         /\\/lib\\/lurker/

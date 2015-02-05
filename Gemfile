@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 gemspec
 
-# Add any gems and groups that you don't want to keep local
 group :development do
   # tools
   gem 'pry-byebug'
@@ -10,7 +9,7 @@ group :development do
   # rspec --format fuubar
   gem 'fuubar'
   # cucumber --format fuubar
-  gem 'fuubar-cucumber', github: 'martinciu/fuubar-cucumber', branch: 'master'
+  gem 'fuubar-cucumber'
   gem 'selenium-webdriver'
 
   # deploy site
@@ -18,7 +17,7 @@ group :development do
   # gem 'coderay', path: '../coderay'
 
   # multiple rails versions support
-  gem 'appraisal'
+  gem 'appraisal', github: 'razum2um/appraisal', branch: 'master'
 
   # build template static
   # run `rake assets:precompile`

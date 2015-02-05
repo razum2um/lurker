@@ -1,4 +1,9 @@
-EXAMPLE_APP = 'tmp/lurker_app'
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+  EXAMPLE_APP = "tmp/lurker_app_#{rails_version}"
+else
+  raise "Use `appraisal rails-XY rake ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+end
+
 EXAMPLE_PATH = File.expand_path("../../#{EXAMPLE_APP}", __FILE__)
 
 namespace :clobber do
@@ -26,7 +31,7 @@ namespace :generate do
     if needs_generation?
       sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --skip-bundle --quiet"
       in_lurker_app "bundle config --local local.lurker $PWD/../.." unless ENV['TRAVIS']
-      in_lurker_app "bundle install"
+      in_lurker_app "bundle install --quiet"
       %w[rake rspec-core spring].each do |gem|
         in_lurker_app "bundle binstubs #{gem}"
       end

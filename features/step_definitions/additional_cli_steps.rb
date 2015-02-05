@@ -6,7 +6,7 @@ Given /^a checked file "([^"]*)" with:$/ do |file_name, file_content|
 end
 
 Given /^an empty directory named "([^"]*)"$/ do |dir_name|
-  FileUtils.rm_rf File.expand_path("../../../tmp/lurker_app/#{dir_name}", __FILE__)
+  in_current_dir { _rm_rf(dir_name) }
   create_dir(dir_name)
 end
 

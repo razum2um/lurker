@@ -1,3 +1,5 @@
+# This is initial testing/demo rails app template (passed to `rails new`)
+
 gem 'rack-cors', require: 'rack/cors'
 gem 'rspec-rails', '~> 2.14.0'
 gem 'spring-commands-rspec'

@@ -6,6 +6,14 @@ SimpleCov.start do
   end
 end
 
+def example_path
+  if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+    File.expand_path("../../../tmp/lurker_app_#{rails_version}", __FILE__)
+  else
+    raise "Use `appraisal rails-XY cucumber ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+  end
+end
+
 require 'fileutils'
 require 'aruba/cucumber'
 
@@ -16,7 +24,7 @@ require 'capybara'
 require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'capybara/poltergeist'
-require File.expand_path('../../../tmp/lurker_app/config/environment', __FILE__)
+require "#{example_path}/config/environment"
 require 'database_cleaner'
 require 'database_cleaner/cucumber'
 
@@ -34,15 +42,14 @@ Aruba.configure do |config|
 end
 
 Before do
-  @dirs = ["tmp/lurker_app"]
+  @dirs = [example_path]
   @aruba_timeout_seconds = 30
   DatabaseCleaner.start
   if ENV['CLEAN']
     system "bin/spring stop"
-    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/lurker', __FILE__)
-    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/html', __FILE__)
-    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/spec/requests', __FILE__)
-    FileUtils.rm_rf File.expand_path('../../../tmp/lurker_app/spec/controllers', __FILE__)
+    %w[lurker html spec/requests spec/controllers].each do |dir_name|
+      in_current_dir { _rm_rf(dir_name) }
+    end
   end
 end
 
