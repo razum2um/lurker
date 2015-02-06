@@ -3,7 +3,7 @@
 <img align="right" width="94" height="71" src="https://cdn.rawgit.com/razum2um/lurker/master/lurker-bw.svg">
 
 Generates API schemas, validates code against them and creates a handy web interface for testing the API.
-Works on Rails 3.2, 4.0, 4.1 & Ruby 1.9.3, 2.0.0, 2.1.1.
+Works on Rails 3.2, 4.0, 4.1, 4.2 & Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.0
 
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
@@ -201,7 +201,7 @@ separate databases for each rails version both for dev & test env - all prefixed
 Currently testing application is using postgresql, because **the same** testing app is deployed to serve demo purposes.
 
 This is also the reason not to delete anything under `lurker` directory between feature tests
-and using **different** API endpoints of the testing app. To run cucumber with clean `lurker` & `html` directories run:
+and using **different** API endpoints of the testing app. To run cucumber with clean `lurker` & `public/lurker` directories run:
 
     CLEAN=1 bundle exec appraisal rails-42 cucumber features
 
@@ -213,7 +213,7 @@ Beware while writing your feature tests for PRs.
 
 This gem is quite opinionated and relies on rails - if you're
 interested in anything else, please take a look at [api_taster][api_taster] or [fdoc][fdoc],
-This gem is heavily inspirated by them. Thanks, @square & @fredwu
+This gem is heavily inspired by them. Thanks, @square & @fredwu
 
 Also thanks to
 
