@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("psych", "~> 2.0")
   spec.add_development_dependency("bundler", "~> 1.3")
   spec.add_development_dependency("rack-cors", "~> 0.2")
-  spec.add_development_dependency("rails", ">= 3.2", "< 4.2")
+  spec.add_development_dependency("rails", ">= 3.2", "< 4.3")
   spec.add_development_dependency("rake", "~> 10.2")
   spec.add_development_dependency("rspec", "~> 2.14")
   spec.add_development_dependency("cucumber", "~> 1.3")
