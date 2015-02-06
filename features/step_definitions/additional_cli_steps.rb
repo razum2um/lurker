@@ -19,9 +19,11 @@ When /^I click on "([^"]*)"$/ do |text|
 end
 
 When /^I select "([^"]*)" hostname$/ do |host|
-  within(:xpath, "//*[@id='hostname']") do
-    select(host)
-  end
+  puts "#" * 80
+  puts "\n\nAbout to select #{host}"
+  puts Nokogiri::XML(page.body).to_s
+  puts "#" * 80
+  within(:xpath, "//*[@id='hostname']") { select(host) }
   # FIXME: see multidomain feature - cannot select node in phantomjs
   page.execute_script("window.submitForm.setState({host: jQuery('#hostname').val()});")
   page.execute_script("window.submitForm.afterSetPartialState()")
