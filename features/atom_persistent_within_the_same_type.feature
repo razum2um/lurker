@@ -59,7 +59,7 @@ Feature: atom persistent within test suite
   Scenario: json schema tests response parameters and keep atom unchanged using "users/update"
   Given a file named "spec/controllers/api/v2/users_controller_spec.rb" with:
     """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V2::UsersController, :lurker do
         render_views

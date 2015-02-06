@@ -56,7 +56,7 @@ Feature: test endpoint
   Scenario: json schema tests request and response using "users/update"
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::UsersController, :lurker do
         render_views
@@ -78,7 +78,7 @@ Feature: test endpoint
   Scenario: json schema tests response parameters and tell what fails using "users/update"
     Given a file named "spec/controllers/api/v1/users_controller_blank_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::UsersController, :lurker do
         render_views

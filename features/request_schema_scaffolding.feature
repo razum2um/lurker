@@ -7,7 +7,7 @@ Feature: request schema scaffolding
   Scenario: scaffold a json schema for a "users/index" in request spec
     Given a file named "spec/requests/users_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::UsersController, :lurker do
         let!(:user) do

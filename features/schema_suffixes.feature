@@ -56,7 +56,7 @@ Feature: schema suffixes
       """
     And a file named "spec/requests/updating_repos_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::ReposController, :lurker, type: :request do
 
@@ -127,7 +127,7 @@ Feature: schema suffixes
       """
     And a file named "spec/requests/failed_updating_repos_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::ReposController, type: :request do
 

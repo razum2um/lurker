@@ -55,7 +55,7 @@ Feature: $ref defererencing through inlining
       """
     And a file named "spec/controllers/api/v3/users_controller_spec.rb" with:
       """ruby
-        require "spec_helper"
+        require "rails_helper"
 
         describe Api::V3::UsersController, :lurker do
           render_views

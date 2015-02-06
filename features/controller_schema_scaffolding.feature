@@ -7,7 +7,7 @@ Feature: controller schema scaffolding
   Scenario: scaffold a json schema for a "users/show" in controller spec
     Given a file named "spec/controllers/api/v1/users_controller_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::UsersController, :lurker do
         render_views

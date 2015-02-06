@@ -5,7 +5,7 @@ Feature: controller nested schema scaffolding
   Scenario: scaffold a json schema for a "repos/index" in a nested controller spec
     Given a file named "spec/controllers/api/v1/repos_controller_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::ReposController, :lurker do
         render_views

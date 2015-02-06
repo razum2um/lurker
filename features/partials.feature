@@ -68,7 +68,7 @@ Feature: partials
 
     Given a file named "spec/requests/repo_creation_spec.rb" with:
       """ruby
-      require "spec_helper"
+      require "rails_helper"
 
       describe Api::V1::ReposController, :lurker do
         let!(:user) do

@@ -45,6 +45,7 @@ end
 chmod "bin/lurker", 0755
 
 # not to disturb generators
+remove_file 'spec/rails_helper.rb'
 remove_file 'spec/spec_helper.rb'
 remove_file 'app/models/user.rb'
 
@@ -361,7 +362,6 @@ file 'spec/support/fixme.rb', force: true do
     DatabaseCleaner.strategy = :truncation
 
     RSpec.configure do |c|
-      c.infer_spec_type_from_file_location! if c.respond_to?(:infer_spec_type_from_file_location!)
       c.treat_symbols_as_metadata_keys_with_true_values = true
       c.backtrace_exclusion_patterns += [
         /\\/lib\\/lurker/
