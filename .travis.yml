@@ -15,5 +15,5 @@ matrix:
     # NOTE : incompatible
     - rvm: 2.2.0
       gemfile: gemfiles/rails_32.gemfile
-install: bundle install -j4 --path vendor/bundle --without development
+install: bundle install -j4 --path vendor/bundle
 

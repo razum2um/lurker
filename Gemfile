@@ -3,9 +3,10 @@ gemspec
 
 group :development do
   # tools
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
-  gem 'pry-session'
+  gem 'pry-byebug', platforms: :mri_20
+  gem 'pry-debugger', platforms: :mri_19
+  gem 'pry-stack_explorer', platform: :mri
+  gem 'pry-session', platform: :mri
   # rspec --format fuubar
   gem 'fuubar'
   # cucumber --format fuubar
