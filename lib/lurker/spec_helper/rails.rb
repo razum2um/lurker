@@ -1,3 +1,4 @@
+require 'active_support/concern'
 require 'lurker/spy'
 
 module Lurker
@@ -38,3 +39,4 @@ end
 if defined?(ActionController::TestCase::Behavior)
   ActionController::TestCase::Behavior.send :include, Lurker::SpecHelper::Rails
 end
+

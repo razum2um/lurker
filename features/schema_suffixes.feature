@@ -49,8 +49,8 @@ Feature: schema suffixes
         path_info: "/api/v1/users/razum2um/repos/lurker.json"
         method: PATCH
         path_params:
-          action: update
           controller: api/v1/repos
+          action: update
           user_id: razum2um
           id: lurker
       """
@@ -120,8 +120,8 @@ Feature: schema suffixes
         method: PATCH
         suffix: 'failed'
         path_params:
-          action: update
           controller: api/v1/repos
+          action: update
           user_id: razum2um
           id: lurker
       """

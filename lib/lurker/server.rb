@@ -25,9 +25,8 @@ module Lurker
     end
 
     def self.to_rack(options = {})
-      default_path = options[:path] || Lurker::DEFAULT_SERVICE_PATH
-
-      cls = Class.new(Sinatra::Base) do
+      Rack::Builder.app do
+        document_root = options[:path] || Lurker::DEFAULT_DOCUMENT_ROOT
 
         if !Rails.env.development? && (username, password = options.values_at(:username, :password)).all?(&:present?)
           use ::Rack::Auth::Basic, "Protected Area" do |u, p|
@@ -38,7 +37,7 @@ module Lurker
         use ::Rack::Deflater
 
         use TryStatic,
-         :root => "#{::Rails.root}/#{default_path}",  # static files root dir
+         :root => "#{::Rails.root}/#{document_root}",  # static files root dir
          :urls => %w[/],     # match all requests
          :header_rules => [
            [%w(css js), { 'Cache-Control' => 'public, max-age=31536000' }],
@@ -46,9 +45,11 @@ module Lurker
          ],
          :try => ['.html', 'index.html', '/index.html'] # try these postfixes sequentially
 
+         run Proc.new { |env|
+           [404, { "Content-Type" => "text/html" }, ["File not lurked: #{env['PATH_INFO']}\n"]]
+         }
       end
-      Lurker.const_set("Rack_#{rand 10}_#{Time.now.to_i}", cls)
-      cls
     end
   end
 end
+

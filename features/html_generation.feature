@@ -7,7 +7,7 @@ Feature: html generation
 
   @javascript
   Scenario: json schema gets generated into html preview using "users/create"
-    Given an empty directory named "html"
+    Given an empty directory named "public/lurker"
     And a file named "lurker/api/v1/users-POST.json.yml" with:
       """yml
       ---
@@ -38,8 +38,8 @@ Feature: html generation
         method: POST
         path_info: "/api/v1/users.json"
         path_params:
-          action: create
           controller: api/v1/users
+          action: create
       """
 
   When I successfully run `bin/lurker convert`
@@ -48,8 +48,8 @@ Feature: html generation
             Converting lurker to html
      using  lurker
 
-    create  index.html
-    create  api/v1/users-POST.html
+    create  public/lurker/index.html
+    create  public/lurker/api/v1/users-POST.html
     """
 
   When I go to "/lurker"
@@ -73,3 +73,4 @@ Feature: html generation
    And I submit it
 
   Then I should see JSON response with "can't be blank"
+

@@ -1,15 +1,21 @@
-# gsub_file 'config/database.yml', /database: lurker_app.*/, 'database: lurker_app'
-# comment_lines 'config/database.yml', /username|password/
+# This is secondary testing/demo rails app template (passed to `rake rails:template`)
+
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+  base_db_name = "lurker_app_#{rails_version}"
+else
+  base_db_name = 'lurker_app'
+end
+
 file 'config/database.yml', force: true do
   <<-CODE
 default: &default
   adapter: postgresql
   encoding: unicode
-  database: lurker_app
+  database: #{base_db_name}
   pool: 5
 test:
   <<: *default
-  database: lurker_app_test
+  database: #{base_db_name}_test
 development:
   <<: *default
 production:
@@ -45,8 +51,6 @@ remove_file 'app/models/user.rb'
 generate 'rspec:install'
 
 route <<-ROUTE
-  mount Lurker::Server.to_rack(path: 'html'), at: "/#{Lurker::DEFAULT_URL_BASE}"
-
   namespace :api do
     namespace :v1 do
       resources :users do
@@ -294,12 +298,12 @@ inject_into_class 'config/application.rb', 'Application' do
     end
 
     require 'rack/cors' # FIXME
-    config.middleware.insert 0, Rack::Cors do
+    config.middleware.insert 0, "Rack::Cors" do
       allow do
-        origins 'localhost:3000', '127.0.0.1:3000', 'razum2um.github.io', 'lurker-app.herokuapp.com', 'lurker.razum2um.me'
+        origins %w[localhost:3000 127.0.0.1:3000 razum2um.github.io lurker-app.herokuapp.com lurker.razum2um.me]
         resource '*',
           :headers => :any,
-          :methods => :any,
+          :methods => [:get, :post, :delete, :put, :options, :head],
           :credentials => false,
           :expose => %w[Etag Server X-Content-Type-Options X-Frame-Options X-Request-Id X-Runtime
                         X-Xss-Protection Date Access-Control-Request-Method Access-Control-Allow-Origin
@@ -357,6 +361,7 @@ file 'spec/support/fixme.rb', force: true do
     DatabaseCleaner.strategy = :truncation
 
     RSpec.configure do |c|
+      c.infer_spec_type_from_file_location! if c.respond_to?(:infer_spec_type_from_file_location!)
       c.treat_symbols_as_metadata_keys_with_true_values = true
       c.backtrace_exclusion_patterns += [
         /\\/lib\\/lurker/
@@ -409,3 +414,4 @@ file 'db/schema.rb', force: true do
     end
   CODE
 end
+

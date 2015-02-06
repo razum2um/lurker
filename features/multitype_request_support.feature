@@ -52,9 +52,9 @@ Feature: multitype request support
       method: PATCH
       path_info: "/api/v2/users/1"
       path_params:
-        id: '1'
         controller: api/v2/users
         action: update
+        id: '1'
     """
 
   Scenario: json schema tests response parameters and update request parameters using "users/update"
@@ -130,8 +130,9 @@ Feature: multitype request support
       method: PATCH
       path_info: "/api/v2/users/1"
       path_params:
-        id: '1'
         controller: api/v2/users
         action: update
+        id: '1'
 
     """
+

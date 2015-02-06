@@ -23,9 +23,9 @@ Feature: $ref defererencing through inlining
         method: PATCH
         path_info: "/api/v3/users/1"
         path_params:
-          id: '1'
           controller: api/v3/users
           action: update
+          id: '1'
 
       """
     And a file named "lurker/definitions/user_request_parameters.json" with:
@@ -100,3 +100,4 @@ Feature: $ref defererencing through inlining
         ]
       }
       """
+

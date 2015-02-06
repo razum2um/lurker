@@ -1,4 +1,9 @@
-EXAMPLE_APP = 'tmp/lurker_app'
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+  EXAMPLE_APP = "tmp/lurker_app_#{rails_version}"
+else
+  raise "Use `appraisal rails-XY rake ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+end
+
 EXAMPLE_PATH = File.expand_path("../../#{EXAMPLE_APP}", __FILE__)
 
 namespace :clobber do
@@ -26,7 +31,7 @@ namespace :generate do
     if needs_generation?
       sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --skip-bundle --quiet"
       in_lurker_app "bundle config --local local.lurker $PWD/../.." unless ENV['TRAVIS']
-      in_lurker_app "bundle install"
+      in_lurker_app "bundle install --without development --quiet"
       %w[rake rspec-core spring].each do |gem|
         in_lurker_app "bundle binstubs #{gem}"
       end
@@ -64,15 +69,17 @@ task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generat
 desc 'run cucumber in a fresh env'
 task :features => [:regenerate, :cucumber]
 
-desc 'convert docs for example app, prepages gh-pages'
-task :build_example_docs => :features do
+desc 'convert docs for example app, prepages gh-pages, having schemas in /lurker'
+task :convert_example_docs do
   if File.exists?(readme = File.expand_path('../../README.md', __FILE__))
     in_lurker_app "bin/lurker convert -c #{readme}"
   else
     in_lurker_app "bin/lurker convert"
   end
 
-  in_lurker_app %Q{sed -i "" "s|</header>|</header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" html/index.html}
-  in_lurker_app "bin/lurker convert -f pdf -o html"
+  in_lurker_app %Q{sed -i "" "s|</header>|</header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" public/lurker/index.html}
+  in_lurker_app "bin/lurker convert -f pdf"
 end
+
+task :build_example_docs => [:features, :convert_example_docs]
 

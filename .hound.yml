@@ -3,6 +3,9 @@ AllCops:
     - 'tmp/**/*'
     - 'templates/rails32_http_patch_support.rb'
 
+TrailingBlankLines:
+  Enabled: false
+
 StringLiterals:
   Enabled: false
 

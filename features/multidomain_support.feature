@@ -15,8 +15,8 @@ Feature: mutidomain support
 
   @javascript
   Scenario: json schema gets generated into html preview using "users/destroy"
-    Given an empty directory named "html"
-    And a file named "lurker/LurkerApp.service.yml" with:
+    Given an empty directory named "public/lurker"
+    And a service file with:
       """yml
       ---
       basePath: ''
@@ -47,8 +47,8 @@ Feature: mutidomain support
         method: DELETE
         path_info: "/api/v1/users/1.json"
         path_params:
-          action: destroy
           controller: api/v1/users
+          action: destroy
           id: 1
       """
 
@@ -58,8 +58,8 @@ Feature: mutidomain support
             Converting lurker to html
      using  lurker
 
-    create  index.html
-    create  api/v1/users/__id-DELETE.html
+    create  public/lurker/index.html
+    create  public/lurker/api/v1/users/__id-DELETE.html
     """
 
   When I go to "/lurker/api/v1/users/__id-DELETE.html"

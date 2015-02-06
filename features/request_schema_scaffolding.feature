@@ -19,7 +19,7 @@ Feature: request schema scaffolding
         end
 
         it "lists all the users" do
-          get "api/v1/users.json?limit=1"
+          get "/api/v1/users.json?limit=1"
           expect(response).to be_success
           expect(JSON.parse(response.body).size).to eq 1
         end
@@ -72,9 +72,10 @@ Feature: request schema scaffolding
       method: GET
       path_info: "/api/v1/users.json"
       path_params:
-        action: index
         controller: api/v1/users
+        action: index
       query_params:
         limit: '1'
 
     """
+

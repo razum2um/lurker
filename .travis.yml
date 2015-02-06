@@ -1,12 +1,20 @@
 language: ruby
 sudo: false
+before_install: gem install bundler
 gemfile:
-  - gemfiles/Gemfile32.ci
-  - gemfiles/Gemfile40.ci
-  - gemfiles/Gemfile41.ci
-  - gemfiles/Gemfile42.ci
-install: bundle install -j4 --path vendor/bundle
+  - gemfiles/rails_32.gemfile
+  - gemfiles/rails_40.gemfile
+  - gemfiles/rails_41.gemfile
+  - gemfiles/rails_42.gemfile
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.1
+  - 2.1.5
+  - 2.2.0
+matrix:
+  exclude:
+    # NOTE : incompatible
+    - rvm: 2.2.0
+      gemfile: gemfiles/rails_32.gemfile
+install: bundle install -j4 --path vendor/bundle
+

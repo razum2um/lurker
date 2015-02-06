@@ -9,7 +9,7 @@ Feature: partials
   All YAML preprocessing happens behind the scene.
 
   Scenario: builds html for "repos/create" in request spec with nested partials
-    Given an empty directory named "html"
+    Given an empty directory named "public/lurker"
     And a file named "lurker/definitions/user.json.yml" with:
       """yml
       ---
@@ -61,8 +61,8 @@ Feature: partials
         method: POST
         path_info: "/api/v1/users/1/repos.json"
         path_params:
-          action: create
           controller: api/v1/repos
+          action: create
           user_id: '1'
       """
 
@@ -77,7 +77,7 @@ Feature: partials
 
         it "creates a new repo" do
           expect {
-            post "api/v1/users/#{user.id}/repos.json", repo: { name: 'new-gem' }
+            post "/api/v1/users/#{user.id}/repos.json", repo: { name: 'new-gem' }
             expect(response).to be_success
             expect(JSON.parse(response.body)['user']).to eq JSON.parse(user.to_json)
           }.to change { Repo.count } .by(1)
@@ -94,6 +94,7 @@ Feature: partials
             Converting lurker to html
      using  lurker
 
-    create  index.html
-    create  api/v1/users/__user_id/repos-POST.html
+    create  public/lurker/index.html
+    create  public/lurker/api/v1/users/__user_id/repos-POST.html
     """
+

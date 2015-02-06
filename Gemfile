@@ -1,21 +1,24 @@
 source 'https://rubygems.org'
 gemspec
 
-# Add any gems and groups that you don't want to keep local
 group :development do
   # tools
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
-  gem 'pry-session'
+  gem 'pry-byebug', platforms: [:mri_20, :mri_21, :mri_22]
+  gem 'pry-debugger', platforms: :mri_19
+  gem 'pry-stack_explorer', platform: :mri
+  gem 'pry-session', platform: :mri
   # rspec --format fuubar
   gem 'fuubar'
   # cucumber --format fuubar
-  gem 'fuubar-cucumber', github: 'martinciu/fuubar-cucumber', branch: 'master'
+  gem 'fuubar-cucumber'
   gem 'selenium-webdriver'
 
   # deploy site
   gem 'highline'
   # gem 'coderay', path: '../coderay'
+
+  # multiple rails versions support
+  gem 'appraisal', github: 'razum2um/appraisal', branch: 'master'
 
   # build template static
   # run `rake assets:precompile`
@@ -27,5 +30,6 @@ group :development do
   gem 'bootstrap-sass', '~> 3.1.1'
   gem 'jquery-rails'
   gem 'remotipart'
-  gem "launchy"
+  gem 'launchy'
 end
+

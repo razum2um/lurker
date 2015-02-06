@@ -85,10 +85,10 @@ require 'lurker/json/schema/extensions'
 require 'lurker/json/schema/response_codes'
 require 'lurker/json/schema/reference'
 require 'lurker/spy'
+require 'lurker/server'
 require 'lurker/request'
 require 'lurker/response'
 
 if defined? Rails
-  require 'lurker/engine'
   require 'lurker/sandbox'
 end
