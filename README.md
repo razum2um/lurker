@@ -88,9 +88,10 @@ and it fails if your code changes the api!
 
 The generation of live-documentation is pretty simple:
 
-    bin/lurker convert                   # builds html under `Rails.root/html`
-    bin/lurker convert -o public/lurker  # builds html under `Rails.root/public/lurker`
-    bin/lurker convert -f pdf -o html    # builds `ServiceName.pdf` under `Rails.root/html`
+    bin/lurker convert           # builds html under `Rails.root/public/lurker` to be served under `/lurker` url
+    bin/lurker convert -f pdf    # builds `Rails.root/public/lurker/snake_cased_name.pdf`
+
+For different document root or serving url prefix use `-o` and `-u` options accordingly.
 
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/)
 (or see [demo][demo_app2] for example)
@@ -125,12 +126,11 @@ For example:
 - [Pretty submit form to test API endpoints (live) based on schemas][demo_live] (enter a name & press "Submit")
 - [Handling URLs with dynamic segments][nested_controller_spec_example] (such as `api/v1/:user_id/repos`)
 - [JSON-Schema partials][partial_example], also in YAML format ([demo][partial_example_demo])
-- [Generation PDF documentation][pdf_example] (add `gem 'pdfkit'` to Gemfile)
+- [Generation PDF documentation][pdf_example] (*NOTE*: add `gem 'pdfkit'` to Gemfile)
 - [Multiple docs for many usecases][suffixes_example] (e.g `:lurker => '...'`)
 - ERB support inside `.json.yml.erb`
-- Insert custom content in Markdown into `index.html` (add `gem 'kramdown'` to Gemfile)
+- Insert custom content in Markdown into `index.html` (*NOTE*: add `gem 'kramdown'` to Gemfile)
 - Syntax highlighting for sample response (add `gem 'execjs'` to Gemfile)
-- HTTP-Auth authorization for docs (`mount Lurker::Server.to_rack username: '...', password: '...'`)
 - Separate API-services generated within one test suite
 - Capistrano integration
 - JSON-Schema draft-v4 support
@@ -249,7 +249,7 @@ Also thanks to
 [demo_app2]: http://lurker.razum2um.me
 [demo_app3]: http://razum2um.github.io/lurker/
 [demo_live]: http://lurker.razum2um.me/lurker/api/v1/users-POST.html
-[pdf_example]: http://razum2um.github.io/lurker/Lurker%20Demo%20Application.pdf
+[pdf_example]: http://razum2um.github.io/lurker/lurker_demo_application.pdf
 [partial_example_demo]: http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html
 
 [Gem Version]: https://rubygems.org/gems/lurker

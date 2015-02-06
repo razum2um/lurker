@@ -15,7 +15,7 @@ Feature: mutidomain support
 
   @javascript
   Scenario: json schema gets generated into html preview using "users/destroy"
-    Given an empty directory named "html"
+    Given an empty directory named "public/lurker"
     And a file named "lurker/LurkerApp.service.yml" with:
       """yml
       ---
@@ -58,8 +58,8 @@ Feature: mutidomain support
             Converting lurker to html
      using  lurker
 
-    create  index.html
-    create  api/v1/users/__id-DELETE.html
+    create  public/lurker/index.html
+    create  public/lurker/api/v1/users/__id-DELETE.html
     """
 
   When I go to "/lurker/api/v1/users/__id-DELETE.html"

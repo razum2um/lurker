@@ -9,7 +9,7 @@ Feature: partials
   All YAML preprocessing happens behind the scene.
 
   Scenario: builds html for "repos/create" in request spec with nested partials
-    Given an empty directory named "html"
+    Given an empty directory named "public/lurker"
     And a file named "lurker/definitions/user.json.yml" with:
       """yml
       ---
@@ -94,7 +94,7 @@ Feature: partials
             Converting lurker to html
      using  lurker
 
-    create  index.html
-    create  api/v1/users/__user_id/repos-POST.html
+    create  public/lurker/index.html
+    create  public/lurker/api/v1/users/__user_id/repos-POST.html
     """
 

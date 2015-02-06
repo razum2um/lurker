@@ -51,8 +51,6 @@ remove_file 'app/models/user.rb'
 generate 'rspec:install'
 
 route <<-ROUTE
-  mount Lurker::Server.to_rack(path: 'html'), at: "/#{Lurker::DEFAULT_URL_BASE}"
-
   namespace :api do
     namespace :v1 do
       resources :users do

@@ -47,7 +47,7 @@ Before do
   DatabaseCleaner.start
   if ENV['CLEAN']
     system "bin/spring stop"
-    %w[lurker html spec/requests spec/controllers].each do |dir_name|
+    %w[lurker html public/lurker spec/requests spec/controllers].each do |dir_name|
       in_current_dir { _rm_rf(dir_name) }
     end
   end
