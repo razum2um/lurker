@@ -33,7 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("rack-cors", "~> 0.2")
   spec.add_development_dependency("rails", ">= 3.2", "< 4.3")
   spec.add_development_dependency("rake", "~> 10.2")
-  spec.add_development_dependency("rspec", "~> 2.14")
   spec.add_development_dependency("cucumber", "~> 1.3")
   spec.add_development_dependency("aruba", "~> 0.5")
   spec.add_development_dependency("capybara", "~> 2.2")
@@ -47,7 +46,7 @@ Gem::Specification.new do |spec|
 
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn"t getting used, but lib"s one
-  spec.add_development_dependency("rspec-rails", "~> 2.14")
+  spec.add_development_dependency("rspec-rails", "~> 3.2")
   spec.add_development_dependency("pg", "~> 0.16")
   spec.add_development_dependency("kramdown", "~> 1.3")
   spec.add_development_dependency("diffy", "~> 3.0")

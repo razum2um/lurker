@@ -1,7 +1,7 @@
 # This is initial testing/demo rails app template (passed to `rails new`)
 
 gem 'rack-cors', require: 'rack/cors'
-gem 'rspec-rails', '~> 2.14.0'
+gem 'rspec-rails', '~> 3.2'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
