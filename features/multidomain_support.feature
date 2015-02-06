@@ -16,7 +16,7 @@ Feature: mutidomain support
   @javascript
   Scenario: json schema gets generated into html preview using "users/destroy"
     Given an empty directory named "public/lurker"
-    And a file named "lurker/LurkerApp.service.yml" with:
+    And a service file with:
       """yml
       ---
       basePath: ''

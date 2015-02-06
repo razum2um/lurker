@@ -10,6 +10,12 @@ Given /^an empty directory named "([^"]*)"$/ do |dir_name|
   create_dir(dir_name)
 end
 
+Given /^a service file with:$/ do |file_content|
+  in_current_dir do
+    write_file("#{Lurker::DEFAULT_SERVICE_PATH}/#{Rails.application.class.parent_name}#{Lurker::Service::SUFFIX}", file_content)
+  end
+end
+
 When /^I go to "([^"]*)"$/ do |url|
   visit(url)
 end
