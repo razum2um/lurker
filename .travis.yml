@@ -1,5 +1,6 @@
 language: ruby
 sudo: false
+before_install: gem install bundler
 gemfile:
   - gemfiles/rails_32.gemfile
   - gemfiles/rails_40.gemfile
