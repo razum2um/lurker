@@ -91,13 +91,6 @@ module Lurker
           end
 
           service_presenters.each do |service_presenter|
-            puts "#" * 80
-            puts "services.first.service_path = #{services.first.service_path}"
-            system "cat #{services.first.service_path}"
-            puts
-            puts "#" * 80
-            say_status :service, service_presenter.name
-
             create_file("index.html", service_presenter.to_html, force: true)
 
             service_presenter.endpoints.each do |endpoint_prefix_group|

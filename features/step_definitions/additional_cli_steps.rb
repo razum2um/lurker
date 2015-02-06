@@ -77,7 +77,6 @@ end
 
 Then /^the output should contain (failures|these lines):$/ do |_, lines|
   out = all_output.dup
-  puts out
   lines.split(/\n/).map(&:strip).each do |line|
     next if line.blank?
     expect(out).to match /#{Regexp.escape(line)}/
