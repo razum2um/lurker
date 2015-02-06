@@ -1,7 +1,7 @@
 require 'thor'
 require 'execjs'
 require 'digest/sha1'
-require 'lurker/service'
+require 'lurker'
 require 'active_support/inflector'
 
 module Lurker
