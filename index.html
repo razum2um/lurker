@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Lurker | Lurker Demo Application</title>
-    <link href="/lurker/application-74b99559f786fb2e49ea831bb908ac824fac248b.css" media="all" rel="stylesheet">
+    <link href="/lurker/application-f2c0dc5ba1f70230f4372afd57395134c9144d9e.css" media="all" rel="stylesheet">
     <style type="text/css">
       @font-face {
         font-family: 'FontAwesome';
@@ -41,13 +41,14 @@
     <div class="col-lg-12">
           <h1 id="lurker">Lurker</h1>
 
+<p><img align="right" width="94" height="71" src="https://cdn.rawgit.com/razum2um/lurker/master/lurker-bw.svg" /></p>
+
 <p>Generates API schemas, validates code against them and creates a handy web interface for testing the API.
-Works on Rails 3.2, 4.0, 4.1 &amp; Ruby 1.9.3, 2.0.0, 2.1.1.</p>
+Works on Rails 3.2, 4.0, 4.1, 4.2 &amp; Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.0</p>
 
 <p><a href="https://rubygems.org/gems/lurker"><img src="https://badge.fury.io/rb/lurker.png" alt="Gem Version" /></a>
 <a href="https://travis-ci.org/razum2um/lurker"><img src="https://travis-ci.org/razum2um/lurker.png" alt="Build Status" /></a>
-<a href="https://gemnasium.com/razum2um/lurker"><img src="https://gemnasium.com/razum2um/lurker.png" alt="Dependency Status" /></a>
-<a href="http://githalytics.com/razum2um/lurker"><img src="https://cruel-carlota.pagodabox.com/87ced56265849ad6386c2ba0a78f8038" alt="githalytics.com alpha" title="githalytics.com" /></a></p>
+<a href="https://gemnasium.com/razum2um/lurker"><img src="https://gemnasium.com/razum2um/lurker.png" alt="Dependency Status" /></a></p>
 
 <h2 id="installation">Installation</h2>
 
@@ -135,10 +136,11 @@ Lurker::ValidationError:
 
 <p>The generation of live-documentation is pretty simple:</p>
 
-<pre><code>bin/lurker convert                   # builds html under `Rails.root/html`
-bin/lurker convert -o public/lurker  # builds html under `Rails.root/public/lurker`
-bin/lurker convert -f pdf -o html    # builds `ServiceName.pdf` under `Rails.root/html`
+<pre><code>bin/lurker convert           # builds html under `Rails.root/public/lurker` to be served under `/lurker` url
+bin/lurker convert -f pdf    # builds `Rails.root/public/lurker/snake_cased_name.pdf`
 </code></pre>
+
+<p>For different document root or serving url prefix use <code>-o</code> and <code>-u</code> options accordingly.</p>
 
 <p>Let’s run your <code>rails s</code> and visit <a href="http://localhost:3000/lurker/">http://localhost:3000/lurker/</a>
 (or see <a href="http://lurker.razum2um.me">demo</a> for example)</p>
@@ -147,8 +149,15 @@ bin/lurker convert -f pdf -o html    # builds `ServiceName.pdf` under `Rails.roo
 
 <h2 id="demo-applicationdemoapp3"><a href="http://razum2um.github.io/lurker/">Demo application</a></h2>
 
-<p>You can clone the repo &amp; run <code>rake build_example_docs &amp;&amp; cd tmp/lurker_app &amp;&amp; bin/rails s</code>
-to get your running demo.</p>
+<p>You can run this to get the demo running locally:</p>
+
+<pre><code>git clone https://github.com/razum2um/lurker.git
+cd lurker
+bundle exec appraisal rails-42 bundle install
+bundle exec appraisal rails-42 rake build_example_docs
+cd tmp/lurker_app_rails_42
+bin/rails s
+</code></pre>
 
 <p>Lurker supports multiple domains (usually <code>staging</code> and <code>production</code>) and can be deployed
 statically everywhere as well as be served by current <code>Rails</code> instance.</p>
@@ -170,12 +179,11 @@ statically everywhere as well as be served by current <code>Rails</code> instanc
   <li><a href="http://lurker.razum2um.me/lurker/api/v1/users-POST.html">Pretty submit form to test API endpoints (live) based on schemas</a> (enter a name &amp; press “Submit”)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-nested-schema-scaffolding">Handling URLs with dynamic segments</a> (such as <code>api/v1/:user_id/repos</code>)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/partials">JSON-Schema partials</a>, also in YAML format (<a href="http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html">demo</a>)</li>
-  <li><a href="http://razum2um.github.io/lurker/Lurker%20Demo%20Application.pdf">Generation PDF documentation</a> (add <code>gem 'pdfkit'</code> to Gemfile)</li>
+  <li><a href="http://razum2um.github.io/lurker/lurker_demo_application.pdf">Generation PDF documentation</a> (<em>NOTE</em>: add <code>gem 'pdfkit'</code> to Gemfile)</li>
   <li><a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes">Multiple docs for many usecases</a> (e.g <code>:lurker =&gt; '...'</code>)</li>
   <li>ERB support inside <code>.json.yml.erb</code></li>
-  <li>Insert custom content in Markdown into <code>index.html</code> (add <code>gem 'kramdown'</code> to Gemfile)</li>
+  <li>Insert custom content in Markdown into <code>index.html</code> (<em>NOTE</em>: add <code>gem 'kramdown'</code> to Gemfile)</li>
   <li>Syntax highlighting for sample response (add <code>gem 'execjs'</code> to Gemfile)</li>
-  <li>HTTP-Auth authorization for docs (<code>mount Lurker::Server.to_rack username: '...', password: '...'</code>)</li>
   <li>Separate API-services generated within one test suite</li>
   <li>Capistrano integration</li>
   <li>JSON-Schema draft-v4 support</li>
@@ -223,7 +231,7 @@ are increasing notwithstanding ROLLBACK is called. As such:</p>
 don’t touch files under <code>lib/lurker/templates/public</code> - they are autogenerated
 and copied to static generated site while <code>bin/lurker convert</code></p>
 
-<pre><code>rake assets:precompile # to build them
+<pre><code>bundle exec appraisal rails-42 rake assets:precompile # to build them
 </code></pre>
 
 <p>Don’t commit <code>lib/lurker/templates/public/**/*</code> to avoid conflicts.</p>
@@ -232,13 +240,34 @@ and copied to static generated site while <code>bin/lurker convert</code></p>
 because they are kept in <code>lurker_app</code> directory to be deployed as a demo. Please, write
 features in a way to generate <strong>new</strong> relevant <code>lurker/**/*.json.yml</code> files</p>
 
-<p>To run cucumber in a clean <code>lurker</code> &amp; <code>html</code> directories run:</p>
-
-<pre><code>CLEAN=1 cucumber features
-</code></pre>
-
 <p><strong>NOTE:</strong> template partial <code>submit_form.html.erb</code> and it’s partials is a big <code>jsx</code> script for <code>React</code>
 so there are <code>&lt;label htmlFor</code> instead of <code>&lt;label for&gt;</code> and <code>&lt;div className</code> instead of <code>&lt;div class</code></p>
+
+<h3 id="different-rails-versions">Different Rails versions</h3>
+
+<p>We use <a href="https://github.com/thoughtbot/appraisal"><code>appraisal</code></a> to test the lib with different Rails versions (from 3.2 up to 4.2):</p>
+
+<pre><code># run this to install all gems for all the supported rails versions:
+bundle exec appraisal install
+
+# then prefix any rake command with `bundle exec appraisal` and rails version
+bundle exec appraisal rails-42 rake build_example_docs
+</code></pre>
+
+<p>Test apps are getting generated into their’s own directory under <code>tmp/lurker_app...</code> prefix. They also use
+separate databases for each rails version both for dev &amp; test env - all prefixed with <code>lurker_app</code></p>
+
+<h3 id="demo-app--testing-app">Demo app == Testing app</h3>
+
+<p>Currently testing application is using postgresql, because <strong>the same</strong> testing app is deployed to serve demo purposes.</p>
+
+<p>This is also the reason not to delete anything under <code>lurker</code> directory between feature tests
+and using <strong>different</strong> API endpoints of the testing app. To run cucumber with clean <code>lurker</code> &amp; <code>public/lurker</code> directories run:</p>
+
+<pre><code>CLEAN=1 bundle exec appraisal rails-42 cucumber features
+</code></pre>
+
+<p>Beware while writing your feature tests for PRs.</p>
 
 <h2 id="acknoledgements">Acknoledgements</h2>
 
@@ -246,7 +275,7 @@ so there are <code>&lt;label htmlFor</code> instead of <code>&lt;label for&gt;</
 
 <p>This gem is quite opinionated and relies on rails - if you’re
 interested in anything else, please take a look at <a href="https://github.com/fredwu/api_taster">api_taster</a> or <a href="https://github.com/square/fdoc">fdoc</a>,
-This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
+This gem is heavily inspired by them. Thanks, @square &amp; @fredwu</p>
 
 <p>Also thanks to</p>
 
@@ -378,13 +407,13 @@ This gem is heavily inspirated by them. Thanks, @square &amp; @fredwu</p>
       <div class="container">
         <ul class="bs-docs-footer-links muted">
           <li>·</li>
-            <li>Lurker Demo Application&nbsp;113631c</li>
+            <li>Lurker Demo Application&nbsp;d4d50cc</li>
             <li>·</li>
-            <li>lurker (c1d395cf1d0e65260af0da7fae54815d52ffb557)</li>
+            <li>lurker (1104098bc040d7e9e234a0243b5817b1f0676c0e)</li>
             <li>·</li>
         </ul>
       </div>
     </footer>
-    <script src="/lurker/application-211c61b55f2c52f0ebd67640c2169805ed5d70cd.js"></script>
+    <script src="/lurker/application-8c3161c09c73586dc63d5fa9a00346c54f8eba72.js"></script>
 </body>
 </html>
