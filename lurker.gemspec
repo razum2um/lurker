@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
 
   # testing
   spec.add_development_dependency("psych", "~> 2.0")
-  spec.add_development_dependency("bundler", "~> 1.7.11")
+  spec.add_development_dependency("bundler", ">= 1.7.11")
   spec.add_development_dependency("rack-cors", "~> 0.2")
   spec.add_development_dependency("rails", ">= 3.2", "< 4.3")
   spec.add_development_dependency("rake", "~> 10.2")
