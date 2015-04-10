@@ -73,7 +73,7 @@ namespace :github do
   desc 'copies htmls from deployed app'
   task :copy_html do
     if File.exists?(pages = File.expand_path('../../gh-pages', __FILE__))
-      in_lurker_app "cp -R html/* #{pages}"
+      in_lurker_app "cp -R public/lurker/* #{pages}"
     end
   end
 
