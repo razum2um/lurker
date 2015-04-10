@@ -67,7 +67,7 @@ module Lurker
       elsif result.is_a?(Exception)
         false
       else
-        result
+        true
       end
     end
     private :success?
