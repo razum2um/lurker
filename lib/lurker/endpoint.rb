@@ -74,16 +74,16 @@ module Lurker
     def consume_response(params, status_code, successful = true)
       parameters = stringify_keys(params)
 
-      if persisted?
+      if persisted? && !Lurker.rewrite?
         response_codes.validate!(status_code, successful)
 
-        @response_errors = response_parameters.validate(parameters)
+        @response_errors = response_for_status(status_code).validate(parameters)
         @response_errors.unshift('Response') unless @response_errors.empty?
 
         return
       end
 
-      response_parameters.merge!(parameters) if successful
+      response_for_status(status_code).merge!(parameters) if successful
       response_codes.merge!(status_code, successful)
     end
 
@@ -141,7 +141,7 @@ module Lurker
       @persisted = true
 
       reader = Lurker::Json::Reader.new(endpoint_path)
-      schemify(reader.payload)
+      inject_schema_map schemify(reader.payload)
     end
 
     def build_schema
@@ -154,7 +154,8 @@ module Lurker
         RESPONSE_CODES => [],
         RESPONSE_PARAMETERS => {}
       }
-      schemify(payload)
+
+      inject_schema_map schemify(payload)
     end
 
     def schemify(payload)
@@ -162,6 +163,20 @@ module Lurker
         ext = Lurker::Json::Extensions.new(stringify_keys extensions)
         schm.merge!(EXTENSIONS => ext)
       end
+    end
+
+    def inject_schema_map(schema)
+      return schema unless schema.key?(RESPONSE_PARAMETERS)
+
+      schema.update!(RESPONSE_PARAMETERS) do |response_parameters|
+        Lurker::Json::SchemaMap.new(
+          response_parameters, map_on: schema[RESPONSE_CODES].statuses)
+      end
+    end
+
+    def response_for_status(status)
+      return response_parameters if response_parameters.is_a?(Lurker::Json::Schema)
+      response_parameters[status]
     end
 
     def finalize_schema!

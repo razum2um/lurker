@@ -3,6 +3,7 @@ Feature: schema updating within test suite
   If your API is stable and the new code isn't breaking it
   you'll see nothing special, just passing specs
 
+  # TODO : FIXMEEEEEEE
   Background:
     Given a file named "lurker/api/v2/users/__id-PATCH.json.yml" with:
     """yml

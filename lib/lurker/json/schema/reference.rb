@@ -1,5 +1,8 @@
 module Lurker
   module Json
+    # NOTE : Reference alwayse need a wrapper schema.
+    # It will never collapse to original $ref by itself.
+    # So when you call Reference#to_json it will return loaded schema insted
     class Reference < Schema
       attr_reader :original_uri
 

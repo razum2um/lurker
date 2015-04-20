@@ -34,7 +34,7 @@ module Lurker
         case schema
         when Array
           schema.each { |payload| extract_references(payload, memo) }
-        when Hash, Lurker::Json::Schema
+        when Hash, Lurker::Json::Schema, Lurker::Json::SchemaMap
           schema.each do |_, payload|
             memo << payload if payload.is_a?(Lurker::Json::Reference)
             extract_references(payload, memo)

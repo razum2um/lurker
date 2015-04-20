@@ -44,6 +44,11 @@ module Lurker
           .parse_property(property, property_schema)
       end
 
+      def update!(property)
+        @schema[property] = yield(@schema[property])
+        self
+      end
+
       def reorder!
         @schema = Hash[@schema.sort]
         self
@@ -76,7 +81,7 @@ module Lurker
         when Lurker::Json::Reference
           options[:reference] == :original ? object.to_original_hash(options)
             : object.to_hash(options)
-        when Lurker::Json::Schema then object.to_hash(options)
+        when Lurker::Json::Schema, Lurker::Json::SchemaMap then object.to_hash(options)
         when Array then object.map { |x| hashify(x, options) }
         when Hash
           object.each_with_object({}) do |(property, property_schema), memo|

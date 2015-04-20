@@ -17,6 +17,10 @@ module Lurker
           @schema[tuple_key].any? { |schm| schm.eql?(schema) }
         end
 
+        def elements
+          @schema[tuple_key]
+        end
+
         private
 
         def parse_schema(schema)

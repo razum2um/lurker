@@ -2,7 +2,7 @@ $:.unshift(File.dirname(__FILE__))
 
 module Lurker
   DEFAULT_SERVICE_PATH = DEFAULT_URL_BASE = "lurker".freeze
-  LURKER_UPGRADE = "LURKER_UPGRADE".freeze
+  LURKER_REWRITE = "LURKER_REWRITE".freeze
 
   def self.safe_require(gem, desc=nil)
     begin
@@ -16,8 +16,8 @@ module Lurker
     yield if block_given?
   end
 
-  def self.upgrade?
-    !!ENV[LURKER_UPGRADE]
+  def self.rewrite?
+    !!ENV[LURKER_REWRITE]
   end
 
   def self.service_path=(service_path)
@@ -73,6 +73,7 @@ require 'lurker/json/parser/plain_strategy'
 require 'lurker/json/parser/typed_strategy'
 require 'lurker/json/concerns/validatable'
 require 'lurker/json/schema'
+require 'lurker/json/schema_map'
 require 'lurker/json/schema/object'
 require 'lurker/json/schema/list'
 require 'lurker/json/schema/attribute'
@@ -84,6 +85,7 @@ require 'lurker/json/schema/tuple/one_of'
 require 'lurker/json/schema/extensions'
 require 'lurker/json/schema/response_codes'
 require 'lurker/json/schema/reference'
+require 'lurker/json/schema/proxy'
 require 'lurker/spy'
 require 'lurker/server'
 require 'lurker/request'

@@ -33,6 +33,10 @@ module Lurker
              response_code[STATUS].to_i == status_code) # "200 OK"
         end
       end
+
+      def statuses
+        @schema.map { |response_code| response_code[STATUS].to_i }
+      end
     end
   end
 end
