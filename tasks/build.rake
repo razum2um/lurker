@@ -37,10 +37,13 @@ namespace :assets do
     sprockets.append_path(SOURCE_DIR.join('javascripts').to_s)
     sprockets.append_path(SOURCE_DIR.join('stylesheets').to_s)
 
-    %w[jquery-rails bootstrap-sass remotipart].each do |gem|
+    %w[jquery-rails bootstrap-sass remotipart lurker].each do |gem|
       gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
       %w[javascripts stylesheets].each do |prefix|
-        sprockets.append_path(gem_path.join('vendor', 'assets', prefix).to_s)
+        %w[assets vendor/assets lib/lurker/templates].each do |interfix|
+          path = gem_path.join(interfix, prefix).to_s
+          sprockets.append_path(path) if File.exists? path
+        end
       end
     end
 
@@ -49,7 +52,7 @@ namespace :assets do
 
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)
-      realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css)$/ } + [$~.to_s]).join(".")
+      realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css|scss)$/ } + [$~.to_s]).join(".").gsub(/\.scss$/, '.css')
       assets.write_to(BUILD_DIR.join(realname))
     end
   end

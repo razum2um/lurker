@@ -1,10 +1,7 @@
-/*
- *= require bootstrap
- *= require docs
- *
- *= require github
- *= require_self
- */
+@import 'bootstrap';
+@import 'docs';
+@import 'github';
+
 #show-api-response-div table th, #show-api-response-div table td {
   border: none;
 }
