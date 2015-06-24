@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><%= @service_presenter.title %></title>
+    <title><%= @title || @service_presenter.title %></title>
     <link href="<%= @service_presenter.html_directory %>/application-<%= @service_presenter.options['css'] %>.css" media="all" rel="stylesheet">
     <style type="text/css">
       @font-face {

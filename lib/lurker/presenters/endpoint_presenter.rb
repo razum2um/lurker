@@ -14,6 +14,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
     @endpoint_presenter = self
     @url_params = endpoint.url_params
     @post_params = example_request.json
+    @title = "#{service_presenter.title} | #{title}"
     render('show', options)
   end
 
