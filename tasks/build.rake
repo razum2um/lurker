@@ -50,6 +50,7 @@ namespace :assets do
     sprockets.js_compressor  = :uglify
     sprockets.css_compressor  = :scss
 
+    puts "sprockets.paths = #{sprockets.paths}"
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)
       realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css|scss)$/ } + [$~.to_s]).join(".").gsub(/\.scss$/, '.css')
