@@ -18,10 +18,12 @@ class Lurker::Service
       Lurker::Json::Schema.new(schema)
     else
       Lurker::Json::Schema.new(
-        'name'        => service_filename,
-        'basePath'    => '',
+        'name' => service_filename,
+        'basePath' => '',
         'description' => '',
-        'domains'     => {}
+        'domains' => {},
+        'consumes' => %w(application/x-www-form-urlencode application/json),
+        'produces' => %w(application/json)
       )
     end
   end
@@ -111,5 +113,13 @@ class Lurker::Service
 
   def domains
     schema['domains']
+  end
+
+  def request_media_types
+    schema['consumes']
+  end
+
+  def response_media_types
+    schema['produces']
   end
 end

@@ -2,104 +2,105 @@
   /** @jsx React.DOM */
   var SubmitForm = React.createClass({
     mixins: [ReactCatalyst.LinkedStateMixin],
+
     runsOnLocalhost: function() {
       return window.location.hostname == '127.0.0.1' || window.location.hostname == 'localhost'
     },
+
     getInitialState: function() {
-      var state = {};
-      var values = JSON.parse('<%= @url_params.map { |k,v| { label:k, value: v} } .to_json.html_safe %>');
-      var template = '<%= @endpoint_presenter.named_path %>';
-      var method = '<%= @endpoint_presenter.verb %>';
-      var hosts = JSON.parse('<%= @service_presenter.domains.to_json.html_safe %>');
-      var host = '<%= @service_presenter.default_domain %>';
-
-      var i;
-      var includesLocalhost = false;
-      for (i in hosts) {
-        if (hosts[i] == '/') {
-          includesLocalhost = true;
-          if (this.runsOnLocalhost()) {
-            host = hosts[i] = window.location.origin;
-          }
-        } else {
-          hosts[i] = hosts[i].replace(/\$/, '');
-        }
-
-        if (window.location.origin == hosts[i]) {
-          host = hosts[i];
-        }
+      var state = {
+        payload: JSON.parse('<%= @post_params.to_json.html_safe %>'),
+        values: JSON.parse('<%= @url_params.map { |k,v| { label:k, value: v} } .to_json.html_safe %>'),
+        hosts: JSON.parse('<%= @service_presenter.domains.to_json.html_safe %>'),
+        template: '<%= @endpoint_presenter.named_path %>',
+        method: '<%= @endpoint_presenter.verb %>',
+        host: '<%= @service_presenter.default_domain %>',
+        requestMediaTypes: JSON.parse('<%= @service_presenter.request_media_types.to_json.html_safe %>'),
+        requestMediaType: '<%= @service_presenter.default_request_media_type %>'
       };
+
+      return this.autodetectLocalhost(state);
+    },
+
+    autodetectLocalhost: function (state) {
+      var hosts = state.hosts;
+
+      var includesLocalhost = false;
+      for (var name in hosts) {
+        if (hosts.hasOwnProperty(name)) {
+          if (hosts[name] === '/') {
+            includesLocalhost = true;
+            if (this.runsOnLocalhost()) {
+              hosts[name] = window.location.origin;
+            }
+          } else {
+            hosts[name] = hosts[name].replace(/\$/, '');
+          }
+
+          if (hosts[name] === window.location.origin) {
+            state.host = hosts[name];
+          }
+        }
+      }
 
       if (!includesLocalhost && this.runsOnLocalhost()) {
-        host = hosts['Local'] = window.location.origin;
+        state.host = hosts['Local'] = window.location.origin;
       }
-
-      state.host = host;
-      state.hosts = hosts;
-      state.method = method;
-      state.values = values;
-      state.template = template;
-      state.action = this.renderAction(host, template, values);
-      state.curl = this.renderCurl(method, host, template, values, jQuery.param(JSON.parse('<%= @post_params.to_json.html_safe %>')));
       return state;
     },
-    getPayload: function() {
-      // FIXME
-      return jQuery('#post-payload input').serialize();
-    },
-    getHostname: function(host) {
-      return host;
-    },
-    renderAction: function(host, template, values) {
-      var action = template;
-      var i;
-      for (i in values) {
-        action = action.replace(new RegExp(':' + values[i].label), values[i].value);
+
+    renderHostOptions: function() {
+      var hostOptions = [];
+      for (var name in this.state.hosts) {
+        hostOptions.push(<option key={name} value={this.state.hosts[name]}>{name}</option>);
       }
-      return this.getHostname(host) + action;
+      return hostOptions;
     },
-    renderCurl: function(method, host, template, values, payload) {
-      var url = '"' + this.renderAction(host, template, values) + '"';
-      if (payload.length > 0) {
-        url = '-d "' + (payload || this.getPayload()) + '" ' + url;
+
+    renderRequestMediaTypeOptions: function () {
+      var mediaTypes = this.state.requestMediaTypes;
+      var requestMediaTypeOptions = [];
+      for (var i = 0; i < mediaTypes.length; i++) {
+        requestMediaTypeOptions.push(<option key={i}>{mediaTypes[i]}</option>)
       }
-      return 'curl -X ' + method + " " + url;
+      return requestMediaTypeOptions;
     },
-    // see react-catalyst.js
-    afterSetPartialState: function() {
-      this.setState({
-        action: this.renderAction(this.state.host, this.state.template, this.state.values),
-        curl: this.renderCurl(this.state.method, this.state.host, this.state.template, this.state.values, jQuery('#post-payload input').serialize())
-      });
-    },
+
     handleSubmit: function() {
-      // FIXME
-      Lurker.onSubmit(jQuery('#payload'));
+      var s = this.state;
+      Lurker.performRequest(s.host, s.method, s.template, s.values, s.payload, s.requestMediaType);
       return false;
     },
+
     render: function() {
-      var hostOptions = [];
-      var name;
-      for (name in this.state.hosts) {
-        var hostUrl = this.state.hosts[name];
-        hostOptions.push(<option value={hostUrl}>{name}</option>);
-      };
+      var actionUrl = Lurker.buildActionUrl(this.state.host, this.state.template, this.state.values);
+      var curl = Lurker.generateCurlCommand(actionUrl, this.state.method, this.state.payload, this.state.requestMediaType);
       return (
-        <form accept-charset="UTF-8" action={this.state.action} onSubmit={this.handleSubmit} id="payload" className="bs-example hidden-print form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
+        <form accept-charset="UTF-8" action={actionUrl} onSubmit={this.handleSubmit} id="payload" className="bs-example hidden-print form-horizontal" method="<%= @endpoint_presenter.form_verb %>">
           <input name="_method" value="<%= @endpoint_presenter.verb %>" type="hidden" />
           <div className="form-group">
-            <label className="control-label col-sm-1"forHtml="hostname">Lurk!</label>
-            <div className="col-sm-11">
+            <label className="control-label col-sm-3" forHtml="hostname">Target Host</label>
+            <div className="col-sm-9">
               <select id="hostname" className="form-control" valueLink={this.linkState('host')}>
-                {hostOptions}
+                {this.renderHostOptions()}
               </select>
             </div>
           </div>
+          <% if @service_presenter.request_media_types.size > 1 %>
+            <div className="form-group">
+              <label className="control-label col-sm-3" forHtml="requestMediaType">Request Media Type</label>
+              <div className="col-sm-9">
+                <select id="requestMediaType" className="form-control" valueLink={this.linkState('requestMediaType')}>
+                  {this.renderRequestMediaTypeOptions()}
+                </select>
+              </div>
+            </div>
+          <% end %>
 
           <div id="curl" className="form-group">
-            <p className="control-label col-sm-1">cURL</p>
-            <div className="col-sm-11">
-              <pre>{this.state.curl}</pre>
+            <p className="control-label col-sm-3">cURL</p>
+            <div className="col-sm-9">
+              <pre>{curl}</pre>
             </div>
           </div>
 

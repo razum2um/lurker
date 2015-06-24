@@ -30,7 +30,14 @@ When /^I select "([^"]*)" hostname$/ do |host|
   end
   # FIXME: see multidomain feature - cannot select node in phantomjs
   page.execute_script("window.submitForm.setState({host: jQuery('#hostname').val()});")
-  page.execute_script("window.submitForm.afterSetPartialState()")
+end
+
+When /^I select "([^"]*)" request media type$/ do |type|
+  within(:xpath, "//*[@id='requestMediaType']") do
+    select(type)
+  end
+  # FIXME: cannot select node in phantomjs
+  page.execute_script("window.submitForm.setState({requestMediaType: jQuery('#requestMediaType').val()});")
 end
 
 When(/^I fill in the submit form field "([^"]*)" with "([^"]*)"$/) do |field, name|

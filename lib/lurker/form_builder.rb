@@ -11,55 +11,46 @@ module Lurker
 
     private
 
-    def add_to_buffer(params, parent_labels = [])
-      params.each do |label, value|
-        if parent_labels.present?
-          label = "[#{label}]"
-        end
+    def add_to_buffer(params, parent_accessors = [])
+      params.each do |name, value|
 
-        new_parent_labels = parent_labels.clone << label
-
+        accessors = parent_accessors.clone << name
         if value.is_a?(Hash)
-          add_legend_to_buffer(parent_labels, label)
-
-          add_to_buffer(value, new_parent_labels)
+          add_to_buffer(value, accessors)
         elsif value.is_a?(Array)
-          value.each do |v|
+          value.each_with_index do |v, i|
             if v.is_a?(Hash)
-              add_legend_to_buffer(parent_labels, label)
-
-              add_to_buffer(v, parent_labels.clone << "#{label}[]")
+              add_to_buffer(v, accessors << i)
             else
-              add_element_to_buffer(parent_labels, "#{label}[]", v)
+              add_element_to_buffer(accessors, v)
             end
           end
         else
-          add_element_to_buffer(parent_labels, label, value)
+          add_element_to_buffer(accessors, value)
         end
       end
     end
 
-    def add_element_to_buffer(parent_labels, label, value)
+    def add_element_to_buffer(accessors, value)
       @_buffer += render(
         :partial => 'param_form_element',
-        :locals  => {
-          :label      => "#{print_labels(parent_labels)}#{label}",
-          :label_text => "#{print_labels(parent_labels)}#{label}",
-          :value      => value
+        :locals => {
+          :accessor => "#{accessors.compact.join('.')}",
+          :label => "#{print_labels(accessors)}",
+          :label_text => "#{print_labels(accessors)}",
+          :value => value
         }
       )
     end
 
-    def add_legend_to_buffer(parent_labels, label)
-      return
-      @_buffer += render(
-        :partial => 'param_form_legend',
-        :locals  => { :label => print_labels(parent_labels.clone << label) }
-      )
-    end
-
-    def print_labels(parent_labels)
-      "#{parent_labels * ''}"
+    def print_labels(accessors)
+      accessors.inject do |acc, label|
+        if label.is_a? Numeric
+          "#{acc}[]"
+        else
+          "#{acc}[#{label}]"
+        end
+      end
     end
   end
 end
