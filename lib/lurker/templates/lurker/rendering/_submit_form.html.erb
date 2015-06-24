@@ -18,7 +18,10 @@
         requestMediaTypes: JSON.parse('<%= @service_presenter.request_media_types.to_json.html_safe %>'),
         requestMediaType: '<%= @service_presenter.default_request_media_type %>'
       };
-
+      if (state.method === 'GET') {
+        state.requestMediaType = 'application/x-www-form-urlencoded';
+        state.requestMediaTypes = [state.requestMediaType];
+      }
       return this.autodetectLocalhost(state);
     },
 
@@ -86,7 +89,7 @@
               </select>
             </div>
           </div>
-          <% if @service_presenter.request_media_types.size > 1 %>
+          <% if @endpoint_presenter.verb != 'GET' && @service_presenter.request_media_types.size > 1 %>
             <div className="form-group">
               <label className="control-label col-sm-3" forHtml="requestMediaType">Request Media Type</label>
               <div className="col-sm-9">

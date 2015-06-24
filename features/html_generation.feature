@@ -75,7 +75,7 @@ Feature: html generation
   And I fill in the submit form field "name" with "Jim"
   Then I should see:
     """
-    curl -X POST -H 'Content-Type: application/x-www-form-urlencoded' -d 'user%5Bname%5D=Jim'
+    curl -X POST -d 'user%5Bname%5D=Jim'
     """
 
    And I submit lurk form
