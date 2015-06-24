@@ -3,6 +3,8 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 4.2.0"
+gem "sprockets"
+gem "sass-rails"
 
 group :development do
   gem "fuubar"
@@ -10,11 +12,9 @@ group :development do
   gem "selenium-webdriver"
   gem "highline"
   gem "appraisal"
-  gem "sprockets"
   gem "uglifier"
-  gem "sass-rails"
   gem "coffee-rails"
-  gem "bootstrap-sass", "~> 3.3.3"
+  gem "bootstrap-sass"
   gem "jquery-rails"
   gem "remotipart"
   gem "launchy"

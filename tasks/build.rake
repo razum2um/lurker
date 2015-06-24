@@ -8,7 +8,7 @@ namespace :assets do
     require 'lurker/cli'
 
     require 'sprockets'
-    require 'sass'
+    require 'sass-rails'
 
     ROOT        = Pathname(File.dirname(__FILE__))
     LOGGER      = Logger.new(STDOUT)
@@ -39,7 +39,7 @@ namespace :assets do
 
     %w[jquery-rails bootstrap-sass remotipart lurker].each do |gem|
       gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
-      %w[javascripts stylesheets].each do |prefix|
+      %w[javascripts stylesheets fonts].each do |prefix|
         %w[assets vendor/assets lib/lurker/templates].each do |interfix|
           path = gem_path.join(interfix, prefix).to_s
           sprockets.append_path(path) if File.exists? path
@@ -47,8 +47,10 @@ namespace :assets do
       end
     end
 
-    sprockets.js_compressor  = :uglify
-    sprockets.css_compressor  = :scss
+    unless ENV['TRAVIS']
+      sprockets.js_compressor  = :uglify
+      sprockets.css_compressor  = :scss
+    end
 
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)
