@@ -5,9 +5,9 @@
           <% endpoints.each do |endpoint| %>
             <li class="<%= (@endpoint_presenter.nil? && 'opened') || (endpoint.url == @endpoint_presenter.url && 'active') %>">
                 <a href="<%= endpoint.url %>">
-                  <span class="btn btn-<%= endpoint.verb_colorname %> btn-xs"><%= endpoint.verb %>&nbsp;<%= endpoint.named_path %></span>
-                  <br>
                   <span><%= endpoint.title %></span>
+                  <br>
+                  <span class="btn btn-<%= endpoint.verb_colorname %> btn-xs"><%= endpoint.verb %>&nbsp;<%= endpoint.named_path %></span>
                 </a>
             </li>
           <% end %>

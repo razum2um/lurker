@@ -18,7 +18,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def title
-    "Lurker | #{name}"
+    name
   end
 
   def domains
