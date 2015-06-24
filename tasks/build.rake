@@ -47,7 +47,7 @@ namespace :assets do
       end
     end
 
-    sprockets.js_compressor  = :uglify
+    sprockets.js_compressor  = :uglify unless ENV['TRAVIS']
     sprockets.css_compressor  = :scss
 
     puts "sprockets.paths = #{sprockets.paths}"
