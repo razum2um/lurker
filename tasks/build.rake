@@ -8,8 +8,7 @@ namespace :assets do
     require 'lurker/cli'
 
     require 'sprockets'
-    require 'sprockets-sass'
-    require 'sass'
+    require 'sass-rails'
 
     ROOT        = Pathname(File.dirname(__FILE__))
     LOGGER      = Logger.new(STDOUT)
