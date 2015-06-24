@@ -64,7 +64,7 @@ def needs_generation?
 end
 
 desc 'destroys & recreates new test app'
-task :regenerate => ["clobber:coverage", "clobber:app", "generate:app", "generate:stuff"]
+task :regenerate => ["clobber:coverage", "clobber:app", "assets:precompile", "generate:app", "generate:stuff"]
 
 desc 'run cucumber in a fresh env'
 task :features => [:regenerate, :cucumber]
