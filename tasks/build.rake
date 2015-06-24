@@ -51,6 +51,9 @@ namespace :assets do
     sprockets.css_compressor  = :scss
 
     puts "sprockets.paths = #{sprockets.paths}"
+    puts 
+    system "find /home/travis/build/razum2um/lurker/gemfiles/vendor/bundle/ruby/1.9.1/gems/bootstrap-sass-3.3.5"
+
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)
       realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css|scss)$/ } + [$~.to_s]).join(".").gsub(/\.scss$/, '.css')
