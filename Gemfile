@@ -24,9 +24,7 @@ group :development do
   # build template static
   # run `rake assets:precompile`
   # to get bundled application.(js|css)
-  gem 'sprockets'
   gem 'uglifier'
-  gem 'sass-rails'
   gem 'coffee-rails'
   gem 'bootstrap-sass', '~> 3.3.3'
   gem 'jquery-rails'

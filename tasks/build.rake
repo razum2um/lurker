@@ -39,7 +39,7 @@ namespace :assets do
 
     %w[jquery-rails bootstrap-sass remotipart lurker].each do |gem|
       gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
-      %w[javascripts stylesheets].each do |prefix|
+      %w[javascripts stylesheets fonts].each do |prefix|
         %w[assets vendor/assets lib/lurker/templates].each do |interfix|
           path = gem_path.join(interfix, prefix).to_s
           sprockets.append_path(path) if File.exists? path
@@ -47,15 +47,14 @@ namespace :assets do
       end
     end
 
-    sprockets.js_compressor  = :uglify unless ENV['TRAVIS']
-    sprockets.css_compressor  = :scss
+    unless ENV['TRAVIS']
+      sprockets.js_compressor  = :uglify
+      sprockets.css_compressor  = :scss
+    end
 
-    puts "sprockets.paths = #{sprockets.paths}"
-    puts 
-    system "find /home/travis/build/razum2um/lurker/gemfiles/vendor/bundle/ruby/1.9.1/gems/bootstrap-sass-3.3.5"
     BUNDLES.each do |bundle|
       begin
-        assets = sprockets.find_asset(bundle, bundle: false)
+        assets = sprockets.find_asset(bundle)
         realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css|scss)$/ } + [$~.to_s]).join(".").gsub(/\.scss$/, '.css')
         assets.write_to(BUILD_DIR.join(realname))
       end
