@@ -31,6 +31,15 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
     '/'
   end
 
+  def request_media_types
+    return service.request_media_types if service.request_media_types.present?
+    ['application/x-www-form-urlencoded']
+  end
+
+  def default_request_media_type
+    request_media_types[0]
+  end
+
   def name_as_link(options = {})
     path = index_path
     '<a href="%s">%s %s</a>' % [path, options[:prefix], service.name]

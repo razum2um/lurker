@@ -66,6 +66,6 @@ Feature: mutidomain support
   When I select "[Sandbox] Heroku" hostname
   Then I should see:
     """
-    curl -X DELETE "http://lurker-app.herokuapp.com/api/v1/users/1"
+    curl -X DELETE 'http://lurker-app.herokuapp.com/api/v1/users/1'
     """
 
