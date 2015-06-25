@@ -12,9 +12,9 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   # TODO move to controller
-  def to_html(&block)
+  def to_html(options={}, &block)
     @service_presenter = self
-    render('index')
+    render('index', options)
   end
 
   def title
