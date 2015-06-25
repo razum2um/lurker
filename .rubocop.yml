@@ -1,1 +1,79 @@
-.hound.yml
+AllCops:
+  Exclude:
+    - 'tmp/**/*'
+    - 'templates/rails32_http_patch_support.rb'
+
+TrailingBlankLines:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+AlignParameters:
+  Enabled: false
+
+MultilineTernaryOperator:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+RedundantSelf:
+  Enabled: false
+
+GuardClause:
+  Enabled: false
+
+Next:
+  Enabled: false
+
+SpaceAroundEqualsInParameterDefault:
+  Enabled: false
+
+AssignmentInCondition:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+HashSyntax:
+  Enabled: false
+
+PercentLiteralDelimiters:
+  Enabled: false
+
+UnneededPercentQ:
+  Enabled: false
+
+Blocks:
+  Enabled: false
+
+DoubleNegation:
+  Enabled: false
+
+CaseEquality:
+  Enabled: false
+
+SpecialGlobalVars:
+  Enabled: false
+
+UnusedMethodArgument:
+  Enabled: false
+
+UnusedBlockArgument:
+  Enabled: false
+
+CollectionMethods:
+  Enabled: false
+
+TrivialAccessors:
+  Enabled: false
+
+IndentationWidth:
+  Enabled: false
+
+IndentHash:
+  Enabled: false

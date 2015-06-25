@@ -4,7 +4,7 @@
     <% if value === :file %>
         <input type="file" name="<%= label %>" ></input>
     <% else %>
-        <input type="text" name="<%= label %>" defaultValue="<%= value.to_s %>" className="form-control" onChange={this.afterSetPartialState}></input>
+        <input type="text" name="<%= label %>" defaultValue="<%= value.to_s %>" valueLink={this.linkState('payload.<%= accessor %>')} className="form-control"></input>
     <% end %>
   </div>
 </div>

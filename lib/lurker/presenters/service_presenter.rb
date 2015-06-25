@@ -18,7 +18,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def title
-    name
+    "#{name}"
   end
 
   def domains
@@ -29,6 +29,15 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   def default_domain
     return service_domains.to_a[0][1] if service_domains.present?
     '/'
+  end
+
+  def request_media_types
+    return service.request_media_types if service.request_media_types.present?
+    ['application/x-www-form-urlencoded']
+  end
+
+  def default_request_media_type
+    request_media_types[0]
   end
 
   def name_as_link(options = {})
