@@ -60,6 +60,7 @@ module Lurker
         inside(output_path) do
           service_presenters.each do |service_presenter|
             html = "<html><body>"
+            html << service_presenter.to_html(layout: false)
             service_presenter.endpoints.each do |endpoint_prefix_group|
               endpoint_prefix_group.each do |endpoint_presenter|
                 html << endpoint_presenter.to_html(layout: false)
