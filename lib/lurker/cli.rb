@@ -32,15 +32,7 @@ module Lurker
     method_option :templates, :aliases => "-t", :desc => "Template overrides path"
     method_option :content, :aliases => "-c", :desc => "Content to be rendered into html-docs main page"
     def convert(lurker_path=Lurker::DEFAULT_SERVICE_PATH)
-      Lurker.safe_require 'kramdown'
-
       say_status nil, "Converting lurker to #{options[:format]}"
-
-      # for backwards compatibility
-      if options[:content]
-        content = open(File.expand_path(options[:content])).read
-        services.each { |srv| srv.documentation = content }
-      end
 
       self.origin_path = File.expand_path(lurker_path)
       raise Lurker::NotFound.new(origin_path) unless has_valid_origin?
@@ -51,6 +43,14 @@ module Lurker
 
       if options[:rails]
         require "#{Dir.pwd}/config/environment"
+      end
+
+      Lurker.safe_require 'kramdown'
+
+      # for backward compatibility
+      if options[:content]
+        content = open(File.expand_path(options[:content])).read
+        services.each { |srv| srv.documentation = content }
       end
 
       if options[:format] == 'pdf'
