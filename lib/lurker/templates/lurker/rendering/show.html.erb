@@ -1,9 +1,8 @@
-<h1 id="endpoint" class="page-header"><%= @endpoint_presenter.title %></h1>
-<% if @endpoint_presenter.description.present? %>
-  <p class="lead"><%= @endpoint_presenter.description %></p>
-<% end %>
+<h1 class="page-header endpoint"><%= @endpoint_presenter.title %></h1>
 
 <pre><%= @endpoint_presenter.verb %> <%= @endpoint_presenter.named_path %></pre>
+
+<%= markup @endpoint_presenter.documentation %>
 
 <h3>Response Example</h3>
 <%= render 'submit_form' %>

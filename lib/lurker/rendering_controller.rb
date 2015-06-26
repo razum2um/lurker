@@ -16,7 +16,26 @@ module Lurker
     self.view_paths = File.join(File.dirname(__FILE__), "templates")
 
     # Define additional helpers, this one is for csrf_meta_tag
-    helper_method :protect_against_forgery?, :tag_with_anchor
+    helper_method :protect_against_forgery?
+    helper do
+      def tag_with_anchor(tag, content, anchor_slug = nil)
+        anchor_slug ||= content.downcase.gsub(' ', '_')
+        <<-EOS
+      <#{tag} id="#{anchor_slug}">
+        <a href="##{anchor_slug}" class="anchor">
+          #{content}
+        </a>
+      </#{tag}>
+        EOS
+      end
+
+      def markup(content)
+        if defined?(Kramdown)
+          content = Kramdown::Document.new(content).to_html
+        end
+        raw content
+      end
+    end
 
     # override the layout in your subclass if needed.
     layout 'application'
@@ -24,17 +43,6 @@ module Lurker
     # we are not in a browser, no need for this
     def protect_against_forgery?
       false
-    end
-
-    def tag_with_anchor(tag, content, anchor_slug = nil)
-      anchor_slug ||= content.downcase.gsub(' ', '_')
-      <<-EOS
-      <#{tag} id="#{anchor_slug}">
-        <a href="##{anchor_slug}" class="anchor">
-          #{content}
-        </a>
-      </#{tag}>
-      EOS
     end
 
     # so that your flash calls still work

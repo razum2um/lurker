@@ -2,6 +2,9 @@
 class Lurker::EndpointPresenter < Lurker::BasePresenter
   attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
+  extend Forwardable
+  def_delegators :endpoint, :documentation
+
   def initialize(endpoint, options = {})
     super(options)
     @endpoint = endpoint

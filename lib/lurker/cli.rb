@@ -32,9 +32,16 @@ module Lurker
     method_option :templates, :aliases => "-t", :desc => "Template overrides path"
     method_option :content, :aliases => "-c", :desc => "Content to be rendered into html-docs main page"
     def convert(lurker_path=Lurker::DEFAULT_SERVICE_PATH)
+      Lurker.safe_require 'kramdown'
+
       say_status nil, "Converting lurker to #{options[:format]}"
 
-      self.content = get_content(options[:content])
+      # for backwards compatibility
+      if options[:content]
+        content = open(File.expand_path(options[:content])).read
+        services.each { |srv| srv.documentation = content }
+      end
+
       self.origin_path = File.expand_path(lurker_path)
       raise Lurker::NotFound.new(origin_path) unless has_valid_origin?
       say_status :using, lurker_path
@@ -59,15 +66,13 @@ module Lurker
         css = File.expand_path('application.css', self.class.precompiled_static_root)
         inside(output_path) do
           service_presenters.each do |service_presenter|
-            html = "<html><body>"
-            html << service_presenter.to_html(layout: false)
+            html = service_presenter.to_html(layout: false)
             service_presenter.endpoints.each do |endpoint_prefix_group|
               endpoint_prefix_group.each do |endpoint_presenter|
                 html << endpoint_presenter.to_html(layout: false)
               end
             end
-            html << "</body></html>"
-            kit = PDFKit.new(html, :page_size => 'Letter')
+            kit = PDFKit.new("<html><body>#{html}</body></html>", :page_size => 'Letter')
             kit.stylesheets << css
             url_name = ActiveSupport::Inflector.parameterize(service_presenter.name, '_')
             create_file("#{url_name}.pdf", kit.to_pdf, force: true)
@@ -200,17 +205,6 @@ module Lurker
     rescue => e
       puts e
       "lurker (unknown)"
-    end
-
-    def get_content(content_fname)
-      return unless content_fname
-      content_fname = File.expand_path(content_fname)
-      if content_fname.ends_with? 'md'
-        Lurker.safe_require('kramdown')
-        Kramdown::Document.new(open(content_fname).read).to_html
-      else
-        ''
-      end
     end
 
     def services

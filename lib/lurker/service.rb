@@ -3,8 +3,17 @@ require 'yaml'
 # Services represent a group of Lurker API endpoints in a directory
 class Lurker::Service
   attr_reader :service_dir, :schema
+  attr_writer :documentation
   attr_accessor :opened_endpoints
   SUFFIX = '.service.yml'
+  DEFAULT_SCHEMA = {
+      name: '',
+      basePath: '',
+      description: '',
+      domains: {},
+      consumes: %w(application/x-www-form-urlencode application/json),
+      produces: %w(application/json)
+  }
 
   def self.default_service
     new(Lurker.service_path)
@@ -15,16 +24,9 @@ class Lurker::Service
     @service_dir = File.expand_path(service_dir)
     @service_filename = service_name
     @schema = if persisted? && (schema = YAML.load_file(service_path)).is_a?(Hash)
-      Lurker::Json::Schema.new(schema)
+      Lurker::Json::Schema.new(schema, uri: service_path)
     else
-      Lurker::Json::Schema.new(
-        'name' => service_filename,
-        'basePath' => '',
-        'description' => '',
-        'domains' => {},
-        'consumes' => %w(application/x-www-form-urlencode application/json),
-        'produces' => %w(application/json)
-      )
+      Lurker::Json::Schema.new(DEFAULT_SCHEMA.merge(name: service_filename), uri: service_path)
     end
   end
 
@@ -104,11 +106,11 @@ class Lurker::Service
   end
 
   def description
-    @schema['description']
+    schema['description']
   end
 
   def discussion
-    @schema['discussion']
+    schema['discussion']
   end
 
   def domains
@@ -121,5 +123,9 @@ class Lurker::Service
 
   def response_media_types
     schema['produces']
+  end
+
+  def documentation
+    @documentation ||= schema.documentation
   end
 end

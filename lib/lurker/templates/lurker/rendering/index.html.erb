@@ -1,10 +1,7 @@
 <div class="row">
     <div class="col-lg-12">
-        <% if (content = @service_presenter.options[:content]).present? %>
-          <%= raw content %>
-        <% else %>
-          <h1 class="page-header">Hi to Lurker!</h1>
-        <% end %>
+      <h1 class="page-header"><%= @service_presenter.name %> API Reference</h1>
+      <%= markup @service_presenter.documentation %>
     </div>
     <!-- /.col-lg-12 -->
 </div>

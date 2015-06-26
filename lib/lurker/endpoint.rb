@@ -131,6 +131,10 @@ module Lurker
       @schema[RESPONSE_CODES]
     end
 
+    def documentation
+      @schema.documentation
+    end
+
     protected
 
     def persisted?
