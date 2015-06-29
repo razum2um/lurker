@@ -43,7 +43,7 @@ class Lurker::Service
   end
 
   def persist!
-    Lurker::Json::Writter.write(schema, service_path) unless File.exist?(service_path)
+    Lurker::Json::Writer.write(schema, service_path) unless File.exist?(service_path)
     @opened_endpoints.each { |ep| ep.persist! if ep.respond_to?(:persist!) }
   end
 

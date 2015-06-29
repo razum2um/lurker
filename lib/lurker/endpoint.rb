@@ -19,7 +19,7 @@ module Lurker
     RESPONSE_CODES = 'responseCodes'.freeze
     REQUEST_PARAMETERS = 'requestParameters'.freeze
     RESPONSE_PARAMETERS = 'responseParameters'.freeze
-    DESCRPTIONS = {
+    DESCRIPTIONS = {
       'index' => 'listing',
       'show' => '',
       'edit' => 'editing',
@@ -44,7 +44,7 @@ module Lurker
       finalize_schema!
 
       Lurker::Json::Orderer.reorder(schema) unless persisted?
-      Lurker::Json::Writter.write(schema, endpoint_path)
+      Lurker::Json::Writer.write(schema, endpoint_path)
 
       @persisted = true
     end
@@ -171,7 +171,7 @@ module Lurker
     def finalize_schema!
       path_params = schema[EXTENSIONS][PATH_PARAMS] || {}
       subject = path_params[CONTROLLER].to_s.split(/\//).last.to_s
-      description = DESCRPTIONS[path_params[ACTION]]
+      description = DESCRIPTIONS[path_params[ACTION]]
 
       schema[DESCRIPTION] = "#{subject.singularize} #{description}".strip if schema[DESCRIPTION].blank?
       schema[PREFIX] = "#{subject} management" if schema[PREFIX].blank?
