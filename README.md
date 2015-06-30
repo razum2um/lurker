@@ -224,7 +224,7 @@ This gem is heavily inspired by them. Thanks, @square & @fredwu
 Also thanks to
 
 - [Andrey Deryabin][aderyabin] for advice
-- [React.js][reactjs] for two-way binding
+- [React.js][reactjs] for reactive UI
 - [highlight.js][hljs] for syntax highlighting
 
 [aderyabin]: https://twitter.com/aderyabin
