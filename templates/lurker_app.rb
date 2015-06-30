@@ -21,7 +21,6 @@ unless ENV['TRAVIS']
 end
 
 gem 'unicorn', group: :production
-gem 'therubyracer', group: :production
 
 append_to_file 'Gemfile' do
   gem = if ENV['TRAVIS']
