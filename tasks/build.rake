@@ -13,8 +13,8 @@ namespace :assets do
     ROOT        = Pathname(File.dirname(__FILE__))
     LOGGER      = Logger.new(STDOUT)
     BUNDLES     = %w( application.css application.js )
-    BUILD_DIR   = Pathname.new Lurker::Cli.precompiled_static_root
-    SOURCE_DIR  = Pathname.new Lurker::Cli.source_root
+    BUILD_DIR   = Lurker::Cli.assets_root
+    SOURCE_DIR  = Lurker::Cli.templates_root
 
     FileUtils.rm_rf(BUILD_DIR)
     FileUtils.mkdir_p(BUILD_DIR)

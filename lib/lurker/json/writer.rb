@@ -1,6 +1,6 @@
 module Lurker
   module Json
-    class Writter
+    class Writer
       class << self
         def write(schema, path)
           new(path).write(schema)
@@ -16,7 +16,7 @@ module Lurker
         write_to_file(schema)
 
         extract_references(schema).each do |reference|
-          Lurker::Json::Writter.write(reference, reference.original_uri.path)
+          Lurker::Json::Writer.write(reference, reference.original_uri.path)
         end
       end
 

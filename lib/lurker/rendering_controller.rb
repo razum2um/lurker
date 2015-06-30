@@ -2,28 +2,30 @@ require 'ostruct'
 require 'abstract_controller'
 require 'action_view'
 require 'action_dispatch/http/mime_type'
+require 'action_dispatch/routing'
 
 module Lurker
   class RenderingController < ::AbstractController::Base
     # Include all the concerns we need to make this work
+    include AbstractController::Logger
     include AbstractController::Helpers
     include AbstractController::Rendering
-    include ActionView::Rendering if defined?(ActionView::Rendering)
-    include ActionView::Layouts if defined?(ActionView::Layouts) # Rails 4.1.x
+    include AbstractController::AssetPaths
     include AbstractController::Layouts if defined?(AbstractController::Layouts) # Rails 3.2.x, 4.0.x
+    include ActionView::Layouts if defined?(ActionView::Layouts) # Rails 4.1.x
+    include ActionView::Rendering if defined?(ActionView::Rendering)
     include ActionView::Context
 
-    self.view_paths = File.join(File.dirname(__FILE__), "templates")
+    attr_writer :service_presenter, :endpoint_presenter
 
     # Define additional helpers, this one is for csrf_meta_tag
-    helper_method :protect_against_forgery?, :tag_with_anchor
+    helper_method :title, :tag_with_anchor, :protect_against_forgery?
 
     # override the layout in your subclass if needed.
     layout 'application'
 
-    # we are not in a browser, no need for this
-    def protect_against_forgery?
-      false
+    def title
+      [@service_presenter.try(:title), @endpoint_presenter.try(:title)].compact.join ' | '
     end
 
     def tag_with_anchor(tag, content, anchor_slug = nil)
@@ -35,6 +37,11 @@ module Lurker
         </a>
       </#{tag}>
       EOS
+    end
+
+    # we are not in a browser, no need for this
+    def protect_against_forgery?
+      false
     end
 
     # so that your flash calls still work

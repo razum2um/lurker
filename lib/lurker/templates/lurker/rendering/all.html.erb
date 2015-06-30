@@ -1,0 +1,5 @@
+<%= render 'service', service: @service_presenter %>
+
+<% @service_presenter.endpoints.each do |endpoint_prefix_group| %>
+    <%= render partial: 'endpoint', collection: endpoint_prefix_group, as: :endpoint %>
+<% end %>

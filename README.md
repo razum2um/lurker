@@ -92,6 +92,13 @@ The generation of live-documentation is pretty simple:
 
 For different document root or serving URL prefix use `-o` and `-u` options accordingly.
 
+If you want to provide additional documentation for your API (and you probably should),
+you can use separate Markdown files in the schema folder. To generate documentation
+stubs for the current schema:
+
+    bin/lurker init_docs         # generate documentation stubs for the current schema
+
+
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/)
 (or see [demo][demo_app2] for example)
 

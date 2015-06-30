@@ -1,3 +1,5 @@
+require 'active_support/inflector'
+
 # An BasePresenter for Lurker::Service
 class Lurker::ServicePresenter < Lurker::BasePresenter
   attr_reader :service
@@ -11,10 +13,20 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
     @filtering_block = block
   end
 
-  # TODO move to controller
   def to_html(options={}, &block)
-    @service_presenter = self
-    render('index', options)
+    controller = Lurker::RenderingController.new
+    controller.service_presenter = self
+    controller.render_to_string 'index', options
+  end
+
+  def to_print(options = {})
+    controller = Lurker::RenderingController.new
+    controller.service_presenter = self
+    controller.render_to_string 'all', { layout: 'print' }.merge(options)
+  end
+
+  def documentation
+    markup @service.documentation
   end
 
   def title
@@ -46,11 +58,23 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def slug_name
-    service.name.downcase.gsub(/[ \/]/, '_')
+    @slug_name ||= service.name.downcase.gsub(/[ \/]/, '_')
+  end
+
+  def url_name
+    @url_name ||= ActiveSupport::Inflector.parameterize(name, '_')
   end
 
   def url(extension = ".html")
     '%s-%s%s' % [@endpoint.path, @endpoint.verb, extension]
+  end
+
+  def footer
+    @footer ||= options[:footer].present? ? "#{name}&nbsp;#{options[:footer]}" : ''
+  end
+
+  def lurker
+    @lurker ||= options[:lurker] || ''
   end
 
   def endpoints

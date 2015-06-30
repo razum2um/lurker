@@ -21,6 +21,16 @@ module Lurker
         parse_schema(schema)
       end
 
+      def documentation_uri(extension = 'md')
+        @uri.to_s.sub(%r{^file:(//)?}, '').sub(/(\.json)?(\.yml)?(\.erb)?$/, ".#{extension}")
+      end
+
+      def documentation
+        open(documentation_uri).read
+      rescue
+        @schema['description']
+      end
+
       def root?
         root_schema.blank?
       end
@@ -40,8 +50,7 @@ module Lurker
       end
 
       def replace!(property, property_schema)
-        @schema[property] = Lurker::Json::Parser.plain(subschema_options)
-          .parse_property(property, property_schema)
+        @schema[property] = @parser.plain.parse_property(property, property_schema)
       end
 
       def reorder!
@@ -54,7 +63,7 @@ module Lurker
       end
 
       def to_json(options = {})
-        hashify(@schema, options).to_json
+        to_hash(options).to_json
       end
 
       def to_yaml(options = {})

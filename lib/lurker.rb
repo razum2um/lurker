@@ -28,6 +28,14 @@ module Lurker
     @service_path || DEFAULT_SERVICE_PATH
   end
 
+  def self.valid_service_path?
+    Dir.exist? service_path
+  end
+
+  def self.service
+    @service ||= Lurker::Service.new(service_path)
+  end
+
   def self.decide_success_with(&block)
     @success_block = block
   end
@@ -65,7 +73,7 @@ require 'lurker/presenters/schema_presenter'
 require 'lurker/presenters/response_code_presenter'
 require 'lurker/json'
 require 'lurker/json/reader'
-require 'lurker/json/writter'
+require 'lurker/json/writer'
 require 'lurker/json/orderer'
 require 'lurker/json/parser'
 require 'lurker/json/parser/expertise'

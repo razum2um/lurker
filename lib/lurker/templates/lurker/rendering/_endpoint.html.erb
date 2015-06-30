@@ -1,0 +1,36 @@
+<h1 class="page-header endpoint"><%= endpoint.title %></h1>
+
+<pre><%= endpoint.verb %> <%= endpoint.named_path %></pre>
+
+<%= raw endpoint.documentation %>
+
+<h3>Response Example</h3>
+<%= render 'submit_form', service: endpoint.service_presenter, endpoint: endpoint %>
+
+<div id="show-api-response-div" class="highlight">
+  <table class="small table table-condensed" ref="response-info" style="display: none;">
+    <tr class="status">
+      <th class="name">Status:</th>
+      <td class="value"></td>
+    </tr>
+    <tr class="time">
+      <th class="name">Time:</th>
+      <td class="value"></td>
+    </tr>
+    <tr class="headers">
+      <th class="name">Headers:</th>
+      <td>
+        <a href="javascript:void(0)" data-toggle="collapse" data-target="#headers">Toggle</a>
+        <div id="headers" class="collapse value"></div>
+      </td>
+    </tr>
+  </table>
+  <pre><code id="response" ref="response-example" class="hljs"><%= endpoint.example_response.html_safe %></code></pre>
+  <pre><code ref="response-raw" style="display: none;"></code></pre>
+</div> <!-- ./#show-api-response-div -->
+
+<h3>Request Schema</h3>
+<%= raw endpoint.request_parameters.to_html %>
+
+<h3>Response Schema</h3>
+<%= raw endpoint.response_parameters.to_html %>
