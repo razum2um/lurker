@@ -3,7 +3,7 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
   extend Forwardable
-  def_delegators :endpoint, :documentation
+  def_delegators :endpoint, :url_params
 
   def initialize(endpoint, options = {})
     super(options)
@@ -13,12 +13,15 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def to_html(options={})
-    @service_presenter = service_presenter
-    @endpoint_presenter = self
-    @url_params = endpoint.url_params
-    @post_params = example_request.json
-    @title = "#{service_presenter.title} | #{title}"
-    render('show', options)
+    controller = Lurker::RenderingController.new
+    controller.service_presenter = service_presenter
+    controller.endpoint_presenter = self
+    controller.instance_variable_set :@title, "#{service_presenter.title} | #{title}"
+    controller.render_to_string 'show', options
+  end
+
+  def documentation
+    markup @endpoint.documentation
   end
 
   def relative_path(extension = ".html")
@@ -35,6 +38,10 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
 
   def prefix
     endpoint.prefix || endpoint.path.split("/").first
+  end
+
+  def post_params
+    example_request.json
   end
 
   def zws_ify(str)

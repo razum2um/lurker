@@ -9,16 +9,6 @@ class Lurker::BasePresenter
     @options = options
   end
 
-  def render_erb(erb_name, binding = get_binding)
-    template_path = path_for_template(erb_name)
-    template = ERB.new(File.read(template_path), nil, '-')
-    template.result(binding)
-  end
-
-  def get_binding
-    binding
-  end
-
   def html_directory
     options[:url_base_path] || options[:html_directory] || ""
   end
@@ -27,8 +17,12 @@ class Lurker::BasePresenter
     options[:url_base_path] || '/'
   end
 
-  def css_path
-    File.join(html_directory, "styles.css")
+  def assets
+    options[:assets] || {}
+  end
+
+  def asset_path(asset)
+    "#{html_directory}/#{assets[asset] || asset}"
   end
 
   def index_path(subdirectory = "")
@@ -51,27 +45,8 @@ class Lurker::BasePresenter
     EOS
   end
 
-  def render(*args)
-    rendering_controller.render_to_string(*args)
-  end
-
-  protected
-
-  def path_for_template(filename)
-    template_dir  = options[:template_directory]
-    template_path = File.join(template_dir, filename) if template_dir
-    if template_path.nil? || !File.exist?(template_path)
-      template_path = File.join(File.dirname(__FILE__), "../templates", filename)
-    end
-    template_path
-  end
-
-  def rendering_controller
-    return @rendering_controller if @rendering_controller
-    @rendering_controller = Lurker::RenderingController.new
-    instance_variables.each do |var|
-      @rendering_controller.instance_variable_set(var, instance_variable_get(var))
-    end
-    @rendering_controller
+  def markup(content)
+    Lurker.safe_require 'kramdown'
+    defined?(Kramdown) ? Kramdown::Document.new(content).to_html : content
   end
 end

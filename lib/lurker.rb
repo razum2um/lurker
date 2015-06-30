@@ -28,6 +28,14 @@ module Lurker
     @service_path || DEFAULT_SERVICE_PATH
   end
 
+  def self.valid_service_path?
+    Dir.exist? service_path
+  end
+
+  def self.service
+    @service ||= Lurker::Service.new(service_path)
+  end
+
   def self.decide_success_with(&block)
     @success_block = block
   end

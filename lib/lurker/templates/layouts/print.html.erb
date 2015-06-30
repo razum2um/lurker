@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="pdfkit-page-size" content="A4"/>
+
+  <meta name="pdfkit-margin-top" content="2cm"/>
+  <meta name="pdfkit-margin-bottom" content="1cm"/>
+  <meta name="pdfkit-margin-left" content="1cm"/>
+  <meta name="pdfkit-margin-right" content="1cm"/>
+  <meta name="pdfkit-header-left" content="[webpage]"/>
+  <meta name="pdfkit-header-right" content="Page [page] of [toPage]"/>
+  <meta name="pdfkit-header-line" content="true"/>
+
+  <meta name="pdfkit-footer-left" content="<%= raw @service_presenter.footer %>"/>
+</head>
+<body>
+<%= yield %>
+</body>
+</html>

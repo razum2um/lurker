@@ -1,70 +1,67 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title><%= @title || @service_presenter.title %></title>
-    <link href="<%= @service_presenter.html_directory %>/application-<%= @service_presenter.options['css'] %>.css" media="all" rel="stylesheet">
-    <style type="text/css">
-      @font-face {
-        font-family: 'FontAwesome';
-        src: url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.eot?v=4.0.3");
-        src: url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3") format("embedded-opentype"),
-             url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.woff?v=4.0.3") format("woff"),
-             url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.ttf?v=4.0.3") format("truetype"),
-             url("<%= @service_presenter.html_directory %>/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular") format("svg");
-        font-weight: normal;
-        font-style: normal;
-      }
-    </style>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link href="<%= @service_presenter.asset_path('application.css') %>" media="all" rel="stylesheet">
+  <style type="text/css">
+    @font-face {
+      font-family: 'FontAwesome';
+      src: url("<%= @service_presenter.asset_path '/fonts/fontawesome-webfont.eot?v=4.0.3' %>");
+      src: url("<%= @service_presenter.asset_path '/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3' %>") format("embedded-opentype"),
+      url("<%= @service_presenter.asset_path '/fonts/fontawesome-webfont.woff?v=4.0.3' %>") format("woff"),
+      url("<%= @service_presenter.asset_path '/fonts/fontawesome-webfont.ttf?v=4.0.3' %>") format("truetype"),
+      url("<%= @service_presenter.asset_path '/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular' %>") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
 </head>
-
 <body>
 
-    <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="<%= @service_presenter.html_directory %>"><%= @service_presenter.name %></a>
-        </div>
-      </div>
-    </header>
+<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="<%= @service_presenter.html_directory %>"><%= @service_presenter.name %></a>
+    </div>
+  </div>
+</header>
 
-    <div class="container bs-docs-container">
-      <div class="row">
-        <div class="col-md-9" role="main">
-          <div class="bs-docs-section">
-            <%= yield %>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="bs-docs-sidebar hidden-print" role="complementary">
-            <ul class="nav bs-docs-sidenav">
-              <%= render 'layouts/sidemenu' %>
-            </ul>
-          </div>
-        </div>
+<div class="container bs-docs-container">
+  <div class="row">
+    <div class="col-md-9" role="main">
+      <div class="bs-docs-section">
+        <%= yield %>
       </div>
     </div>
-
-    <footer class="bs-docs-footer" role="contentinfo">
-      <div class="container">
-        <ul class="bs-docs-footer-links muted">
-          <li>·</li>
-          <% if @service_presenter.options[:footer].present? %>
-            <li><%= @service_presenter.name %>&nbsp;<%= @service_presenter.options[:footer] %></li>
-            <li>·</li>
-          <% end %>
-          <% if @service_presenter.options[:lurker].present? %>
-            <li><%= @service_presenter.options[:lurker] %></li>
-            <li>·</li>
-          <% end %>
+    <div class="col-md-3">
+      <div class="bs-docs-sidebar hidden-print" role="complementary">
+        <ul class="nav bs-docs-sidenav">
+          <%= render 'layouts/sidemenu' %>
         </ul>
       </div>
-    </footer>
-    <script src="<%= @service_presenter.html_directory %>/application-<%= @service_presenter.options['js'] %>.js"></script>
+    </div>
+  </div>
+</div>
+
+<footer class="bs-docs-footer" role="contentinfo">
+  <div class="container">
+    <ul class="bs-docs-footer-links muted">
+      <li>·</li>
+      <% if @service_presenter.footer.present? %>
+        <li><%= raw @service_presenter.footer %></li>
+        <li>·</li>
+      <% end %>
+      <% if @service_presenter.lurker.present? %>
+        <li><%= raw @service_presenter.lurker %></li>
+        <li>·</li>
+      <% end %>
+    </ul>
+  </div>
+</footer>
+
+<script src="<%= @service_presenter.asset_path 'application.js' %>"></script>
+
 </body>
 </html>
