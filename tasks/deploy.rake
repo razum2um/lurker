@@ -57,7 +57,7 @@ namespace :razum2um do
         on_razum2um_me "cp ~/#{fname}.yml config/#{fname}.yml"
       end
       on_razum2um_me "bundle install"
-      on_razum2um_me "RAILS_ENV=production bin/rake db:migrateRAILS_ENV=production bin/rake db:migrate"
+      on_razum2um_me "RAILS_ENV=production bin/rake db:migrate"
       on_razum2um_me "RAILS_ENV=production bin/rake db:import"
       on_razum2um_me "touch tmp/restart.txt"
     }
