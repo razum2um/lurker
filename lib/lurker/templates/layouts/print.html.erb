@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title><%= title %></title>
+
   <meta name="pdfkit-page-size" content="A4"/>
 
-  <meta name="pdfkit-margin-top" content="2cm"/>
-  <meta name="pdfkit-margin-bottom" content="1cm"/>
-  <meta name="pdfkit-margin-left" content="1cm"/>
-  <meta name="pdfkit-margin-right" content="1cm"/>
-  <meta name="pdfkit-header-left" content="[webpage]"/>
-  <meta name="pdfkit-header-right" content="Page [page] of [toPage]"/>
-  <meta name="pdfkit-header-line" content="true"/>
+  <meta name="pdfkit-margin-left" content="20"/>
+  <meta name="pdfkit-margin-top" content="20"/>
+  <meta name="pdfkit-margin-bottom" content="25"/>
+  <meta name="pdfkit-margin-right" content="20"/>
 
-  <meta name="pdfkit-footer-left" content="<%= raw @service_presenter.footer %>"/>
+  <meta name="pdfkit-footer-spacing" content="10"/>
+  <meta name="pdfkit-footer-line" content="true"/>
+  <meta name="pdfkit-footer-left" content="[title]"/>
+  <meta name="pdfkit-footer-center" content="[page] of [toPage]"/>
+  <meta name="pdfkit-footer-right" content="[section]"/>
 </head>
 <body>
-<%= yield %>
+<div class="container bs-docs-container">
+  <%= yield %>
+</div>
 </body>
 </html>
