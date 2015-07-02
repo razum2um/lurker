@@ -8,18 +8,20 @@
 
   <title><%= title %></title>
 
-  <meta name="pdfkit-page-size" content="A4"/>
+  <meta name="pdfkit-page-size" content="A4">
 
-  <meta name="pdfkit-margin-left" content="20"/>
-  <meta name="pdfkit-margin-top" content="20"/>
-  <meta name="pdfkit-margin-bottom" content="25"/>
-  <meta name="pdfkit-margin-right" content="20"/>
+  <meta name="pdfkit-margin-left" content="20">
+  <meta name="pdfkit-margin-top" content="20">
+  <meta name="pdfkit-margin-bottom" content="25">
+  <meta name="pdfkit-margin-right" content="20">
 
-  <meta name="pdfkit-footer-spacing" content="10"/>
-  <meta name="pdfkit-footer-line" content="true"/>
-  <meta name="pdfkit-footer-left" content="[title]"/>
-  <meta name="pdfkit-footer-center" content="[page] of [toPage]"/>
-  <meta name="pdfkit-footer-right" content="[section]"/>
+  <meta name="pdfkit-footer-spacing" content="10">
+  <meta name="pdfkit-footer-line" content="true">
+  <meta name="pdfkit-footer-left" content="[title]">
+  <meta name="pdfkit-footer-center" content="[page] of [toPage]">
+  <meta name="pdfkit-footer-right" content="[section]">
+
+  <link href="<%= @service_presenter.asset_path('application.css') %>" media="all" rel="stylesheet">
 </head>
 <body>
 <div class="container bs-docs-container">
