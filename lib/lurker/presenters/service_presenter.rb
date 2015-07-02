@@ -70,7 +70,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def footer
-    @footer ||= options[:footer].present? ? "#{name}&nbsp;#{options[:footer]}" : ''
+    @footer ||= options[:footer].present? ? "Revision&nbsp;#{options[:footer]}".html_safe : ''
   end
 
   def lurker
