@@ -63,6 +63,21 @@ def needs_generation?
   !File.exists?("#{EXAMPLE_PATH}/Gemfile")
 end
 
+def place_github_badge(fname)
+  full_fname = "#{EXAMPLE_PATH}/#{fname}"
+  content = File.read(full_fname).gsub("</header>", <<-EOF
+    </header>
+    <a href='https://github.com/razum2um/lurker'>
+      <img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000'
+           src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+           data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+           alt='Fork me on GitHub'>
+    </a>
+    EOF
+    )
+  File.open(full_fname, 'w') { |f| f.write content }
+end
+
 desc 'destroys & recreates new test app'
 task :regenerate => ["clobber:coverage", "clobber:app", "assets:precompile", "generate:app", "generate:stuff"]
 
@@ -79,7 +94,7 @@ task :convert_example_docs do
     in_lurker_app "bin/lurker convert"
   end
 
-  in_lurker_app %Q{sed -i "" "s|</header>|</header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>|" public/lurker/index.html}
+  place_github_badge 'public/lurker/index.html'
   in_lurker_app "bin/lurker convert -f pdf"
 end
 
