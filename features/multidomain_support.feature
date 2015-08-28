@@ -33,10 +33,7 @@ Feature: mutidomain support
       prefix: users management
       description: user deletion
       requestParameters:
-        properties:
-          id:
-            type: integer
-            example: 1
+        properties: {}
       responseCodes:
       - status: 200
         successful: true

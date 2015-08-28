@@ -72,9 +72,6 @@ Feature: minitest
       description: 'user updating'
       requestParameters:
         properties:
-          id:
-            type: integer
-            example: 1
           user:
             type: object
             properties:

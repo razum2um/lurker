@@ -17,12 +17,6 @@ Feature: schema suffixes
       description: 'repo updating'
       requestParameters:
         properties:
-          id:
-            type: string
-            example: 1
-          user_id:
-            type: string
-            example: razum2um
           repo:
             type: object
             properties:
@@ -88,12 +82,6 @@ Feature: schema suffixes
       description: 'failed repo updating'
       requestParameters:
         properties:
-          id:
-            type: string
-            example: 1
-          user_id:
-            type: string
-            example: razum2um
           repo:
             type: object
             properties:

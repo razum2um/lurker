@@ -44,9 +44,6 @@ Feature: partials
       prefix: repos management
       requestParameters:
         properties:
-          user_id:
-            type: string
-            example: 1
           repo:
             properties:
               name:
