@@ -4,9 +4,10 @@
 
 <%= raw endpoint.documentation %>
 
-<h3>Response Example</h3>
+<h3>Request Form</h3>
 <%= render 'submit_form', service: endpoint.service_presenter, endpoint: endpoint %>
 
+<h3>Response Example</h3>
 <div id="show-api-response-div" class="highlight">
   <table class="small table table-condensed" ref="response-info" style="display: none;">
     <tr class="status">
