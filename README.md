@@ -144,6 +144,11 @@ For example:
 - Builtin Rack middleware `Lurker::Server.to_rack` serves cached digested assets
 - [RSpec][failed_spec_example] & [Minitest][minitest_example] support
 
+## Related gems
+
+- [Swarker](https://github.com/sponomarev/swarker) converts
+  Lurker schemas to [Swagger](http://swagger.io) schema
+
 ## Token authentication with sandbox
 
 `Lurker::Sandbox` allows you to test services with token authentication:
