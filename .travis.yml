@@ -17,4 +17,5 @@ matrix:
     - rvm: 2.2.0
       gemfile: gemfiles/rails_32.gemfile
 install: bundle install -j4 --path vendor/bundle
-
+notifications:
+    slack: evilmartians:3TVEqLTmDrMKUZZqUIy9apFT
