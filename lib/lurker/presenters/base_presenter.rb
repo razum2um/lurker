@@ -46,6 +46,7 @@ class Lurker::BasePresenter
   end
 
   def markup(content)
+    return unless content
     Lurker.safe_require 'kramdown'
     defined?(Kramdown) ? Kramdown::Document.new(content).to_html : content
   end

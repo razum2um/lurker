@@ -116,18 +116,19 @@ class Lurker::SchemaPresenter < Lurker::BasePresenter
 
   def items_html
     return unless items = @schema["items"]
+    return if items.size == 0
 
     html = ""
     html << '<li>Items'
 
     sub_options = options.merge(:nested => options[:nested] + 1, :parent => self)
 
-    if items.is_a? Array
-      item.compact.each do |item|
-        html << self.class.new(item, sub_options).to_html
-      end
-    else
+    if items.respond_to?(:each_pair)
       html << self.class.new(items, sub_options).to_html
+    else
+      items.each do |item|
+        html << self.class.new(item, sub_options).to_html if item
+      end
     end
 
     html << '</li>'

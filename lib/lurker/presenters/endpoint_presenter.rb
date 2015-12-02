@@ -220,15 +220,15 @@ class Lurker::EndpointPresenter < Lurker::BasePresenter
   end
 
   def example_from_array(array, parent=nil)
-    if array["items"].is_a? Array
+    if array["items"].respond_to?(:each) && !array["items"].respond_to?(:each_pair)
       example = []
       array["items"].each do |item|
         example << example_from_schema(item, parent)
       end
       example
-    elsif (array["items"] || {})["type"].is_a? Array
+    elsif (types = (array["items"] || {})["type"]).respond_to?(:each)
       example = []
-      array["items"]["type"].each do |item|
+      types.each do |item|
         example << example_from_schema(item, parent)
       end
       example

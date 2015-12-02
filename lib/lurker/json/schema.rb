@@ -70,12 +70,16 @@ module Lurker
         YAML.dump(to_hash(options))
       end
 
+      def respond_to_missing?(method, include_private=false)
+        @schema.respond_to?(method, include_private)
+      end
+
       def method_missing(method, *args, &block)
         if @schema.is_a?(Lurker::Json::Schema) || @schema.respond_to?(method)
-          return @schema.send(method, *args, &block)
+          @schema.send(method, *args, &block)
+        else
+          super
         end
-
-        super
       end
 
       private

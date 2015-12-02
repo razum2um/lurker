@@ -101,7 +101,7 @@ class Lurker::Service
     if base_path && !base_path.end_with?('/')
       base_path + '/'
     else
-      base_path
+      base_path || '/'
     end
   end
 

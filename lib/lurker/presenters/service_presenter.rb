@@ -124,6 +124,6 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   private
 
   def service_domains
-    service.domains.to_hash
+    service.domains.try(:to_hash) || {}
   end
 end
