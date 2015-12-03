@@ -45,6 +45,11 @@ but add `:lurker` mark (like documented [controller example][controler_spec_exam
       get "/api/v1/users.json"
     end
 
+NOTE: If you use `rspec-rails`, it should be required first
+
+    require 'rspec/rails'
+    require 'lurker/spec_helper'
+
 ## Minitest usage
 
 You can use [minitest-around][minitest_around] to wrap your test classes like this:
