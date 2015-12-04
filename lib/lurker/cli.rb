@@ -80,7 +80,10 @@ module Lurker
     no_tasks do
       def convert_to_pdf
         Lurker.safe_require('pdfkit')
-        kit = PDFKit.new(service_presenter.to_print)
+        print_html = service_presenter.to_print
+        create_file "#{service_presenter.url_name}_print.html", print_html, force: true
+
+        kit = PDFKit.new(print_html)
         kit.stylesheets << assets['application.css']
         create_file "#{service_presenter.url_name}.pdf", kit.to_pdf, force: true
       end
