@@ -9,7 +9,11 @@ module Lurker
 
         def to_validation_schema
           set_additional_properties_false_on(to_hash).tap do |schema|
-            schema[Json::ID] = "file://#{uri}"
+            if uri.class == URI::Generic
+              schema[Json::ID] = uri.path
+            else
+              schema[Json::ID] = uri.to_s
+            end
           end
         end
 

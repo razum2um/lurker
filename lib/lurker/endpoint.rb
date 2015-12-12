@@ -192,15 +192,15 @@ module Lurker
     def word_wrap(text)
       # strip .json# | .json.yml# | .json.yml.erb#
       text = text.reverse
-      text.gsub!(/(\n|^)#bre\./, "\nbre.")
-      text.gsub!(/(\n|^)#lmy\./, "\nlmy.")
-      text.gsub!(/(\n|^)#nosj\./, "\nnosj.")
+      text.gsub!(/(\n|^)#bre\./, "\nbre.")   # erb
+      text.gsub!(/(\n|^)#lmy\./, "\nlmy.")   # yml
+      text.gsub!(/(\n|^)#nosj\./, "\nnosj.") # json
       text.strip!
       text = text.reverse
 
       text.gsub!(/\s+in schema/m, "\n  in schema")
       if defined?(Rails)
-        text.gsub!(/file:\/\/#{Rails.root}\//m, "")
+        text.gsub!(Regexp.new("#{Rails.root}\/"), "")
       end
       text
     end
