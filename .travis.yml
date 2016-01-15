@@ -11,10 +11,13 @@ rvm:
   - 2.0.0
   - 2.1.5
   - 2.2.0
+  - 2.3.0
 matrix:
   exclude:
     # NOTE : incompatible
     - rvm: 2.2.0
+      gemfile: gemfiles/rails_32.gemfile
+    - rvm: 2.3.0
       gemfile: gemfiles/rails_32.gemfile
 install: bundle install -j4 --path vendor/bundle
 notifications:

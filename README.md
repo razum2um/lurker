@@ -3,7 +3,7 @@
 <img align="right" width="94" height="71" src="https://cdn.rawgit.com/razum2um/lurker/master/lurker-bw.svg">
 
 Generates API schemas, validates code against them and creates a handy web interface for testing the API.
-Works on Rails 3.2, 4.0, 4.1, 4.2 & Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.0
+Works on Rails 3.2, 4.0, 4.1, 4.2 & Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.0, 2.3.0
 
 [![Gem Version][GV img]][Gem Version]
 [![Build Status][BS img]][Build Status]
