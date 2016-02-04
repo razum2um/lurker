@@ -18,7 +18,7 @@ module Lurker
     attr_accessor :content
 
     def self.templates_root
-      options[:template].present? ? Pathname.new(options[:templates]).expand_path : Lurker::BUNDLED_TEMPLATES_PATH
+      Lurker::BUNDLED_TEMPLATES_PATH
     end
 
     def self.assets_root
@@ -106,7 +106,10 @@ module Lurker
 
       def setup_rendering_engine!
         I18n.config.enforce_available_locales = true
-        Lurker::RenderingController.prepend_view_path templates_root
+        Lurker::RenderingController.prepend_view_path Lurker::Cli.templates_root
+        if options[:templates].present?
+          Lurker::RenderingController.prepend_view_path Pathname.new(options[:templates]).expand_path
+        end
         Lurker::RenderingController.config.assets_dir = assets_root
       end
 
@@ -159,7 +162,6 @@ module Lurker
         @html_options ||= {
             static_html: true,
             url_base_path: url_base_path.prepend('/'),
-            template_directory: templates_root,
             assets_directory: assets_root,
             assets: assets,
             html_directory: output_path,
@@ -195,10 +197,6 @@ module Lurker
 
     def assets_root
       Lurker::Cli.assets_root
-    end
-
-    def templates_root
-      Lurker::Cli.templates_root
     end
 
     def asset_logical_path(path)
