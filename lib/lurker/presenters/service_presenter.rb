@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require 'active_support/hash_with_indifferent_access'
 
 # An BasePresenter for Lurker::Service
 class Lurker::ServicePresenter < Lurker::BasePresenter
