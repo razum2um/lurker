@@ -23,17 +23,17 @@ Gem::Specification.new do |spec|
   spec.add_dependency("json", "~> 1.7")
   spec.add_dependency("json-schema", "~> 2.2")
   spec.add_dependency("thor", "~> 0.19")
-  spec.add_dependency("sinatra", "~> 1.4")
+  spec.add_dependency("sinatra", ">= 1.4", "< 2.1")
   spec.add_dependency("hashie", ">= 3.0")
-  spec.add_dependency("activesupport", ">= 3.2", "< 4.3")
+  spec.add_dependency("activesupport", ">= 3.2", "< 5.1")
 
   # testing
   spec.add_development_dependency("psych", "~> 2.0")
   spec.add_development_dependency("bundler", ">= 1.7.11")
   spec.add_development_dependency("rack-cors", "~> 0.2")
-  spec.add_development_dependency("rails", ">= 3.2", "< 4.3")
+  spec.add_development_dependency("rails", ">= 3.2", "< 5.1")
   spec.add_development_dependency("rake", "~> 10.2")
-  spec.add_development_dependency("rspec", "~> 2.14.0")
+  spec.add_development_dependency("rspec", ">= 2.14.0")
   spec.add_development_dependency("cucumber", "~> 1.3")
   spec.add_development_dependency("aruba", "~> 0.6.2")
   spec.add_development_dependency("capybara", "~> 2.2")
@@ -47,13 +47,14 @@ Gem::Specification.new do |spec|
 
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn"t getting used, but lib"s one
-  spec.add_development_dependency("rspec-rails", "~> 2.14.0")
-  spec.add_development_dependency("pg", "~> 0.16")
-  spec.add_development_dependency("kramdown", "~> 1.3")
-  spec.add_development_dependency("diffy", "~> 3.0")
-  spec.add_development_dependency("execjs", "~> 2.0")
-  spec.add_development_dependency("pdfkit", "~> 0.6")
-  spec.add_development_dependency("wkhtmltopdf-binary", "~> 0.9")
+  #spec.add_development_dependency("rspec-rails", "~> 2.14.0")
+  #spec.add_development_dependency("pg", "~> 0.16")
+  #spec.add_development_dependency("kramdown", "~> 1.3")
+  #spec.add_development_dependency("diffy", "~> 3.0")
+  #spec.add_development_dependency("execjs", "~> 2.0")
+  #spec.add_development_dependency("pdfkit", "~> 0.6")
+  #spec.add_development_dependency("wkhtmltopdf-binary", "~> 0.9")
+  #spec.add_development_dependency("pry-byebug")
 
   if RUBY_VERSION >= "2.2.0"
     # FIXME : this gem are needed to ruby 2.2.0

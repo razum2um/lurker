@@ -23,6 +23,15 @@ end
 gem 'unicorn', group: :production
 
 append_to_file 'Gemfile' do
+
+  # remove after sinatra-2.0 release
+  if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
+    deps = %q{
+      gem 'sinatra', '>= 2.0.0.beta2'
+      gem 'listen', '~> 3.0.5'
+    }
+  end
+
   gem = if ENV['TRAVIS']
     "gem 'lurker', github: 'razum2um/lurker', branch: 'master'"
   else
@@ -37,6 +46,8 @@ append_to_file 'Gemfile' do
     # please, dont commit here: "gem 'lurker', path: '../../'"
     # as I deploy this app instantly with this Gemfile
     #{gem}
+
+    #{deps}
   CODE
 end
 

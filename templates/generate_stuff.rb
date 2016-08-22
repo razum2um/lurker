@@ -291,6 +291,12 @@ append_to_file 'config/environment.rb' do
   CODE
 end
 
+rack_cors_injection = if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
+  'Rack::Cors'
+else
+  '"Rack::Cors"'
+end
+
 inject_into_class 'config/application.rb', 'Application' do
   <<-CODE
     if ENV['DATABASE_URL'].present? # heroku
@@ -298,7 +304,7 @@ inject_into_class 'config/application.rb', 'Application' do
     end
 
     require 'rack/cors' # FIXME
-    config.middleware.insert 0, "Rack::Cors" do
+    config.middleware.insert 0, #{rack_cors_injection} do
       allow do
         origins %w[localhost:3000 127.0.0.1:3000 razum2um.github.io lurker-app.herokuapp.com lurker.razum2um.me]
         resource '*',
@@ -337,6 +343,13 @@ file 'test/test_helper.rb', force: true do
   CODE
 end
 
+# only rails 5 tested with rspec 3
+rspec_2_config = if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
+  ''
+else
+  'c.treat_symbols_as_metadata_keys_with_true_values = true'
+end
+
 file 'spec/support/fixme.rb', force: true do
   <<-CODE
     require 'simplecov'
@@ -362,7 +375,7 @@ file 'spec/support/fixme.rb', force: true do
 
     RSpec.configure do |c|
       c.infer_spec_type_from_file_location! if c.respond_to?(:infer_spec_type_from_file_location!)
-      c.treat_symbols_as_metadata_keys_with_true_values = true
+      #{rspec_2_config}
       c.backtrace_exclusion_patterns += [
         /\\/lib\\/lurker/
       ]

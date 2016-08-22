@@ -37,7 +37,8 @@ namespace :assets do
     sprockets.append_path(SOURCE_DIR.join('javascripts').to_s)
     sprockets.append_path(SOURCE_DIR.join('stylesheets').to_s)
 
-    %w[jquery-rails bootstrap-sass remotipart lurker].each do |gem|
+    # %w[jquery-rails bootstrap-sass remotipart lurker].each do |gem|
+    %w[jquery-rails bootstrap-sass lurker].each do |gem|
       gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
       %w[javascripts stylesheets fonts].each do |prefix|
         %w[assets vendor/assets lib/lurker/templates].each do |interfix|

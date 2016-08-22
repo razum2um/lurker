@@ -2,6 +2,7 @@ require 'ostruct'
 require 'abstract_controller'
 require 'action_view'
 require 'action_dispatch/http/mime_type'
+require 'active_support/core_ext/string/filters'
 require 'action_dispatch/routing'
 
 module Lurker

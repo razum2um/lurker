@@ -40,7 +40,11 @@ namespace :generate do
 
   desc "generate a bunch of stuff with generators"
   task :stuff do
-    in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
+    if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
+      in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake app:template"
+    else
+      in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
+    end
 
     unless ENV['TRAVIS']
       in_lurker_app 'bin/rake db:setup'
