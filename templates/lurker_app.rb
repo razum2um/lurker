@@ -1,7 +1,15 @@
 # This is initial testing/demo rails app template (passed to `rails new`)
 
+if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
+  gem 'sinatra', '>= 2.0.0.beta2' # remove after sinatra-2.0 release
+  gem 'listen', '~> 3.0.5'
+  gem 'rspec-rails', '~> 3.5.0'
+else
+  gem 'rspec-rails', '~> 2.14.0'
+end
+
+
 gem 'rack-cors', require: 'rack/cors'
-gem 'rspec-rails', '~> 2.14.0'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
@@ -10,6 +18,9 @@ gem 'pdfkit', '~> 0.5'
 gem 'wkhtmltopdf-binary', '~> 0.9'
 gem 'execjs'
 gem 'coderay'
+
+# include into demo app to be deployed
+gem 'unicorn', group: :production
 
 unless ENV['TRAVIS']
   if RUBY_VERSION > '2.0.0'
@@ -20,18 +31,7 @@ unless ENV['TRAVIS']
   gem 'pry-stack_explorer', group: [:development, :test]
 end
 
-gem 'unicorn', group: :production
-
 append_to_file 'Gemfile' do
-
-  # remove after sinatra-2.0 release
-  if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
-    deps = %q{
-      gem 'sinatra', '>= 2.0.0.beta2'
-      gem 'listen', '~> 3.0.5'
-    }
-  end
-
   gem = if ENV['TRAVIS']
     "gem 'lurker', github: 'razum2um/lurker', branch: 'master'"
   else
@@ -46,8 +46,6 @@ append_to_file 'Gemfile' do
     # please, dont commit here: "gem 'lurker', path: '../../'"
     # as I deploy this app instantly with this Gemfile
     #{gem}
-
-    #{deps}
   CODE
 end
 

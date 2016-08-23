@@ -46,7 +46,7 @@ appraise 'rails-50' do
   gem 'rspec', '~> 3.5.0'
   gem 'rspec-rails', '~> 3.5.1'
   gem 'sinatra', '~> 2.0.0.beta2'
-  gem 'listen', '~> 3.0.5', group: [:development] # FIXME
+  gem 'listen', '~> 3.0.5' # FIXME
   eval ::File.read('Gemfile')
 end
 

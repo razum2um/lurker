@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 gemspec
 
 # these gems are needed while cucumber runs
-gem 'pg', '~> 0.16'
+gem 'pg', '~> 0.18'
 gem 'kramdown', '~> 1.3'
 gem 'diffy', '~> 3.0'
 gem 'execjs', '~> 2.0'

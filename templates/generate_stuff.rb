@@ -50,6 +50,15 @@ remove_file 'app/models/user.rb'
 
 generate 'rspec:install'
 
+# only rails 5 tested with rspec 3
+if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
+  FileUtils.cp("spec/rails_helper.rb", "spec/spec_helper.rb")
+  rspec_2_config = ''
+ else
+   rspec_2_config = 'c.treat_symbols_as_metadata_keys_with_true_values = true'
+ end
+
+
 route <<-ROUTE
   namespace :api do
     namespace :v1 do
@@ -341,13 +350,6 @@ file 'test/test_helper.rb', force: true do
       end
     end
   CODE
-end
-
-# only rails 5 tested with rspec 3
-rspec_2_config = if ENV['BUNDLE_GEMFILE'] =~ /rails_5/
-  ''
-else
-  'c.treat_symbols_as_metadata_keys_with_true_values = true'
 end
 
 file 'spec/support/fixme.rb', force: true do
