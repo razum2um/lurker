@@ -50,6 +50,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("puma", "> 0")
   spec.add_development_dependency("bootsnap", "> 0")
   spec.add_development_dependency("listen", "> 0")
+  spec.add_development_dependency("sass-rails", "> 0")
   spec.add_development_dependency("rspec-rails", ">= 2.14.0")
   spec.add_development_dependency("pg", ">= 0.16")
   spec.add_development_dependency("kramdown", ">= 1.3")

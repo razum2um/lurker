@@ -2,4 +2,9 @@ source "https://rubygems.org"
 
 gem "rails", "~> 6.0"
 
+gem "jquery-rails"
+gem "bootstrap-sass"
+gem "remotipart"
+gem "uglifier"
+
 gemspec :path => "../"
