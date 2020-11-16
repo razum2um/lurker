@@ -22,8 +22,7 @@ Feature: mutidomain support
       basePath: ''
       description: ''
       domains:
-        '[Sandbox] Heroku': 'http://lurker-app.herokuapp.com'
-        '[Real] razum2um.me': 'http://lurker.razum2um.me'
+        'razum2um.me': 'https://lurker.razum2um.me'
       name: Lurker Demo Application
       extensions: {}
       """
@@ -60,9 +59,9 @@ Feature: mutidomain support
     """
 
   When I go to "/lurker/api/v1/users/__id-DELETE.html"
-  When I select "[Sandbox] Heroku" hostname
+  When I select "razum2um.me" hostname
   Then I should see:
     """
-    curl -X DELETE 'http://lurker-app.herokuapp.com/api/v1/users/1'
+    curl -X DELETE 'https://lurker.razum2um.me/api/v1/users/1'
     """
 

@@ -15,8 +15,7 @@ Feature: html generation
       basePath: ''
       description: ''
       domains:
-        '[Sandbox] Heroku': 'http://lurker-app.herokuapp.com'
-        '[Real] razum2um.me': 'http://lurker.razum2um.me'
+        'razum2um.me': 'https://lurker.razum2um.me'
       consumes:
       - application/x-www-form-urlencoded
       - application/json
