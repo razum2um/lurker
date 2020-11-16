@@ -16,8 +16,15 @@ env:
   - CUCUMBER_PUBLISH_QUIET=true
 jobs:
   include:
+    - rvm: 2.6.5
+      env:  BUNDLER_VERSION=1.17.3 CUCUMBER_PUBLISH_QUIET=true
+      gemfile: gemfiles/rails_4.gemfile
+    - rvm: 2.6.5
+      gemfile: gemfiles/rails_5.gemfile
+    - rvm: 2.6.5
+      gemfile: gemfiles/rails_6.gemfile
     - rvm: 2.7.0
-      env:  BUNDLER_VERSION=1.17.3
+      env:  BUNDLER_VERSION=1.17.3 CUCUMBER_PUBLISH_QUIET=true
       gemfile: gemfiles/rails_4.gemfile
     - rvm: 2.7.0
       gemfile: gemfiles/rails_5.gemfile
