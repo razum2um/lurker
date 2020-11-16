@@ -60,8 +60,6 @@ Feature: multitype request support
   Scenario: json schema tests response parameters and update request parameters using "users/update"
     Given a file named "spec/controllers/api/v2/users_controller_spec.rb" with:
       """ruby
-        require "spec_helper"
-
         describe Api::V2::UsersController, :lurker do
           render_views
 
@@ -70,7 +68,7 @@ Feature: multitype request support
           end
 
           it "updates a user surname as string" do
-            patch :update, id: user.id, user: { surname: 'Marley' }
+            patch :update, params: { id: user.id, user: { surname: 'Marley' } }
             expect(response).to be_success
           end
         end

@@ -5,8 +5,6 @@ Feature: request nested schema scaffolding
   Scenario: scaffold a json schema for a "repos/show" in a nested controller spec
     Given a file named "spec/requests/repos_spec.rb" with:
       """ruby
-      require "spec_helper"
-
       describe Api::V1::ReposController, :lurker do
         let!(:user) do
           User.where(name: 'razum2um').first_or_create!.tap do |u|

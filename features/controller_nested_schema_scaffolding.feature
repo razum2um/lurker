@@ -5,8 +5,6 @@ Feature: controller nested schema scaffolding
   Scenario: scaffold a json schema for a "repos/index" in a nested controller spec
     Given a file named "spec/controllers/api/v1/repos_controller_spec.rb" with:
       """ruby
-      require "spec_helper"
-
       describe Api::V1::ReposController, :lurker do
         render_views
 
@@ -18,7 +16,7 @@ Feature: controller nested schema scaffolding
         end
 
         it "lists all the repos of the user" do
-          get :index, user_id: user.id, limit: 1, format: 'json'
+          get :index, params: { user_id: user.id, limit: 1, format: 'json' }
           expect(response).to be_success
           expect(JSON.parse(response.body).size).to eq 1
         end
@@ -41,8 +39,8 @@ Feature: controller nested schema scaffolding
       properties:
         limit:
           description: ''
-          type: integer
-          example: 1
+          type: string
+          example: '1'
     responseCodes:
     - status: 200
       successful: true
@@ -75,7 +73,7 @@ Feature: controller nested schema scaffolding
         action: index
         user_id: '1'
       query_params:
-        limit: 1
+        limit: '1'
 
     """
 

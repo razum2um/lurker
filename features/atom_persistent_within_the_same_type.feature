@@ -59,8 +59,6 @@ Feature: atom persistent within test suite
   Scenario: json schema tests response parameters and keep atom unchanged using "users/update"
   Given a file named "spec/controllers/api/v2/users_controller_spec.rb" with:
     """ruby
-      require "spec_helper"
-
       describe Api::V2::UsersController, :lurker do
         render_views
 
@@ -69,7 +67,7 @@ Feature: atom persistent within test suite
         end
 
         it "updates a user surname as string" do
-          patch :update, id: user.id, user: { surname: 'Marley' }
+          patch :update, params: { id: user.id, user: { surname: 'Marley' } }
           expect(response).to be_success
         end
       end

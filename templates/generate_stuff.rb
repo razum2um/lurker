@@ -109,8 +109,6 @@ file 'config/initializers/serializer.rb', force: true do
   CODE
 end
 
-copy_file "#{File.expand_path '../../templates/rails32_http_patch_support.rb', __FILE__}", "config/initializers/rails32_http_patch_support.rb"
-
 inject_into_class 'app/models/user.rb', 'User' do
   <<-CODE
     include ExactOrderAsJson
@@ -134,7 +132,7 @@ file 'app/controllers/application_controller.rb', 'ApplicationController', force
   <<-CODE
     class ApplicationController < ActionController::Base
       protect_from_forgery with: :null_session
-      before_filter :set_format
+      before_action :set_format
 
       private
 
@@ -174,7 +172,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
       end
 
       def update
-        if user.update_attributes(user_params)
+        if user.update(user_params)
           render json: user
         else
           render json: { errors: user.errors }, status: :bad_request
@@ -235,7 +233,7 @@ file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', f
 
       def update
         @repo = repo
-        if @repo.update_attributes(repo_params)
+        if @repo.update(repo_params)
           render json: @repo
         else
           render json: { errors: @repo.errors }, status: :bad_request
@@ -341,6 +339,13 @@ file 'spec/support/fixme.rb', force: true do
   <<-CODE
     require 'simplecov'
 
+    module ActionDispatchTestResponseCompat
+      def success?
+        status == 200
+      end
+    end
+    ActionDispatch::TestResponse.include(ActionDispatchTestResponseCompat)
+
     if simplecov_root = ENV['SIMPLECOV_ROOT']
       SimpleCov.root simplecov_root
     end
@@ -414,3 +419,14 @@ file 'db/schema.rb', force: true do
   CODE
 end
 
+append_to_file 'spec/rails_helper.rb' do
+  <<-CODE
+    Dir[File.expand_path '../support/**/*.rb', __FILE__].each { |file| require file }
+  CODE
+end
+
+append_to_file '.rspec' do
+  <<-CODE
+    --require rails_helper
+  CODE
+end

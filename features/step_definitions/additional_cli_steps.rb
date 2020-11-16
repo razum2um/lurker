@@ -5,13 +5,8 @@ Given /^a checked file "([^"]*)" with:$/ do |file_name, file_content|
   in_current_directory { @files[md5(file_name)] = checksum(file_name) }
 end
 
-Given /^an empty directory named "([^"]*)"$/ do |dir_name|
-  in_current_dir { _rm_rf(dir_name) }
-  create_dir(dir_name)
-end
-
 Given /^a service file with:$/ do |file_content|
-  in_current_dir do
+  in_current_directory do
     write_file("#{Lurker::DEFAULT_SERVICE_PATH}/#{Rails.application.class.parent_name}#{Lurker::Service::SUFFIX}", file_content)
   end
 end
@@ -105,13 +100,13 @@ Then(/^I should see JSON response with "([^"]*)"$/) do |name|
 end
 
 Then /(?:a|the) checked file "([^"]*)" should not change$/ do |file_name|
-  in_current_dir do
+  in_current_directory do
     expect(@files.try(:[], md5(file_name))).to eq checksum(file_name)
   end
 end
 
 Then /(?:a|the) checked file "([^"]*)" should change$/ do |file_name|
-  in_current_dir do
+  in_current_directory do
     expect(@files.try(:[], md5(file_name))).not_to eq checksum(file_name)
   end
 end

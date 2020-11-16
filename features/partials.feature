@@ -65,8 +65,6 @@ Feature: partials
 
     Given a file named "spec/requests/repo_creation_spec.rb" with:
       """ruby
-      require "spec_helper"
-
       describe Api::V1::ReposController, :lurker do
         let!(:user) do
           User.where(name: 'razum2um').first_or_create!
@@ -74,7 +72,7 @@ Feature: partials
 
         it "creates a new repo" do
           expect {
-            post "/api/v1/users/#{user.id}/repos.json", repo: { name: 'new-gem' }
+            post "/api/v1/users/#{user.id}/repos.json", params: { repo: { name: 'new-gem' } }
             expect(response).to be_success
             expect(JSON.parse(response.body)['user']).to eq JSON.parse(user.to_json)
           }.to change { Repo.count } .by(1)

@@ -16,7 +16,9 @@ module Lurker
       @block = block
 
       @service = if defined?(Rails)
-        Service.new(Rails.root.join(DEFAULT_SERVICE_PATH).to_s, Rails.application.class.parent_name)
+        rails_app_class = Rails.application.class
+        rails_app_name = rails_app_class.respond_to?(:module_parent_name) ? rails_app_class.module_parent_name : rails_app_class.parent_name
+        Service.new(Rails.root.join(DEFAULT_SERVICE_PATH).to_s, rails_app_name)
       else
         Service.default_service
       end
