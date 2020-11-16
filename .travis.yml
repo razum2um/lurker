@@ -3,6 +3,8 @@ dist: focal
 before_install:
   - gem install bundler -v 1.17.3
   - bundle config set path ${PWD}/vendor/bundle
+services:
+  - postgresql
 sudo: false
 gemfile:
   - gemfiles/rails_4.gemfile
