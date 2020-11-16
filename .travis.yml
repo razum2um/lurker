@@ -1,4 +1,5 @@
 language: ruby
+dist: focal
 sudo: false
 gemfile:
   - gemfiles/rails_4.gemfile
