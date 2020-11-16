@@ -4,6 +4,7 @@ group: dev
 cache: bundler
 before_install:
   - if [ $BUNDLER_VERSION ]; then
+      rm -f $(which bundle)
       rvm @global do gem uninstall bundler --executables --force;
       rvm @global do gem install bundler -v $BUNDLER_VERSION;
     else
