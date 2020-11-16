@@ -1,14 +1,21 @@
 language: ruby
 dist: focal
+cache: bundler
 before_install:
-  - gem install bundler -v 1.17.3
-  - bundle config set path ${PWD}/vendor/bundle
+  - if [ $BUNDLER_VERSION ]; then
+      rvm @global do gem uninstall bundler --executables --force;
+      rvm @global do gem install bundler -v $BUNDLER_VERSION;
+    else
+      gem install bundler --no-document;
+    fi
 services:
   - postgresql
+jobs:
+  include:
+    - rvm: 2.7
+      env: BUNDLE_GEMFILE=gemfiles/rails_4.gemfile BUNDLER_VERSION=1.17.3
+    - rvm: 2.7
+      env: BUNDLE_GEMFILE=gemfiles/rails_5.gemfile
+    - rvm: 2.7
+      env: BUNDLE_GEMFILE=gemfiles/rails_6.gemfile
 sudo: false
-gemfile:
-  - gemfiles/rails_4.gemfile
-  - gemfiles/rails_5.gemfile
-  - gemfiles/rails_6.gemfile
-rvm:
-  - 2.7
