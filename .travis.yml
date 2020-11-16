@@ -13,9 +13,10 @@ services:
 jobs:
   include:
     - rvm: 2.7
-      env: BUNDLE_GEMFILE=gemfiles/rails_4.gemfile BUNDLER_VERSION=1.17.3
+      env:  BUNDLER_VERSION=1.17.3
+      gemfile: gemfiles/rails_4.gemfile
     - rvm: 2.7
-      env: BUNDLE_GEMFILE=gemfiles/rails_5.gemfile
+      gemfile: gemfiles/rails_5.gemfile
     - rvm: 2.7
-      env: BUNDLE_GEMFILE=gemfiles/rails_6.gemfile
+      gemfile: gemfiles/rails_6.gemfile
 sudo: false
