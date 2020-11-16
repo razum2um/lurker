@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 4.2"
-gem "bigdecimal", ">= 2.0.0"
+gem "bigdecimal", "~> 1.4"
 
 gem "jquery-rails"
 gem "bootstrap-sass"
