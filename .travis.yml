@@ -1,5 +1,5 @@
 language: ruby
-dist: focal
+dist: xenial
 group: dev
 cache: bundler
 before_install:
