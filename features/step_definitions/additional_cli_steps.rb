@@ -7,7 +7,9 @@ end
 
 Given /^a service file with:$/ do |file_content|
   in_current_directory do
-    write_file("#{Lurker::DEFAULT_SERVICE_PATH}/#{Rails.application.class.parent_name}#{Lurker::Service::SUFFIX}", file_content)
+    rails_app_class = Rails.application.class
+    rails_app_name = rails_app_class.respond_to?(:module_parent_name) ? rails_app_class.module_parent_name : rails_app_class.parent_name
+    write_file("#{Lurker::DEFAULT_SERVICE_PATH}/#{rails_app_name}#{Lurker::Service::SUFFIX}", file_content)
   end
 end
 
