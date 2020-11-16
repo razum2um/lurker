@@ -1,7 +1,7 @@
-if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
   EXAMPLE_APP = "tmp/lurker_app_#{rails_version}"
 else
-  raise "Use `appraisal rails-XY rake ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+  raise "Use `appraisal rails-X rake ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
 end
 
 EXAMPLE_PATH = File.expand_path("../../#{EXAMPLE_APP}", __FILE__)
