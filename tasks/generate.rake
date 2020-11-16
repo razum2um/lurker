@@ -54,7 +54,8 @@ end
 def in_lurker_app(command)
   FileUtils.mkdir_p(EXAMPLE_PATH)
   Dir.chdir(EXAMPLE_PATH) do
-    Bundler.with_unbundled_env do
+    bundler_method = Bundler.respond_to?(:with_unbundled_env) ? :with_unbundled_env : :with_clean_env
+    Bundler.send(bundler_method) do
       sh command
     end
   end
