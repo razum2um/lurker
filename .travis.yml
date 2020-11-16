@@ -1,6 +1,7 @@
 language: ruby
 dist: focal
 before_install:
+  - gem install bundler -v 1.17.3
   - bundle config set path ${PWD}/vendor/bundle
 sudo: false
 gemfile:
