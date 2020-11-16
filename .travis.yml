@@ -1,5 +1,6 @@
 language: ruby
 dist: focal
+group: dev
 cache: bundler
 before_install:
   - if [ $BUNDLER_VERSION ]; then
