@@ -75,10 +75,10 @@ Aruba::Setup.prepend(ArubaSetupNoClobber)
 Aruba.configure do |config|
   config.working_directory = relative_example_path # Aruba::Contracts::RelativePath
   config.activate_announcer_on_command_failure = [:stdout]
-  # config.before :command do |cmd|
-  #   set_env 'SIMPLECOV_CMDNAME', Digest::MD5.hexdigest(cmd)
-  #   set_env 'SIMPLECOV_ROOT',    File.expand_path('../../..', __FILE__)
-  # end
+  config.before :command do |cmd|
+    set_environment_variable 'SIMPLECOV_CMDNAME', Digest::MD5.hexdigest(cmd.object_id.to_s)
+    set_environment_variable 'SIMPLECOV_ROOT',    File.expand_path('../../..', __FILE__)
+  end
 end
 
 Before do
