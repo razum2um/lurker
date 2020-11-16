@@ -1,4 +1,13 @@
-if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
+def rails_version
+  if (version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)&.to_a&.last)
+    Gem::Version.new(version)
+  end
+end
+
+TEMPLATE_TASK = rails_version >= Gem::Version.new('5.0') ? 'app:template' : 'rails:template'
+TASK_RUNNER = rails_version >= Gem::Version.new('5.0') ? 'bin/rails' : 'bin/rake'
+
+if rails_version
   EXAMPLE_APP = "tmp/lurker_app_#{rails_version}"
 else
   raise "Export BUNDLE_GEMFILE=gemfiles/rails_... explicitly"
@@ -41,13 +50,14 @@ namespace :generate do
 
   desc "generate a bunch of stuff with generators"
   task :stuff do
-    in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rails app:template"
+    in_lurker_app "LOCATION='../../templates/generate_stuff.rb' #{TASK_RUNNER} #{TEMPLATE_TASK}"
 
-    unless ENV['CI']
-      in_lurker_app 'bin/rails db:setup'
-      in_lurker_app 'bin/rails db:import'
+    if ENV['CI']
+      in_lurker_app "#{TASK_RUNNER} RAILS_ENV=test db:setup "
+    else
+      in_lurker_app "#{TASK_RUNNER} db:setup"
+      in_lurker_app "#{TASK_RUNNER} db:import"
     end
-    in_lurker_app 'bin/rails RAILS_ENV=test db:setup'
   end
 end
 
