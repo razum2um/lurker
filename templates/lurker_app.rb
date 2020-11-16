@@ -19,7 +19,7 @@ gem 'unicorn', group: :production
 
 append_to_file 'Gemfile' do
   gem = if ENV['TRAVIS']
-    "gem 'lurker', github: 'razum2um/lurker', branch: 'master'"
+    "gem 'lurker', github: 'razum2um/lurker', branch: '#{ENV['TRAVIS_BRANCH']}'"
   else
     origin = `cd ../.. && git config --get remote.origin.url`.scan(/github\.com.(.*).git/).flatten.first.strip rescue 'razum2um/lurker'
     branch = `cd ../.. && git rev-parse --abbrev-ref HEAD`.strip rescue 'master'
