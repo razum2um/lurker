@@ -80,7 +80,7 @@ end
 Then /^the output should contain (failures|these lines):$/ do |_, lines|
   out = all_output.dup
   lines.split(/\n/).map(&:strip).each do |line|
-    next if line.blank?
+    next if line.strip!.blank?
     expect(out).to match /#{Regexp.escape(line)}/
     out.gsub!(/.*?#{Regexp.escape(line)}/m, '')
   end
