@@ -15,6 +15,7 @@ services:
 env:
   - CUCUMBER_PUBLISH_QUIET=true
 jobs:
+  fast_finish: true
   include:
     - rvm: 2.6.5
       env:  BUNDLER_VERSION=1.17.3 CUCUMBER_PUBLISH_QUIET=true
@@ -27,6 +28,4 @@ jobs:
       gemfile: gemfiles/rails_5.gemfile
     - rvm: 2.7.0
       gemfile: gemfiles/rails_6.gemfile
-sudo: false
-matrix:
-  fast_finish: true
+  
