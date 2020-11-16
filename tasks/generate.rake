@@ -1,5 +1,5 @@
 def rails_version
-  if (version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)&.to_a&.last)
+  if (version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_(\d+)/)&.to_a&.last)
     Gem::Version.new(version)
   end
 end
