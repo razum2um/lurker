@@ -63,7 +63,7 @@ class Lurker::ServicePresenter < Lurker::BasePresenter
   end
 
   def url_name
-    @url_name ||= ActiveSupport::Inflector.parameterize(name, '_')
+    @url_name ||= name.gsub(/[^a-z0-9\-_]+/i, '_')
   end
 
   def url(extension = ".html")
