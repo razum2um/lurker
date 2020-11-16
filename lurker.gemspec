@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("aruba", ">= 0.6.2")
   spec.add_development_dependency("capybara", ">= 2.2")
   spec.add_development_dependency("nokogiri", ">= 1.5")
-  spec.add_development_dependency("poltergeist", ">= 1.5")
+  spec.add_development_dependency("webdrivers", ">= 1.5")
   spec.add_development_dependency("database_cleaner", ">= 1.2")
 
   spec.add_development_dependency("simplecov", ">= 0.7")
@@ -47,6 +47,7 @@ Gem::Specification.new do |spec|
 
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn"t getting used, but lib"s one
+  spec.add_development_dependency("puma", "> 0")
   spec.add_development_dependency("bootsnap", "> 0")
   spec.add_development_dependency("listen", "> 0")
   spec.add_development_dependency("rspec-rails", ">= 2.14.0")

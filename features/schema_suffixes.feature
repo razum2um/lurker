@@ -50,8 +50,6 @@ Feature: schema suffixes
       """
     And a file named "spec/requests/updating_repos_spec.rb" with:
       """ruby
-      require "spec_helper"
-
       describe Api::V1::ReposController, :lurker, type: :request do
 
         let(:user) do
@@ -64,7 +62,7 @@ Feature: schema suffixes
 
         it "updates a repo name" do
           expect {
-            patch "/api/v1/users/#{user.name}/repos/#{repo.name}.json", repo: { name: 'updated-name' }
+            patch "/api/v1/users/#{user.name}/repos/#{repo.name}.json", params: { repo: { name: 'updated-name' } }
             expect(response).to be_success
           }.to change { repo.reload.name } .from('lurker').to('updated-name')
         end
@@ -115,8 +113,6 @@ Feature: schema suffixes
       """
     And a file named "spec/requests/failed_updating_repos_spec.rb" with:
       """ruby
-      require "spec_helper"
-
       describe Api::V1::ReposController, type: :request do
 
         let(:user) do
@@ -129,7 +125,7 @@ Feature: schema suffixes
 
         it "fails to update a repo with a blank name", lurker: 'failed' do
           expect {
-            patch "/api/v1/users/#{user.name}/repos/#{repo.name}.json", repo: { name: '' }
+            patch "/api/v1/users/#{user.name}/repos/#{repo.name}.json", params: { repo: { name: '' } }
             expect(response).not_to be_success
           }.not_to change { repo.reload.name }
         end

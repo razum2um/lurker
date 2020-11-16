@@ -49,10 +49,8 @@ Feature: minitest
       description: ''
     responseParameters:
       description: ''
-      type: object
-      additionalProperties: false
-      required: []
-      properties: {}
+      type: boolean
+      example: true
     extensions:
       method: DELETE
       path_info: "/api/v1/users/1/repos/1.json"
@@ -112,7 +110,7 @@ Feature: minitest
           assert_equal 1, User.count
 
           Lurker::Spy.on do
-            patch "/api/v1/users/#{user.id}.json", user: { name: '' }
+            patch "/api/v1/users/#{user.id}.json", params: { user: { name: '' } }
           end
 
           assert_equal 200, status

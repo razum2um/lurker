@@ -55,8 +55,6 @@ Feature: $ref defererencing through inlining
       """
     And a file named "spec/controllers/api/v3/users_controller_spec.rb" with:
       """ruby
-        require "spec_helper"
-
         describe Api::V3::UsersController, :lurker do
           render_views
 
@@ -65,7 +63,7 @@ Feature: $ref defererencing through inlining
           end
 
           it "updates a user surname as string" do
-            patch :update, id: user.id, user: { surname: 'Marley' }
+            patch :update, params: { id: user.id, user: { surname: 'Marley' } }
             expect(response).to be_success
           end
         end
