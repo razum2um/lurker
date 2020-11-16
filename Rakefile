@@ -23,7 +23,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 
 Cucumber::Rake::Task.new(:cucumber) do |t|
-  t.cucumber_opts = "features --format progress --tags ~@wip"
+  t.cucumber_opts = "features --format progress"
 end
 
 task :default => ["clobber:coverage", :spec, :regenerate, :cucumber, 'coveralls:push']
@@ -33,7 +33,7 @@ task :publish do
   require 'lurker'
   version = Lurker::VERSION
 
-  Bundler.with_clean_env do
+  Bundler.with_unbundled_env do
     system "git tag v#{version}"
     system "relish versions:add razum2um/lurker:#{version}"
     system "relish push razum2um/lurker:#{version}"

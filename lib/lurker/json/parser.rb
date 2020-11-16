@@ -16,7 +16,7 @@ module Lurker
         @parent_schema = options[:parent_schema]
         @parent_property = options[:parent_property]
         @polymorph_if_empty = options.fetch(:polymorph_if_empty, false)
-        @uri = options[:uri] || @parent_schema.try(:uri)
+        @uri = options[:uri] || @parent_schema&.uri
         @strategy = nil
       end
 

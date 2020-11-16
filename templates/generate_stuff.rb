@@ -1,6 +1,6 @@
 # This is secondary testing/demo rails app template (passed to `rake rails:template`)
 
-if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
   base_db_name = "lurker_app_#{rails_version}"
 else
   base_db_name = 'lurker_app'
@@ -298,7 +298,7 @@ inject_into_class 'config/application.rb', 'Application' do
     end
 
     require 'rack/cors' # FIXME
-    config.middleware.insert 0, "Rack::Cors" do
+    config.middleware.insert 0, Rack::Cors do
       allow do
         origins %w[localhost:3000 127.0.0.1:3000 razum2um.github.io lurker-app.herokuapp.com lurker.razum2um.me]
         resource '*',
@@ -362,7 +362,6 @@ file 'spec/support/fixme.rb', force: true do
 
     RSpec.configure do |c|
       c.infer_spec_type_from_file_location! if c.respond_to?(:infer_spec_type_from_file_location!)
-      c.treat_symbols_as_metadata_keys_with_true_values = true
       c.backtrace_exclusion_patterns += [
         /\\/lib\\/lurker/
       ]

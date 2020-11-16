@@ -54,7 +54,7 @@ namespace :assets do
 
     BUNDLES.each do |bundle|
       assets = sprockets.find_asset(bundle)
-      realname = (assets.pathname.basename.to_s.split(".").take_while { |s| !s.match /^(js|css|scss)$/ } + [$~.to_s]).join(".").gsub(/\.scss$/, '.css')
+      realname = (Pathname.new(assets.filename).basename.to_s.split(".").take_while { |s| !s.match /^(js|css|scss)$/ } + [$~.to_s]).join(".").gsub(/\.scss$/, '.css')
       assets.write_to(BUILD_DIR.join(realname))
     end
   end

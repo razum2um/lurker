@@ -1,7 +1,7 @@
 # This is initial testing/demo rails app template (passed to `rails new`)
 
 gem 'rack-cors', require: 'rack/cors'
-gem 'rspec-rails', '~> 2.14.0'
+gem 'rspec-rails'
 gem 'spring-commands-rspec'
 gem 'database_cleaner'
 gem 'simplecov', '~> 0.7.1', require: false
@@ -12,12 +12,7 @@ gem 'execjs'
 gem 'coderay'
 
 unless ENV['TRAVIS']
-  if RUBY_VERSION > '2.0.0'
-    gem 'pry-byebug', group: [:development, :test]
-  else
-    gem 'pry-debugger', group: [:development, :test]
-  end
-  gem 'pry-stack_explorer', group: [:development, :test]
+  gem 'pry-byebug'
 end
 
 gem 'unicorn', group: :production

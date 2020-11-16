@@ -3,7 +3,7 @@ gemspec
 
 group :development do
   # tools
-  platforms :mri_20, :mri_21, :mri_22 do
+  platforms :mri do
     gem 'pry-byebug'
     gem 'pry-stack_explorer'
     gem 'pry-session'
