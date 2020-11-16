@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency("database_cleaner", ">= 1.2")
 
   spec.add_development_dependency("simplecov", ">= 0.7")
-  spec.add_development_dependency("coveralls", ">= 0.7")
+  spec.add_development_dependency("coveralls_reborn", "> 0")
   spec.add_development_dependency("rubocop", ">= 0.21")
 
   # FIXME: these gems are needed while cucumber runs
