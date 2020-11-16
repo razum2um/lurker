@@ -7,10 +7,10 @@ SimpleCov.start do
 end
 
 def example_path
-  if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d\d/)
+  if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
     File.expand_path("../../../tmp/lurker_app_#{rails_version}", __FILE__)
   else
-    raise "Use `appraisal rails-XY cucumber ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+    raise "Use `appraisal rails-X cucumber ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
   end
 end
 
