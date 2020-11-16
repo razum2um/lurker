@@ -55,8 +55,8 @@ Feature: mutidomain support
             Converting lurker to html
      using  lurker
 
-    create  public/lurker/index.html
-    create  public/lurker/api/v1/users/__id-DELETE.html
+    public/lurker/index.html
+    public/lurker/api/v1/users/__id-DELETE.html
     """
 
   When I go to "/lurker/api/v1/users/__id-DELETE.html"

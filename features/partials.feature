@@ -89,7 +89,7 @@ Feature: partials
             Converting lurker to html
      using  lurker
 
-    create  public/lurker/index.html
-    create  public/lurker/api/v1/users/__user_id/repos-POST.html
+    public/lurker/index.html
+    public/lurker/api/v1/users/__user_id/repos-POST.html
     """
 
