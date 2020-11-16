@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 4.2.11"
+gem "rails", "~> 4.2"
 gem "sprockets"
 gem "sass-rails"
 gem "autoprefixer-rails", "~> 5.2"
