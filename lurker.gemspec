@@ -20,44 +20,42 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency("json", "~> 1.7")
-  spec.add_dependency("json-schema", "~> 2.2")
-  spec.add_dependency("thor", "~> 0.19")
-  spec.add_dependency("sinatra", "~> 1.4")
+  spec.add_dependency("json", ">= 1.7")
+  spec.add_dependency("json-schema", ">= 2.2")
+  spec.add_dependency("thor", ">= 0.19")
+  spec.add_dependency("sinatra", ">= 1.4")
   spec.add_dependency("hashie", ">= 3.0")
   spec.add_dependency("activesupport", ">= 4.2")
 
   # testing
-  spec.add_development_dependency("psych", "~> 2.0")
+  spec.add_development_dependency("psych", ">= 2.0")
   spec.add_development_dependency("bundler", ">= 1.7.11")
-  spec.add_development_dependency("rack-cors", "~> 0.2")
+  spec.add_development_dependency("rack-cors", ">= 0.2")
   spec.add_development_dependency("rails", ">= 3.2", "< 4.3")
-  spec.add_development_dependency("rake", "~> 10.2")
-  spec.add_development_dependency("rspec", "~> 2.14.0")
-  spec.add_development_dependency("cucumber", "~> 1.3")
-  spec.add_development_dependency("aruba", "~> 0.6.2")
-  spec.add_development_dependency("capybara", "~> 2.2")
-  spec.add_development_dependency("nokogiri", "~> 1.5")
-  spec.add_development_dependency("poltergeist", "~> 1.5")
-  spec.add_development_dependency("database_cleaner", "~> 1.2")
+  spec.add_development_dependency("rake", ">= 10.2")
+  spec.add_development_dependency("rspec", ">= 2.14.0")
+  spec.add_development_dependency("cucumber", ">= 1.3")
+  spec.add_development_dependency("aruba", ">= 0.6.2")
+  spec.add_development_dependency("capybara", ">= 2.2")
+  spec.add_development_dependency("nokogiri", ">= 1.5")
+  spec.add_development_dependency("poltergeist", ">= 1.5")
+  spec.add_development_dependency("database_cleaner", ">= 1.2")
 
-  spec.add_development_dependency("simplecov", "~> 0.7")
-  spec.add_development_dependency("coveralls", "~> 0.7")
-  spec.add_development_dependency("rubocop", "~> 0.21")
+  spec.add_development_dependency("simplecov", ">= 0.7")
+  spec.add_development_dependency("coveralls", ">= 0.7")
+  spec.add_development_dependency("rubocop", ">= 0.21")
 
   # FIXME: these gems are needed while cucumber runs
   # inner Gemfile isn"t getting used, but lib"s one
-  spec.add_development_dependency("rspec-rails", "~> 2.14.0")
-  spec.add_development_dependency("pg", "~> 0.16")
-  spec.add_development_dependency("kramdown", "~> 1.3")
-  spec.add_development_dependency("diffy", "~> 3.0")
-  spec.add_development_dependency("execjs", "~> 2.0")
-  spec.add_development_dependency("pdfkit", "~> 0.6")
-  spec.add_development_dependency("wkhtmltopdf-binary", "~> 0.9")
-
-  if RUBY_VERSION >= "2.2.0"
-    # FIXME : this gem are needed to ruby 2.2.0
-    spec.add_development_dependency("test-unit", "~> 3.0")
-  end
+  spec.add_development_dependency("bootsnap", "> 0")
+  spec.add_development_dependency("listen", "> 0")
+  spec.add_development_dependency("rspec-rails", ">= 2.14.0")
+  spec.add_development_dependency("pg", ">= 0.16")
+  spec.add_development_dependency("kramdown", ">= 1.3")
+  spec.add_development_dependency("diffy", ">= 3.0")
+  spec.add_development_dependency("execjs", ">= 2.0")
+  spec.add_development_dependency("pdfkit", ">= 0.6")
+  spec.add_development_dependency("wkhtmltopdf-binary", ">= 0.9")
+  spec.add_development_dependency("test-unit", ">= 3.0")
 end
 

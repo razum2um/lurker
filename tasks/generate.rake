@@ -31,7 +31,8 @@ namespace :generate do
     if needs_generation?
       sh "bundle exec rails new #{EXAMPLE_APP} -d postgresql -m #{File.expand_path '../../templates/lurker_app.rb', __FILE__} --skip-javascript --skip-git --skip-test-unit --skip-keeps --skip-bundle --quiet"
       in_lurker_app "bundle config --local local.lurker $PWD/../.." unless ENV['TRAVIS']
-      in_lurker_app "bundle install --without development --quiet"
+      in_lurker_app "bundle config --local set without 'development'"
+      in_lurker_app "bundle install --quiet"
       %w[rake rspec-core spring].each do |gem|
         in_lurker_app "bundle binstubs #{gem}"
       end
@@ -40,20 +41,20 @@ namespace :generate do
 
   desc "generate a bunch of stuff with generators"
   task :stuff do
-    in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rake rails:template --quiet --silent"
+    in_lurker_app "LOCATION='../../templates/generate_stuff.rb' bin/rails app:template"
 
     unless ENV['TRAVIS']
-      in_lurker_app 'bin/rake db:setup'
-      in_lurker_app 'bin/rake db:import'
+      in_lurker_app 'bin/rails db:setup'
+      in_lurker_app 'bin/rails db:import'
     end
-    in_lurker_app 'bin/rake RAILS_ENV=test db:setup'
+    in_lurker_app 'bin/rails RAILS_ENV=test db:setup'
   end
 end
 
 def in_lurker_app(command)
   FileUtils.mkdir_p(EXAMPLE_PATH)
   Dir.chdir(EXAMPLE_PATH) do
-    Bundler.with_clean_env do
+    Bundler.with_unbundled_env do
       sh command
     end
   end

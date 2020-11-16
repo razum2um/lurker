@@ -35,9 +35,12 @@ DatabaseCleaner.strategy = :truncation
 
 # see: https://github.com/colszowka/simplecov/issues/234
 Aruba.configure do |config|
-  config.before_cmd do |cmd|
-    set_env 'SIMPLECOV_CMDNAME', Digest::MD5.hexdigest(cmd)
-    set_env 'SIMPLECOV_ROOT',    File.expand_path('../../..', __FILE__)
+  # config.working_directory = '.' # Aruba::Contracts::RelativePath
+  # config.command_search_paths << example_path
+  config.before :command do |cmd|
+    # require 'pry-byebug'; binding.pry
+    # set_env 'SIMPLECOV_CMDNAME', Digest::MD5.hexdigest(cmd)
+    # set_env 'SIMPLECOV_ROOT',    File.expand_path('../../..', __FILE__)
   end
 end
 

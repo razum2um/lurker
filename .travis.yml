@@ -1,5 +1,7 @@
 language: ruby
 dist: focal
+before_install:
+  - bundle config set path ${PWD}/vendor/bundle
 sudo: false
 gemfile:
   - gemfiles/rails_4.gemfile
@@ -7,4 +9,3 @@ gemfile:
   - gemfiles/rails_6.gemfile
 rvm:
   - 2.7
-install: bundle install -j4 --path vendor/bundle

@@ -2,7 +2,7 @@ Given /^a checked file "([^"]*)" with:$/ do |file_name, file_content|
   write_file(file_name, file_content)
 
   @files ||= {}
-  in_current_dir { @files[md5(file_name)] = checksum(file_name) }
+  in_current_directory { @files[md5(file_name)] = checksum(file_name) }
 end
 
 Given /^an empty directory named "([^"]*)"$/ do |dir_name|
