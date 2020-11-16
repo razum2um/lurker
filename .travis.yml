@@ -6,7 +6,7 @@ before_install:
   - if [ $BUNDLER_VERSION ]; then
       rm -f $(which bundle);
       rvm @global do gem uninstall bundler --executables --force;
-      rvm @global do gem install bundler -v $BUNDLER_VERSION;
+      rvm @global do gem install bundler --force -v $BUNDLER_VERSION;
     else
       gem install bundler --no-document;
     fi
@@ -16,11 +16,11 @@ env:
   - CUCUMBER_PUBLISH_QUIET=true
 jobs:
   include:
-    - rvm: 2.7
+    - rvm: 2.7.0
       env:  BUNDLER_VERSION=1.17.3
       gemfile: gemfiles/rails_4.gemfile
-    - rvm: 2.7
+    - rvm: 2.7.0
       gemfile: gemfiles/rails_5.gemfile
-    - rvm: 2.7
+    - rvm: 2.7.0
       gemfile: gemfiles/rails_6.gemfile
 sudo: false
