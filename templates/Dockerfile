@@ -27,6 +27,8 @@ COPY --from=build /app/vendor /app/vendor
 
 COPY . /app
 
+RUN bin/lurker convert
+
 EXPOSE 3000
 
 ENV PATH "$PATH:/app/vendor/bundle/ruby/2.7.0/bin"
