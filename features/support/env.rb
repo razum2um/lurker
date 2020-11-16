@@ -54,6 +54,7 @@ Capybara.register_driver :headless_chrome do |app|
 end
 
 Capybara.app = Rails.application
+Capybara.server = :puma, { Silent: true, Threads: '1:1' }
 Capybara.javascript_driver = ENV['CAPYBARA_JS_DRIVER']&.to_sym || :headless_chrome
 
 DatabaseCleaner.strategy = :truncation
