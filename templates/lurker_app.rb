@@ -11,15 +11,14 @@ gem 'wkhtmltopdf-binary', '~> 0.9'
 gem 'execjs'
 gem 'coderay'
 
-unless ENV['TRAVIS']
+unless ENV['CI']
   gem 'pry-byebug'
 end
 
-gem 'unicorn', group: :production
-
 append_to_file 'Gemfile' do
-  gem = if ENV['TRAVIS']
-    "gem 'lurker', github: 'razum2um/lurker', branch: '#{ENV['TRAVIS_BRANCH']}'"
+  gem = if ENV['CI']
+    branch = %x[git branch --show-current]
+    "gem 'lurker', github: 'razum2um/lurker', branch: '#{branch.strip}'"
   else
     origin = `cd ../.. && git config --get remote.origin.url`.scan(/github\.com.(.*).git/).flatten.first.strip rescue 'razum2um/lurker'
     branch = `cd ../.. && git rev-parse --abbrev-ref HEAD`.strip rescue 'master'
@@ -35,34 +34,10 @@ append_to_file 'Gemfile' do
   CODE
 end
 
-file 'config/unicorn.rb' do
-  <<-CODE
-    worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-    timeout 15
-    preload_app true
-
-    before_fork do |server, worker|
-      Signal.trap 'TERM' do
-        puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
-        Process.kill 'QUIT', Process.pid
-      end
-
-      defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
-    end
-
-    after_fork do |server, worker|
-      Signal.trap 'TERM' do
-        puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'
-      end
-
-      defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
-    end
-  CODE
-end
-
 file 'Procfile' do
   <<-CODE
-    web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+    web: bundle exec puma -p $PORT
   CODE
 end
 
+gsub_file('Gemfile', /gem.*tzinfo-data.*/, '')

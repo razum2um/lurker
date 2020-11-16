@@ -10,7 +10,7 @@ def relative_example_path
   if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
     "tmp/lurker_app_#{rails_version}"
   else
-    raise "Use `appraisal rails-X cucumber ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+    raise "Export BUNDLE_GEMFILE=gemfiles/rails... explicitly"
   end
 end
 
@@ -18,7 +18,7 @@ def example_path
   if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
     File.expand_path("../../../tmp/lurker_app_#{rails_version}", __FILE__)
   else
-    raise "Use `appraisal rails-X cucumber ...` or export BUNDLE_GEMFILE=gemfiles/... explicitly"
+    raise "Export BUNDLE_GEMFILE=gemfiles/rails... explicitly"
   end
 end
 

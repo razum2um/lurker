@@ -38,7 +38,9 @@ namespace :assets do
     sprockets.append_path(SOURCE_DIR.join('stylesheets').to_s)
 
     %w[jquery-rails bootstrap-sass remotipart lurker].each do |gem|
-      gem_path = Pathname.new(Bundler.rubygems.find_name(gem).first.full_gem_path)
+      bundler_gem = Bundler.rubygems.find_name(gem).first
+      raise "Gem #{gem.inspect} is required in #{ENV.fetch('BUNDLE_GEMFILE', 'Gemfile')}" unless bundler_gem
+      gem_path = Pathname.new(bundler_gem.full_gem_path)
       %w[javascripts stylesheets fonts].each do |prefix|
         %w[assets vendor/assets lib/lurker/templates].each do |interfix|
           path = gem_path.join(interfix, prefix).to_s
@@ -47,7 +49,7 @@ namespace :assets do
       end
     end
 
-    unless ENV['TRAVIS']
+    unless ENV['CI']
       sprockets.js_compressor  = :uglify
       sprockets.css_compressor  = :scss
     end
