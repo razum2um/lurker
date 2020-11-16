@@ -16,9 +16,5 @@ if defined?(RSpec) && RSpec.respond_to?(:configure)
       end
       Lurker::Spy.on(options, &example)
     end
-
-    unless RSpec::Core::Version::STRING > '3'
-      config.treat_symbols_as_metadata_keys_with_true_values = true
-    end
   end
 end
