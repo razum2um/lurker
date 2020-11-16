@@ -106,15 +106,7 @@ task :convert_example_docs do
   end
 
   place_github_badge 'public/lurker/index.html'
-  in_lurker_app "bin/lurker convert -f pdf"
+  # in_lurker_app "bin/lurker convert -f pdf"
 end
 
 task :build_example_docs => [:features, :convert_example_docs]
-
-task :docker => :build_example_docs do
-  require 'fileutils'
-  FileUtils.cp 'Dockerfile', "#{EXAMPLE_APP}/Dockerfile"
-  in_lurker_app "docker build -t #{ENV.fetch('IMAGE')} ."
-  puts "Run with:\ndocker run -e DATABASE_URL=postgres://#{ENV['USER']}@host.docker.internal/lurker_app_rails_6 -p 3000:3000 #{ENV.fetch('IMAGE')}"
-end
-
