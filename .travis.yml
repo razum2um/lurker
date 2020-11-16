@@ -6,6 +6,5 @@ gemfile:
   - gemfiles/rails_5.gemfile
   - gemfiles/rails_6.gemfile
 rvm:
-  - 2.6
   - 2.7
 install: bundle install -j4 --path vendor/bundle
