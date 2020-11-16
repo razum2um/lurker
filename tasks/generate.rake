@@ -33,7 +33,7 @@ namespace :generate do
       in_lurker_app "bundle config --local local.lurker $PWD/../.." unless ENV['CI']
       in_lurker_app "bundle config --local set without 'development'"
       in_lurker_app "bundle install"
-      %w[rake rspec-core spring].each do |gem|
+      %w[rake rspec-core spring bundler].each do |gem|
         in_lurker_app "bundle binstubs #{gem} --force"
       end
     end
