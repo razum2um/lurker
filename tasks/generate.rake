@@ -1,14 +1,13 @@
 def rails_version
-  if (version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_(\d+)/)&.to_a&.last)
+  if (version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_([\d\.]+).gemfile/)&.to_a&.last)
     Gem::Version.new(version)
   end
 end
 
-TEMPLATE_TASK = rails_version >= Gem::Version.new('5.0') ? 'app:template' : 'rails:template'
-TASK_RUNNER = rails_version >= Gem::Version.new('5.0') ? 'bin/rails' : 'bin/rake'
-
 if rails_version
-  EXAMPLE_APP = "tmp/lurker_app_#{rails_version}"
+  EXAMPLE_APP = "tmp/lurker_app_rails_#{rails_version}"
+  TEMPLATE_TASK = rails_version >= Gem::Version.new('5.0') ? 'app:template' : 'rails:template'
+  TASK_RUNNER = rails_version >= Gem::Version.new('5.0') ? 'bin/rails' : 'bin/rake'
 else
   raise "Export BUNDLE_GEMFILE=gemfiles/rails_... explicitly"
 end
@@ -111,4 +110,11 @@ task :convert_example_docs do
 end
 
 task :build_example_docs => [:features, :convert_example_docs]
+
+task :docker => :build_example_docs do
+  require 'fileutils'
+  FileUtils.cp 'Dockerfile', "#{EXAMPLE_APP}/Dockerfile"
+  in_lurker_app "docker build -t #{ENV.fetch('IMAGE')} ."
+  puts "Run with:\ndocker run -e DATABASE_URL=postgres://#{ENV['USER']}@host.docker.internal/lurker_app_rails_6 -p 3000:3000 #{ENV.fetch('IMAGE')}"
+end
 

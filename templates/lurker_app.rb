@@ -1,18 +1,18 @@
 # This is initial testing/demo rails app template (passed to `rails new`)
 
 gem 'rack-cors', require: 'rack/cors'
-gem 'rspec-rails'
-gem 'spring-commands-rspec'
-gem 'database_cleaner'
+gem 'rspec-rails', group: [:development, :test]
+gem 'spring-commands-rspec', group: [:development, :test]
+gem 'database_cleaner', group: [:development, :test]
 gem 'simplecov', '~> 0.7.1', require: false
-gem 'kramdown',  '~> 1.3'
-gem 'pdfkit', '~> 0.5'
-gem 'wkhtmltopdf-binary', '~> 0.9'
-gem 'execjs'
-gem 'coderay'
+gem 'kramdown',  '~> 1.3', group: [:development, :test]
+gem 'pdfkit', '~> 0.5', group: [:development, :test]
+gem 'wkhtmltopdf-binary', '~> 0.9', group: [:development, :test]
+gem 'execjs', group: [:development, :test]
+gem 'coderay', group: [:development, :test]
 
 unless ENV['CI']
-  gem 'pry-byebug'
+  gem 'pry-byebug', group: [:development, :test]
 end
 
 append_to_file 'Gemfile' do
@@ -40,4 +40,5 @@ file 'Procfile' do
   CODE
 end
 
-gsub_file('Gemfile', /gem.*tzinfo-data.*/, '')
+# docker needs with for mri too
+gsub_file('Gemfile', /gem.*tzinfo-data.*/, 'gem "tzinfo-data"')

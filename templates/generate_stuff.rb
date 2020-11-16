@@ -1,5 +1,4 @@
 # This is secondary testing/demo rails app template (passed to `rake rails:template`)
-
 if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
   base_db_name = "lurker_app_#{rails_version}"
 else
@@ -430,3 +429,5 @@ append_to_file '.rspec' do
     --require rails_helper
   CODE
 end
+
+copy_file "#{File.expand_path '../../templates/Dockerfile', __FILE__}", "Dockerfile"
