@@ -32,8 +32,8 @@ desc 'releases gem & updates docs'
 task :publish do
   require 'lurker'
   version = Lurker::VERSION
-
-  Bundler.with_unbundled_env do
+  bundler_method = Bundler.respond_to?(:with_unbundled_env) ? :with_unbundled_env : :with_clean_env
+  Bundler.send(bundler_method) do
     system "git tag v#{version}"
     system "relish versions:add razum2um/lurker:#{version}"
     system "relish push razum2um/lurker:#{version}"
