@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lurker Demo Application</title>
-  <link href="/lurker/application-ad104fafca32012a24491dd90fa88ee5571eecb1.css" media="all" rel="stylesheet">
+  <link href="/lurker/application-38732d720a9976449cc6a1d409d5f818958572e1.css" media="all" rel="stylesheet">
   <style type="text/css">
     @font-face {
       font-family: 'FontAwesome';
@@ -26,7 +26,7 @@
       <a class="navbar-brand" href="/lurker">Lurker Demo Application</a>
     </div>
   </div>
-</header><a href='https://github.com/razum2um/lurker'><img style='position: absolute; top: 0; right: 0; border: 0; z-index: 1000' src='https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png' alt='Fork me on GitHub'></a>
+</header>
 
 <div class="container bs-docs-container">
   <div class="row">
@@ -35,259 +35,7 @@
         <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header">Lurker Demo Application API Reference</h1>
-    <h1 id="lurker">Lurker</h1>
-
-<p><img align="right" width="94" height="71" src="https://cdn.rawgit.com/razum2um/lurker/master/lurker-bw.svg" /></p>
-
-<p>Generates API schemas, validates code against them and creates a handy web interface for testing the API.
-Works on Rails 3.2, 4.0, 4.1, 4.2 &amp; Ruby 1.9.3, 2.0.0, 2.1.5, 2.2.0</p>
-
-<p><a href="https://rubygems.org/gems/lurker"><img src="https://badge.fury.io/rb/lurker.png" alt="Gem Version" /></a>
-<a href="https://travis-ci.org/razum2um/lurker"><img src="https://travis-ci.org/razum2um/lurker.png" alt="Build Status" /></a>
-<a href="https://gemnasium.com/razum2um/lurker"><img src="https://gemnasium.com/razum2um/lurker.png" alt="Dependency Status" /></a></p>
-
-<h2 id="installation">Installation</h2>
-
-<p>Add my public key:</p>
-
-<pre><code>gem cert --add &lt;(curl -Ls https://raw.github.com/razum2um/lurker/master/certs/razum2um.pem)
-
-$ gem install lurker                 # without key
-$ gem install lurker -P HighSecurity # secure, with key added
-</code></pre>
-
-<p>Or this line to your application’s Gemfile:</p>
-
-<pre><code>gem 'lurker'
-</code></pre>
-
-<p>Inject into <code>test_helper.rb</code> or <code>spec_helper.rb</code>:</p>
-
-<pre><code>require 'lurker/spec_helper'
-</code></pre>
-
-<h2 id="usage">Usage</h2>
-
-<p>Wrap your integration test code, which does request like this</p>
-
-<pre><code>Lurker::Spy.on do
-  get "/api/v1/users.json"
-end
-</code></pre>
-
-<p>And run the specs and commit your schemas. That’s all, easy!</p>
-
-<h2 id="rspec-usage">RSpec usage</h2>
-
-<p>Write your RSpec <a href="https://www.relishapp.com/rspec/rspec-rails/docs/controller-specs">controller</a> or <a href="https://www.relishapp.com/rspec/rspec-rails/docs/request-specs/request-spec">request</a> specs as usual,
-but add <code>:lurker</code> mark (like documented <a href="https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding">controller example</a> or <a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-scaffolding">request spec example</a>).</p>
-
-<pre><code>it "lists users", :lurker do
-  get "/api/v1/users.json"
-end
-</code></pre>
-
-<h2 id="minitest-usage">Minitest usage</h2>
-
-<p>You can use <a href="https://github.com/splattael/minitest-around">minitest-around</a> to wrap your test classes like this:</p>
-
-<pre><code>class DestroyRepoTest &lt; ActionDispatch::IntegrationTest
-  def around(&amp;block)
-    Lurker::Spy.on(&amp;block)
-  end
-end
-</code></pre>
-
-<p>You also can wrap any block with API requests <a href="https://www.relishapp.com/razum2um/lurker/docs/minitest">manually</a>.</p>
-
-<h2 id="schemas">Schemas</h2>
-
-<p>Please, commit your files under <code>Rails.root/lurker</code> directory.
-Feel free to edit them according to <a href="http://json-schema.org/">json-schema</a> standard.
-It can be very strict and flexible if you wish: see an <a href="http://json-schema.org/example2.html">example</a>,
-but scaffolded schemas are pretty good by default.</p>
-
-<pre><code>A  lurker/ExampleApp.service.yml
-A  lurker/api/v1/users-GET.json.yml
-A  lurker/api/v1/users/__user_id/repos-GET.json.yml
-</code></pre>
-
-<p>I also advise you to look on <a href="http://spacetelescope.github.io/understanding-json-schema/">Understanding JSON Schema</a> book,
-it is up-to-date with draft4 and contains lot of examples.</p>
-
-<h2 id="profit">Profit!</h2>
-
-<p>Now, every test run lurker will look into your requests and <a href="https://www.relishapp.com/razum2um/lurker/docs/test-endpoint">validate them</a>,
-and it fails if your code changes the API!</p>
-
-<pre><code>Failure/Error: post :create [...]
-Lurker::ValidationError:
-  Request
-  - The property '#/' contains additional properties ["social_network"] outside of the schema
-    when none are allowed in schema file:///.../lurker/api/v1/users-POST.json.yml#
-  Response
-  - The property '#/user/last_sign_in_at' of type String did not match the following type:
-    null in schema file:///.../lurker/api/v1/users-POST.json.yml#
-</code></pre>
-
-<p>The generation of live-documentation is pretty simple:</p>
-
-<pre><code>bin/lurker convert           # builds html under `Rails.root/public/lurker` to be served under `/lurker` url
-bin/lurker convert -f pdf    # builds `Rails.root/public/lurker/snake_cased_name.pdf`
-</code></pre>
-
-<p>For different document root or serving URL prefix use <code>-o</code> and <code>-u</code> options accordingly.</p>
-
-<p>If you want to provide additional documentation for your API (and you probably should),
-you can use separate Markdown files in the schema folder. To generate documentation
-stubs for the current schema:</p>
-
-<pre><code>bin/lurker init_docs         # generate documentation stubs for the current schema
-</code></pre>
-
-<p>Let’s run your <code>rails s</code> and visit <a href="http://localhost:3000/lurker/">http://localhost:3000/lurker/</a>
-(or see <a href="http://lurker.razum2um.me">demo</a> for example)</p>
-
-<p>Now, you can test your API on-line (for real)</p>
-
-<h2 id="demo-applicationdemoapp3"><a href="http://razum2um.github.io/lurker/">Demo application</a></h2>
-
-<p>You can run this to get the demo running locally:</p>
-
-<pre><code>git clone https://github.com/razum2um/lurker.git
-cd lurker
-bundle exec appraisal rails-42 bundle install
-bundle exec appraisal rails-42 rake build_example_docs
-cd tmp/lurker_app_rails_42
-bin/rails s
-</code></pre>
-
-<p>Lurker supports multiple domains (usually <code>staging</code> and <code>production</code>) and can be deployed
-statically everywhere as well as be served by the current <code>Rails</code> instance.</p>
-
-<p>For example:</p>
-
-<ul>
-  <li><a href="http://razum2um.github.io/lurker/">Github Pages</a> is deployed statically; no API endpoint</li>
-  <li><a href="http://lurker.razum2um.me">Custom domain</a> HTML deployed under nginx; passenger serves demo api production endpoint</li>
-  <li><a href="http://lurker-app.herokuapp.com">Heroku</a> HTML is served by unicorn as well as staging api endpoint in <code>Sandbox</code> mode</li>
-</ul>
-
-<h2 id="features">Features</h2>
-
-<ul>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-schema-scaffolding">Autoscaffolding for non-covered API endpoints</a></li>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/test-endpoint">Autotesting for covered endpoint once written</a> (both request &amp; response!)</li>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/html-generation">Pretty HTML documentation based on your schemas</a></li>
-  <li><a href="http://lurker.razum2um.me/lurker/api/v1/users-POST.html">Pretty submit form to test API endpoints (live) based on schemas</a> (enter a name &amp; press “Submit”)</li>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/controller-nested-schema-scaffolding">Handling URLs with dynamic segments</a> (such as <code>api/v1/:user_id/repos</code>)</li>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/partials">JSON-Schema partials</a>, also in YAML format (<a href="http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html">demo</a>)</li>
-  <li><a href="http://razum2um.github.io/lurker/lurker_demo_application.pdf">Generation PDF documentation</a> (<em>NOTE</em>: add <code>gem 'pdfkit'</code> to Gemfile)</li>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes">Multiple docs for many usecases</a> (e.g <code>:lurker =&gt; '...'</code>)</li>
-  <li>ERB support inside <code>.json.yml.erb</code></li>
-  <li>Insert custom content in Markdown into <code>index.html</code> (<em>NOTE</em>: add <code>gem 'kramdown'</code> to Gemfile)</li>
-  <li>Syntax highlighting for sample response (add <code>gem 'execjs'</code> to Gemfile)</li>
-  <li>Separate API-services generated within one test suite</li>
-  <li>Capistrano integration</li>
-  <li>JSON-Schema draft-v4 support</li>
-  <li>Static site deploy and milti-domain support</li>
-  <li>Builtin Rack middleware <code>Lurker::Server.to_rack</code> serves cached digested assets</li>
-  <li><a href="https://www.relishapp.com/razum2um/lurker/docs/test-endpoint">RSpec</a> &amp; <a href="https://www.relishapp.com/razum2um/lurker/docs/minitest">Minitest</a> support</li>
-</ul>
-
-<h2 id="token-authentication-with-sandbox">Token authentication with sandbox</h2>
-
-<p><code>Lurker::Sandbox</code> allows you to test services with token authentication:</p>
-
-<pre><code># make sure it's not production!
-# e.g. config/environtents/staging.rb
-config.middleware.use Lurker::Sandbox
-</code></pre>
-
-<p>E.g. demo application on Heroku runs with it: when creating, updating repos or users
-ids getting increased, but if you look into GET #index,
-new items are NOT showing up. <strong>This is NOT a bug!</strong> Sequences in PostgreSQL
-are increasing notwithstanding ROLLBACK is called. As such:</p>
-
-<ul>
-  <li>run all your specs with <strong>the same</strong> testing token</li>
-  <li>ensure the same token to be accepted on your demo application</li>
-  <li>insert <code>Lurker::Sandbox</code> and the recorded examples should be ok to submit again</li>
-</ul>
-
-<h2 id="contributions">Contributions</h2>
-
-<p><a href="https://codeclimate.com/github/razum2um/lurker"><img src="https://codeclimate.com/github/razum2um/lurker.png" alt="Code Climate" /></a>
-<a href="https://coveralls.io/r/razum2um/lurker"><img src="https://coveralls.io/repos/razum2um/lurker/badge.png?branch=master" alt="Coverage Status" /></a>
-<a href="http://inch-pages.github.io/github/razum2um/lurker"><img src="http://inch-pages.github.io/github/razum2um/lurker.png" alt="Inline docs" /></a>
-<a href="https://waffle.io/razum2um/lurker"><img src="https://badge.waffle.io/razum2um/lurker.png?label=ready&amp;title=Ready&amp;_=1" alt="Stories in Ready" /></a></p>
-
-<p>I try to use <a href="https://waffle.io/razum2um/lurker">Waffle</a> to develop this gem, if you want to help:</p>
-
-<ul>
-  <li>look on “Ready” section</li>
-  <li>drag an issue to “In Progress” and assign to yourself</li>
-  <li>have fun!</li>
-</ul>
-
-<p><strong>NOTE:</strong> to get new version of bundled <code>bootstrap</code> or update JS/CSS,
-don’t touch files under <code>lib/lurker/templates/public</code> - they are autogenerated
-and copied to static generated site while <code>bin/lurker convert</code></p>
-
-<pre><code>bundle exec appraisal rails-42 rake assets:precompile # to build them
-</code></pre>
-
-<p>Don’t commit <code>lib/lurker/templates/public/**/*</code> to avoid conflicts.</p>
-
-<p><strong>NOTE:</strong> if you write features keep in mind to generate different files with aruba
-because they are kept in the <code>lurker_app</code> directory to be deployed as a demo. Please, write
-features in a way to generate <strong>new</strong> relevant <code>lurker/**/*.json.yml</code> files</p>
-
-<p><strong>NOTE:</strong> template partial <code>submit_form.html.erb</code> and it’s partials is a big <code>jsx</code> script for <code>React</code>
-so there are <code>&lt;label htmlFor</code> instead of <code>&lt;label for&gt;</code> and <code>&lt;div className</code> instead of <code>&lt;div class</code></p>
-
-<h3 id="different-rails-versions">Different Rails versions</h3>
-
-<p>We use <a href="https://github.com/thoughtbot/appraisal"><code>appraisal</code></a> to test the lib with different Rails versions (from 3.2 up to 4.2):</p>
-
-<pre><code># run this to install all gems for all the supported rails versions:
-bundle exec appraisal install
-
-# then prefix any rake command with `bundle exec appraisal` and rails version
-bundle exec appraisal rails-42 rake build_example_docs
-</code></pre>
-
-<p>Test apps are getting generated into their’s directory under <code>tmp/lurker_app...</code> prefix. They also use
-separate databases for each rails version both dev &amp; test env - all prefixed with <code>lurker_app</code></p>
-
-<h3 id="demo-app--testing-app">Demo app == Testing app</h3>
-
-<p>Currently, the testing application is using PostgreSQL because <strong>the same</strong> testing app is deployed to serve demo purposes.</p>
-
-<p>This is also the reason not to delete anything under <code>lurker</code> directory between feature tests
-and using <strong>different</strong> API endpoints of the testing app. To run cucumber with clean <code>lurker</code> &amp; <code>public/lurker</code> directories run:</p>
-
-<pre><code>CLEAN=1 bundle exec appraisal rails-42 cucumber features
-</code></pre>
-
-<p>Beware while writing your feature tests for PRs.</p>
-
-<h2 id="acknowledgments">Acknowledgments</h2>
-
-<p><a href="http://evilmartians.com/"><img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" /></a></p>
-
-<p>This gem is quite opinionated and relies on rails - if you’re
-interested in anything else, please take a look at <a href="https://github.com/fredwu/api_taster">api_taster</a> or <a href="https://github.com/square/fdoc">fdoc</a>,
-This gem is heavily inspired by them. Thanks, @square &amp; @fredwu</p>
-
-<p>Also thanks to</p>
-
-<ul>
-  <li><a href="https://twitter.com/aderyabin">Andrey Deryabin</a> for advice</li>
-  <li><a href="http://facebook.github.io/react/">React.js</a> for reactive UI</li>
-  <li><a href="http://highlightjs.org/">highlight.js</a> for syntax highlighting</li>
-</ul>
-
+    
 
   </div>
   <!-- /.col-lg-12 -->
@@ -302,13 +50,6 @@ This gem is heavily inspired by them. Thanks, @square &amp; @fredwu</p>
             <li class="endpoint-group opened">
       <a href="#">users management</a>
       <ul class="nav">
-            <li class="opened">
-                <a href="/lurker/api/v1/users-GET.html">
-                  <span>user listing</span>
-                  <br>
-                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users</span>
-                </a>
-            </li>
             <li class="opened">
                 <a href="/lurker/api/v1/users-POST.html">
                   <span>user creation</span>
@@ -377,27 +118,6 @@ This gem is heavily inspired by them. Thanks, @square &amp; @fredwu</p>
                   <span class="btn btn-danger btn-xs">DELETE&nbsp;/api/v1/users/:user_id/repos/:id</span>
                 </a>
             </li>
-            <li class="opened">
-                <a href="/lurker/api/v1/users/__user_id/repos/__id-GET.html">
-                  <span>repo</span>
-                  <br>
-                  <span class="btn btn-success btn-xs">GET&nbsp;/api/v1/users/:user_id/repos/:id</span>
-                </a>
-            </li>
-            <li class="opened">
-                <a href="/lurker/api/v1/users/__user_id/repos/__id-PATCH.html">
-                  <span>repo updating</span>
-                  <br>
-                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id</span>
-                </a>
-            </li>
-            <li class="opened">
-                <a href="/lurker/api/v1/users/__user_id/repos/__id-failed-PATCH.html">
-                  <span>failed repo updating</span>
-                  <br>
-                  <span class="btn btn-warning btn-xs">PATCH&nbsp;/api/v1/users/:user_id/repos/:id-failed</span>
-                </a>
-            </li>
       </ul>
   </li>
 
@@ -411,15 +131,15 @@ This gem is heavily inspired by them. Thanks, @square &amp; @fredwu</p>
   <div class="container">
     <ul class="bs-docs-footer-links muted">
       <li>·</li>
-        <li>Revision&nbsp;0b6901c</li>
+        <li>Revision&nbsp;5193eb9</li>
         <li>·</li>
-        <li>lurker (98c9d0a399adcfd7ea05dd3c239264d9781af4f5)</li>
+        <li>lurker (0.6.12)</li>
         <li>·</li>
     </ul>
   </div>
 </footer>
 
-<script src="/lurker/application-227676fcd3c9d8e61b4042fefbb68288484c019b.js"></script>
+<script src="/lurker/application-5dd9a7d2a117b497d472a6e6dde18622946967d3.js"></script>
 
 </body>
 </html>
