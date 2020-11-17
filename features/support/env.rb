@@ -56,9 +56,7 @@ end
 Capybara.app = Rails.application
 Capybara.server = :puma, { Silent: true, Threads: '1:1' }
 Capybara.javascript_driver = ENV['CAPYBARA_JS_DRIVER']&.to_sym || :headless_chrome
-
-require 'active_record/connection_adapters/postgresql_adapter'
-# DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :truncation
 
 # otherwise it cleans up all rails folder
 # https://github.com/cucumber/aruba/blob/bf612766ac51e28ca354e735980cd8a5d7eb296f/lib/aruba/setup.rb#L27L31
