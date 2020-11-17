@@ -10,6 +10,7 @@ gem 'pdfkit', '~> 0.5', group: [:development, :test]
 gem 'wkhtmltopdf-binary', '~> 0.9', group: [:development, :test]
 gem 'execjs', group: [:development, :test]
 gem 'coderay', group: [:development, :test]
+gem 'rails-forward_compatible_controller_tests', group: [:development, :test], require: false
 
 unless ENV['CI']
   gem 'pry-byebug', group: [:development, :test]
@@ -25,7 +26,7 @@ append_to_file 'Gemfile' do
     "gem 'lurker', github: '#{origin}', branch: '#{branch}'"
   end
 
-  <<-CODE
+  <<~CODE
 
     # new line above is important, branch is also important
     # please, dont commit here: "gem 'lurker', path: '../../'"
@@ -35,10 +36,13 @@ append_to_file 'Gemfile' do
 end
 
 file 'Procfile' do
-  <<-CODE
+  <<~CODE
     web: bundle exec puma -p $PORT
   CODE
 end
 
 # docker needs with for mri too
 gsub_file('Gemfile', /gem.*tzinfo-data.*/, 'gem "tzinfo-data"')
+
+# pg 0.21 with rails-4 has too much warnings
+gsub_file('Gemfile', "gem 'pg', '~> 0.15'", "gem 'pg', '<= 0.20'")

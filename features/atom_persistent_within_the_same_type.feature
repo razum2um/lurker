@@ -67,13 +67,15 @@ Feature: atom persistent within test suite
         end
 
         it "updates a user surname as string" do
+              puts Thread.list.to_a.inspect
+
           patch :update, params: { id: user.id, user: { surname: 'Marley' } }
           expect(response).to be_success
         end
       end
     """
 
-  When I run `bin/rspec spec/controllers/api/v2/users_controller_spec.rb`
+  When I run `bin/rspec -b spec/controllers/api/v2/users_controller_spec.rb`
   Then the example should pass
   Then a file named "lurker/api/v2/users/__id-PATCH.json.yml" should exist
   Then the file "lurker/api/v2/users/__id-PATCH.json.yml" should contain exactly:
