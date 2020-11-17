@@ -422,7 +422,7 @@ append_to_file 'spec/rails_helper.rb' do
   <<~CODE
     Dir[File.expand_path '../support/**/*.rb', __FILE__].each { |file| require file }
 
-    Gem::Version.new(Rails.version) < Gem::Version.new('5.0.0')
+    if Gem::Version.new(Rails.version) < Gem::Version.new('5.0.0')
       require 'rails/forward_compatible_controller_tests'
       RSpec.configure do |config|
         config.include Rails::ForwardCompatibleControllerTests, type: :controller
