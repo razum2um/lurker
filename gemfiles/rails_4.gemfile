@@ -4,6 +4,8 @@ gem "rails", "~> 4.2"
 gem "bigdecimal", "~> 1.4"
 gem "pg", "<= 0.20" # doesnt use 1.0 by install, 0.21 too many warnings
 
+gem "rails-forward_compatible_controller_tests", "> 0"
+
 gem "jquery-rails"
 gem "bootstrap-sass"
 gem "remotipart"
