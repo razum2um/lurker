@@ -10,7 +10,12 @@ gem 'pdfkit', '~> 0.5', group: [:development, :test]
 gem 'wkhtmltopdf-binary', '~> 0.9', group: [:development, :test]
 gem 'execjs', group: [:development, :test]
 gem 'coderay', group: [:development, :test]
-gem 'rails-forward_compatible_controller_tests', group: [:development, :test], require: false
+
+# only for rails-4
+version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_([\d\.]+).gemfile/)&.to_a&.last
+if version && (Gem::Version.new(version) < Gem::Version.new('5'))
+  gem 'rails-forward_compatible_controller_tests', group: [:development, :test], require: false
+end
 
 unless ENV['CI']
   gem 'pry-byebug', group: [:development, :test]
