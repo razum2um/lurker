@@ -5,9 +5,8 @@
 Generates API schemas, validates code against them and creates a handy web interface for testing the API.
 Tested on on Rails 4, 5, 6 and Ruby >= 2.6
 
-[![Gem Version][GV img]][Gem Version]
+[![Gem Version](https://badge.fury.io/rb/lurker.svg)](https://badge.fury.io/rb/lurker)
 [![Build Status][BS img]][Build Status]
-[![Dependency Status][DS img]][Dependency Status]
 
 ## Usage
 
@@ -236,8 +235,6 @@ Also thanks to
 [Code Climate]: https://codeclimate.com/github/razum2um/lurker
 [Coverage Status]: https://coveralls.io/r/razum2um/lurker
 
-[GV img]: https://badge.fury.io/rb/lurker.png
 [BS img]: https://travis-ci.org/razum2um/lurker.png
-[DS img]: https://gemnasium.com/razum2um/lurker.png
 [CC img]: https://codeclimate.com/github/razum2um/lurker.png
 [CS img]: https://coveralls.io/repos/razum2um/lurker/badge.png?branch=master
