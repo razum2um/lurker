@@ -40,13 +40,9 @@ Feature: controller nested schema scaffolding
       required: []
       properties:
         limit:
-          anyOf:
-          - description: ''
-            type: integer
-            example: 1
-          - description: ''
-            type: string
-            example: '1'
+    """
+  Then the file "lurker/api/v1/users/__user_id/repos-GET.json.yml" should contain:
+    """yml
     responseCodes:
     - status: 200
       successful: true
