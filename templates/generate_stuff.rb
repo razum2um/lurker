@@ -1,14 +1,8 @@
 # This is secondary testing/demo rails app template (passed to `rake rails:template`)
-def rails_version
-  if (version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_([\d\.]+).gemfile/)&.to_a&.last)
-    Gem::Version.new(version)
-  end
-end
-
-if rails_version
-  BASE_DB_NAME = "lurker_app_rails_#{rails_version}"
+if rails_version = ENV['BUNDLE_GEMFILE'].to_s.match(/rails_\d+/)
+  base_db_name = "lurker_app_#{rails_version}"
 else
-  raise "Export BUNDLE_GEMFILE=gemfiles/rails_... explicitly"
+  base_db_name = 'lurker_app'
 end
 
 file 'config/database.yml', force: true do
@@ -16,11 +10,11 @@ file 'config/database.yml', force: true do
 default: &default
   adapter: postgresql
   encoding: unicode
-  database: #{BASE_DB_NAME}
+  database: #{base_db_name}
   pool: 5
 test:
   <<: *default
-  database: #{BASE_DB_NAME}_test
+  database: #{base_db_name}_test
 development:
   <<: *default
 production:
@@ -427,19 +421,15 @@ end
 append_to_file 'spec/rails_helper.rb' do
   <<~CODE
     Dir[File.expand_path '../support/**/*.rb', __FILE__].each { |file| require file }
-    CODE
-end
 
-if rails_version < Gem::Version.new('5')
-  append_to_file 'spec/rails_helper.rb' do
-    <<~CODE  
+    Gem::Version.new(Rails.version) < Gem::Version.new('5.0.0')
       require 'rails/forward_compatible_controller_tests'
       RSpec.configure do |config|
         config.include Rails::ForwardCompatibleControllerTests, type: :controller
         config.include Rails::ForwardCompatibleControllerTests, type: :request
       end
-    CODE
-  end
+    end
+  CODE
 end
 
 append_to_file '.rspec' do
