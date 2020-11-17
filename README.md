@@ -87,12 +87,13 @@ stubs for the current schema:
 
 
 Let's run your `rails s` and visit [http://localhost:3000/lurker/](http://localhost:3000/lurker/)
-(or see [demo][demo_app2] for example)
+(or see [demo][demo_app] for example)
 
 Now, you can test your API on-line (for real)
 
-## [Demo application][demo_app3]
+## [Demo application][demo_app]
 
+[Custom domain][demo_app] static + demo api production endpoint (in `Sandbox` mode).
 You can run this to get the demo running locally:
 
     git clone https://github.com/razum2um/lurker.git
@@ -105,11 +106,6 @@ You can run this to get the demo running locally:
 
 Lurker supports multiple domains (usually `staging` and `production`) and can be deployed
 statically everywhere as well as be served by the current `Rails` instance.
-
-For example:
-
-- [Github Pages][demo_app3] is deployed statically; no API endpoint
-- [Custom domain][demo_app2] static + demo api production endpoint (in `Sandbox` mode)
 
 ## Features
 
@@ -223,8 +219,7 @@ Also thanks to
 [suffixes_example]: https://www.relishapp.com/razum2um/lurker/docs/request-schema-suffixes
 [minitest_example]: https://www.relishapp.com/razum2um/lurker/docs/minitest
 
-[demo_app2]: https://lurker.razum2um.me
-[demo_app3]: https://razum2um.github.io/lurker/
+[demo_app]: https://lurker.razum2um.me
 [demo_live]: https://lurker.razum2um.me/lurker/api/v1/users-POST.html
 [pdf_example]: http://razum2um.github.io/lurker/lurker_demo_application.pdf
 [partial_example_demo]: http://razum2um.github.io/lurker/api/v1/users/__user_id/repos-POST.html
