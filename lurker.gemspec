@@ -12,8 +12,6 @@ Gem::Specification.new do |spec|
   spec.description   = %q{The new de-facto for API testing your Rails application}
   spec.homepage      = "http://github.com/razum2um/lurker"
   spec.license       = "MIT"
-  spec.cert_chain    = ['certs/razum2um.pem']
-  spec.signing_key   = File.expand_path("~/.ssh/gem-private_key.pem") if $0 =~ /gem\z/
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
