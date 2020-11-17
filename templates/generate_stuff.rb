@@ -6,7 +6,7 @@ else
 end
 
 file 'config/database.yml', force: true do
-  <<-CODE
+  <<~CODE
 default: &default
   adapter: postgresql
   encoding: unicode
@@ -24,7 +24,7 @@ end
 
 copy_file "#{File.expand_path '../../bin/lurker', __FILE__}", "bin/lurker"
 inject_into_file "bin/lurker", before: /require .lurker.$/ do
-  <<-CODE
+  <<~CODE
     if (simplecov_root = ENV['SIMPLECOV_ROOT']) && (simplecov_cmdname = ENV['SIMPLECOV_CMDNAME'])
       require 'simplecov'
       SimpleCov.start
@@ -49,7 +49,7 @@ remove_file 'app/models/user.rb'
 
 generate 'rspec:install'
 
-route <<-ROUTE
+route <<~ROUTE
   namespace :api do
     namespace :v1 do
       resources :users do
@@ -85,7 +85,7 @@ generate 'model User name:string surname:string --no-timestamps --no-test-framew
 generate 'model Repo user:references name:string --no-timestamps --no-test-framework --no-migration'
 
 file 'config/initializers/serializer.rb', force: true do
-  <<-CODE
+  <<~CODE
     module ExactOrderAsJson
       # we need EXACT order for json attributes generation (e.g. rails32 sorts it)
       # see: https://github.com/rails/rails/pull/5678/files
@@ -109,7 +109,7 @@ file 'config/initializers/serializer.rb', force: true do
 end
 
 inject_into_class 'app/models/user.rb', 'User' do
-  <<-CODE
+  <<~CODE
     include ExactOrderAsJson
     has_many :repos
     validates :name, presence: true
@@ -121,14 +121,14 @@ inject_into_class 'app/models/user.rb', 'User' do
 end
 
 inject_into_class 'app/models/repo.rb', 'Repo' do
-  <<-CODE
+  <<~CODE
     include ExactOrderAsJson
     validates :name, presence: true
   CODE
 end
 
 file 'app/controllers/application_controller.rb', 'ApplicationController', force: true do
-  <<-CODE
+  <<~CODE
     class ApplicationController < ActionController::Base
       protect_from_forgery with: :null_session
       before_action :set_format
@@ -151,7 +151,7 @@ file 'app/controllers/application_controller.rb', 'ApplicationController', force
 end
 
 file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', force: true do
-  <<-CODE
+  <<~CODE
     class Api::V1::UsersController < ApplicationController
       def index
         @users = scoped(User)
@@ -206,7 +206,7 @@ file 'app/controllers/api/v1/users_controller.rb', 'Api::V1::UsersController', f
 end
 
 file 'app/controllers/api/v1/repos_controller.rb', 'Api::V1::ReposController', force: true do
-  <<-CODE
+  <<~CODE
     class Api::V1::ReposController < ApplicationController
 
       def index
@@ -269,13 +269,13 @@ end
 
 [2, 3].each do |version|
   file "app/controllers/api/v#{version}/users_controller.rb", "Api::V#{version}::UsersController", force: true do
-    <<-CODE
+    <<~CODE
       class Api::V#{version}::UsersController < Api::V1::UsersController; end
     CODE
   end
 
   file "app/controllers/api/v#{version}/repos_controller.rb", "Api::V#{version}::ReposController", force: true do
-    <<-CODE
+    <<~CODE
       class Api::V#{version}::ReposController < Api::V1::ReposController; end
     CODE
   end
@@ -283,13 +283,13 @@ end
 
 # FIXME: uninitialized constant User (NameError) in last creation line
 append_to_file 'config/environment.rb' do
-  <<-CODE
+  <<~CODE
     $:.unshift File.expand_path('../../app/models', __FILE__)
   CODE
 end
 
 inject_into_class 'config/application.rb', 'Application' do
-  <<-CODE
+  <<~CODE
     if ENV['DATABASE_URL'].present? # heroku
       config.middleware.use Lurker::Sandbox
     end
@@ -311,7 +311,7 @@ inject_into_class 'config/application.rb', 'Application' do
 end
 
 file 'test/test_helper.rb', force: true do
-  <<-CODE
+  <<~CODE
     ENV['RAILS_ENV'] ||= 'test'
     require File.expand_path('../../config/environment', __FILE__)
     require 'rails/test_help'
@@ -335,7 +335,7 @@ file 'test/test_helper.rb', force: true do
 end
 
 file 'spec/support/fixme.rb', force: true do
-  <<-CODE
+  <<~CODE
     require 'simplecov'
 
     module ActionDispatchTestResponseCompat
@@ -388,7 +388,7 @@ file 'spec/support/fixme.rb', force: true do
 end
 
 file 'lib/tasks/db.rake', force: true do
-  <<-CODE
+  <<~CODE
     namespace :db do
       desc 'fills in data'
       task :import => :environment do
@@ -401,7 +401,7 @@ file 'lib/tasks/db.rake', force: true do
 end
 
 file 'db/schema.rb', force: true do
-  <<-CODE
+  <<~CODE
     ActiveRecord::Schema.define do
       create_table "repos", :force => true do |t|
         t.integer "user_id"
@@ -419,15 +419,30 @@ file 'db/schema.rb', force: true do
 end
 
 append_to_file 'spec/rails_helper.rb' do
-  <<-CODE
+  <<~CODE
     Dir[File.expand_path '../support/**/*.rb', __FILE__].each { |file| require file }
+    
+    require 'rails/forward_compatible_controller_tests'
+    RSpec.configure do |config|
+      config.include Rails::ForwardCompatibleControllerTests, type: :controller
+      config.include Rails::ForwardCompatibleControllerTests, type: :request
+    end
   CODE
 end
 
 append_to_file '.rspec' do
-  <<-CODE
+  <<~CODE
     --require rails_helper
   CODE
 end
 
 copy_file "#{File.expand_path '../../templates/Dockerfile', __FILE__}", "Dockerfile"
+
+# rails-4 requires this
+file 'app/assets/config/manifest.js', force: true do
+  <<~CODE
+  // empty
+  CODE
+end
+
+copy_file "#{File.expand_path '../../templates/rails4_ruby26_thread_error_fix.rb', __FILE__}", "spec/support/rails4_ruby26_thread_error_fix.rb"
